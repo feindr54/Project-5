@@ -15,8 +15,6 @@ public class Client extends JFrame implements Runnable, ActionListener{
     //private ObjectInputStream C_IFS; // c = client, i = input, f = from, s = server;
     private ObjectOutputStream C_OTS; // c = client, o = out, t = to, s = server;
 
-    
-    
     private JPanel chats;
 
     private JTextField message;
@@ -31,7 +29,19 @@ public class Client extends JFrame implements Runnable, ActionListener{
         } catch (Exception e) {
             //TODO: handle exception
         }
+    }
 
+
+    public static void main(String[] args) {
+        Client c = new Client();
+        SwingUtilities.invokeLater(c);
+        readerThread t = new readerThread(c);
+        t.start();
+
+    }
+
+    @Override
+    public void run() {
         setTitle("Client");
         setVisible(true);
         setSize(1000, 500);
@@ -41,11 +51,11 @@ public class Client extends JFrame implements Runnable, ActionListener{
         // INPUT MESSAGE TEXT FIELD
         message = new JTextField("",50);
         message.setEditable(true);
-        
+
         //SEND BUTTON
         send = new JButton("Send");
         send.addActionListener(this);
-        
+
 
         chats = new JPanel(new GridLayout(0, 1));
         chats.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -63,21 +73,6 @@ public class Client extends JFrame implements Runnable, ActionListener{
         inputArea.add(send, BorderLayout.EAST);
         add(inputArea, BorderLayout.SOUTH);
         revalidate();
-        
-    }
-
-
-    public static void main(String[] args) {
-        Client c = new Client();
-        SwingUtilities.invokeLater(c);
-        readerThread t = new readerThread(c);
-        t.start();
-
-    }
-
-    @Override
-    public void run() {
-        
     }
 
     synchronized public void showOtherMsg(String data) {
