@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.*;
 /**
  * Paint
  *
@@ -13,6 +15,9 @@ import java.awt.event.*;
  */
 public class CourseTeacher extends JComponent implements Runnable {
 
+    static ArrayList<String> forums;
+    static ArrayList<String> studentsarr;
+    static ArrayList<String> repliesarr;
     static JFrame frame;
     static JPanel defaultPanel;
     static JButton backButton;
@@ -184,6 +189,21 @@ public class CourseTeacher extends JComponent implements Runnable {
     }
 
     public void run() {
+        forums = new ArrayList<>();
+        forums.add("Forum 1");
+        forums.add("Forum 2");
+        forums.add("Forum 3");
+        forums.add("Forum 4");
+        studentsarr = new ArrayList<>();
+        studentsarr.add("Student 1");
+        studentsarr.add("Student 2");
+        studentsarr.add("Student 3");
+        studentsarr.add("Student 4");
+        repliesarr = new ArrayList<>();
+        repliesarr.add("Reply 1");
+        repliesarr.add("Reply 2");
+        repliesarr.add("Reply 3");
+        repliesarr.add("Reply 4");
         frame = new JFrame("courseName");
         Container content = frame.getContentPane();
         content.setLayout(new BorderLayout());
@@ -232,11 +252,7 @@ public class CourseTeacher extends JComponent implements Runnable {
         accessPanel = new JPanel();
         accessPrompt = new JLabel("Choose a course to view:");
         accessPanel.add(accessPrompt);
-        accessForums = new JComboBox<>();
-        accessForums.addItem("Forum1");
-        accessForums.addItem("Forum2");
-        accessForums.addItem("Forum3");
-        accessForums.addItem("Forum4");
+        accessForums = new JComboBox<>(Arrays.copyOf(forums.toArray(), forums.toArray().length, String[].class));
         accessForums.setMaximumRowCount(3);
         accessPanel.add(accessForums);
         accessSubmitButton = new JButton("Submit");
@@ -265,11 +281,7 @@ public class CourseTeacher extends JComponent implements Runnable {
         editPanel = new JPanel();
         editPrompt = new JLabel("Choose the forum you want to edit and input the new name:");
         editPanel.add(editPrompt);
-        editForums = new JComboBox<>();
-        editForums.addItem("Forum1");
-        editForums.addItem("Forum2");
-        editForums.addItem("Forum3");
-        editForums.addItem("Forum4");
+        editForums = new JComboBox<>(Arrays.copyOf(forums.toArray(), forums.toArray().length, String[].class));
         editForums.setMaximumRowCount(3);
         editPanel.add(editForums);
         editCourse = new JTextField("", 10);
@@ -284,11 +296,7 @@ public class CourseTeacher extends JComponent implements Runnable {
         deletePanel = new JPanel();
         deletePrompt = new JLabel("Choose a course to delete:");
         deletePanel.add(deletePrompt);
-        deleteForums = new JComboBox<>();
-        deleteForums.addItem("Forum1");
-        deleteForums.addItem("Forum2");
-        deleteForums.addItem("Forum3");
-        deleteForums.addItem("Forum4");
+        deleteForums = new JComboBox<>(Arrays.copyOf(forums.toArray(), forums.toArray().length, String[].class));
         deleteForums.setMaximumRowCount(3);
         deletePanel.add(deleteForums);
         deleteSubmitButton = new JButton("Submit");
@@ -301,11 +309,7 @@ public class CourseTeacher extends JComponent implements Runnable {
         gradePanel = new JPanel();
         gradePrompt = new JLabel("Choose a student to grade:");
         gradePanel.add(gradePrompt);
-        students = new JComboBox<>();
-        students.addItem("Student1");
-        students.addItem("Student2");
-        students.addItem("Student3");
-        students.addItem("Student4");
+        students = new JComboBox<>(Arrays.copyOf(studentsarr.toArray(), studentsarr.toArray().length, String[].class));
         students.setMaximumRowCount(3);
         gradePanel.add(students);
         gradeSubmitButton = new JButton("Submit");
@@ -317,11 +321,7 @@ public class CourseTeacher extends JComponent implements Runnable {
         //replies and student grade
         replyPanel = new JPanel();
         replyPrompt = new JLabel("Enter the student's grade:");
-        replies = new JComboBox<>();
-        replies.addItem("Reply1");
-        replies.addItem("Reply2");
-        replies.addItem("Reply3");
-        replies.addItem("Reply4");
+        replies = new JComboBox<>(Arrays.copyOf(repliesarr.toArray(), repliesarr.toArray().length, String[].class));
         replies.setMaximumRowCount(3);
         replyPanel.add(replies);
         replyPanel.add(replyPrompt);
