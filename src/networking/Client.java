@@ -35,10 +35,13 @@ public class Client extends JFrame implements Runnable, ActionListener{
 
 
     public static void main(String[] args) {
+        /*
         Client c = new Client();
         SwingUtilities.invokeLater(c);
         readerThread t = new readerThread(c);
         t.start();
+
+         */
 
     }
 
@@ -126,7 +129,7 @@ public class Client extends JFrame implements Runnable, ActionListener{
 }
 
 
-
+/*
 class readerThread extends Thread {
 
     private final Client gui;
@@ -156,3 +159,4 @@ class readerThread extends Thread {
     }
 }
 
+*/
