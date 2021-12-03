@@ -184,7 +184,9 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
 
     CardLayout cl_LMS = (CardLayout) (cards.getLayout());
 
-
+    /**
+     * end of LMS page stuff
+     */
 
     public void submit() {
         //it depends on which radio button is selected
@@ -198,6 +200,22 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
     }
     /**
      * end of LMS page set up
+     */
+
+    /**
+     * start of courseStudent set up
+     */
+
+    /**
+     * end of courseStudent set up
+     */
+
+    /**
+     * start of courseTeacher set up
+     */
+
+    /**
+     * end of courseTeacher set up
      */
 
     public ActualClient() {
@@ -357,8 +375,6 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
 
         textPanel_login.setVisible(false);
         southPanel_Login.setVisible(false);
-
-
 
         /**
          * end of the login page setup
@@ -622,6 +638,21 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
          * end of the LMS set up
          */
 
+        /**
+         * start of courseStudent
+         */
+
+        /**
+         * end of courseStudent
+         */
+
+        /**
+         * start of courseTeacher
+         */
+
+        /**
+         * end of courseTeacher
+         */
         // Adds all the different pages to the main panel
         mainPanel.add(content_LMS, "login");
         mainPanel.add(contentSettings, "settings");
