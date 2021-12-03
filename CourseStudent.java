@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 /**
  * Paint
  *
@@ -13,6 +14,7 @@ import java.awt.event.*;
  */
 public class CourseStudent extends JComponent implements Runnable {
 
+    static ArrayList<String> forumsarr;
     static JFrame frame;
     static JPanel defaultPanel;
     static JButton backButton;
@@ -44,6 +46,11 @@ public class CourseStudent extends JComponent implements Runnable {
     }
 
     public void run() {
+        forumsarr = new ArrayList<>();
+        forumsarr.add("Forum 1");
+        forumsarr.add("Forum 2");
+        forumsarr.add("Forum 3");
+        forumsarr.add("Forum 4");
         frame = new JFrame("courseName");
         Container content = frame.getContentPane();
         content.setLayout(new BorderLayout());
@@ -59,29 +66,20 @@ public class CourseStudent extends JComponent implements Runnable {
         settingsButton = new JButton("Settings");
         settingsButton.addActionListener(actionListener);
         defaultPanel.add(settingsButton);
-
         content.add(defaultPanel, BorderLayout.NORTH);
-
         accessPanel = new JPanel();
         gradeCourse = new JLabel("Your grade is:grade");
         accessPanel.add(gradeCourse);
         accessPrompt = new JLabel("Choose a course to view:");
         accessPanel.add(accessPrompt);
-        forums = new JComboBox<>();
-        forums.addItem("Forum1");
-        forums.addItem("Forum2");
-        forums.addItem("Forum3");
-        forums.addItem("Forum4");
+        forums = new JComboBox<>(Arrays.copyOf(forumsarr.toArray(), forumsarr.toArray().length, String[].class));
         forums.setMaximumRowCount(3);
         accessPanel.add(forums);
         accessSubmitButton = new JButton("Submit");
         accessSubmitButton.addActionListener(actionListener);
         accessPanel.add(accessSubmitButton);
         accessPanel.setVisible(true);
-
         content.add(accessPanel, BorderLayout.CENTER);
-
-
         frame.setSize(800, 200);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
