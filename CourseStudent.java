@@ -21,6 +21,7 @@ public class CourseStudent extends JComponent implements Runnable {
     static JLabel welcomeLabel;
     static JButton settingsButton;
     static JPanel accessPanel;
+    static JLabel gradeSentence;
     static JLabel gradeCourse;
     static JLabel accessPrompt;
     static JComboBox<String> forums;
@@ -68,19 +69,44 @@ public class CourseStudent extends JComponent implements Runnable {
         defaultPanel.add(settingsButton);
         content.add(defaultPanel, BorderLayout.NORTH);
         accessPanel = new JPanel();
-        gradeCourse = new JLabel("Your grade is:grade");
-        accessPanel.add(gradeCourse);
+
+        accessPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
+        gradeSentence = new JLabel("Your grade is:");
+        c.weightx = 1;
+        c.gridx = 1;
+        c.gridy = 0;
+
+        accessPanel.add(gradeSentence, c);
+        gradeCourse = new JLabel("grade");
+
+        c.weightx = 1;
+        c.gridx = 1;
+        c.gridy = 1;
+
+        accessPanel.add(gradeCourse, c);
+
         accessPrompt = new JLabel("Choose a course to view:");
-        accessPanel.add(accessPrompt);
+        c.weightx = 1;
+        c.gridx = 0;
+        c.gridy = 0;
+        accessPanel.add(accessPrompt, c);
         forums = new JComboBox<>(Arrays.copyOf(forumsarr.toArray(), forumsarr.toArray().length, String[].class));
         forums.setMaximumRowCount(3);
-        accessPanel.add(forums);
+        c.weightx = 1;
+        c.gridx = 0;
+        c.gridy = 1;
+        accessPanel.add(forums, c);
         accessSubmitButton = new JButton("Submit");
         accessSubmitButton.addActionListener(actionListener);
-        accessPanel.add(accessSubmitButton);
+        c.weightx = 1;
+        c.gridx = 0;
+        c.gridy = 2;
+        accessPanel.add(accessSubmitButton, c);
         accessPanel.setVisible(true);
         content.add(accessPanel, BorderLayout.CENTER);
-        frame.setSize(800, 200);
+        frame.setSize(500, 500);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
