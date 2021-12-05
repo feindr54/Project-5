@@ -14,7 +14,7 @@ import java.util.*;
  */
 public class CourseStudent extends JComponent implements Runnable {
 
-    static ArrayList<String> forumsarr;
+    static ArrayList<String> forumsArr;
     static JFrame frame;
     static JPanel defaultPanel;
     static JButton backButton;
@@ -47,11 +47,11 @@ public class CourseStudent extends JComponent implements Runnable {
     }
 
     public void run() {
-        forumsarr = new ArrayList<>();
-        forumsarr.add("Forum 1");
-        forumsarr.add("Forum 2");
-        forumsarr.add("Forum 3");
-        forumsarr.add("Forum 4");
+        forumsArr = new ArrayList<>();
+        forumsArr.add("Forum 1");
+        forumsArr.add("Forum 2");
+        forumsArr.add("Forum 3");
+        forumsArr.add("Forum 4");
         frame = new JFrame("courseName");
         Container content = frame.getContentPane();
         content.setLayout(new BorderLayout());
@@ -92,7 +92,7 @@ public class CourseStudent extends JComponent implements Runnable {
         c.gridx = 0;
         c.gridy = 0;
         accessPanel.add(accessPrompt, c);
-        forums = new JComboBox<>(Arrays.copyOf(forumsarr.toArray(), forumsarr.toArray().length, String[].class));
+        forums = new JComboBox<>(Arrays.copyOf(forumsArr.toArray(), forumsArr.toArray().length, String[].class));
         forums.setMaximumRowCount(3);
         c.weightx = 1;
         c.gridx = 0;

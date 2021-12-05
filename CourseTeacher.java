@@ -16,8 +16,8 @@ import java.util.*;
 public class CourseTeacher extends JComponent implements Runnable {
 
     static ArrayList<String> forums;
-    static ArrayList<String> studentsarr;
-    static ArrayList<String> repliesarr;
+    static ArrayList<String> studentsArr;
+    static ArrayList<String> repliesArr;
     static JFrame frame;
     static JPanel defaultPanel;
     static JButton backButton;
@@ -194,16 +194,16 @@ public class CourseTeacher extends JComponent implements Runnable {
         forums.add("Forum 2");
         forums.add("Forum 3");
         forums.add("Forum 4");
-        studentsarr = new ArrayList<>();
-        studentsarr.add("Student 1");
-        studentsarr.add("Student 2");
-        studentsarr.add("Student 3");
-        studentsarr.add("Student 4");
-        repliesarr = new ArrayList<>();
-        repliesarr.add("Reply 1");
-        repliesarr.add("Reply 2");
-        repliesarr.add("Reply 3");
-        repliesarr.add("Reply 4");
+        studentsArr = new ArrayList<>();
+        studentsArr.add("Student 1");
+        studentsArr.add("Student 2");
+        studentsArr.add("Student 3");
+        studentsArr.add("Student 4");
+        repliesArr = new ArrayList<>();
+        repliesArr.add("Reply 1");
+        repliesArr.add("Reply 2");
+        repliesArr.add("Reply 3");
+        repliesArr.add("Reply 4");
         frame = new JFrame("courseName");
         Container content = frame.getContentPane();
         content.setLayout(new BorderLayout());
@@ -366,7 +366,7 @@ public class CourseTeacher extends JComponent implements Runnable {
         h.gridx = 0;
         h.gridy = 0;
         gradePanel.add(gradePrompt, h);
-        students = new JComboBox<>(Arrays.copyOf(studentsarr.toArray(), studentsarr.toArray().length, String[].class));
+        students = new JComboBox<>(Arrays.copyOf(studentsArr.toArray(), studentsArr.toArray().length, String[].class));
         students.setMaximumRowCount(3);
         h.gridx = 0;
         h.gridy = 1;
@@ -387,7 +387,7 @@ public class CourseTeacher extends JComponent implements Runnable {
         replyPanel.setLayout(new GridBagLayout());
         GridBagConstraints i = new GridBagConstraints();
         replyPrompt = new JLabel("Enter the student's grade:");
-        replies = new JComboBox<>(Arrays.copyOf(repliesarr.toArray(), repliesarr.toArray().length, String[].class));
+        replies = new JComboBox<>(Arrays.copyOf(repliesArr.toArray(), repliesArr.toArray().length, String[].class));
         replies.setMaximumRowCount(3);
         i.gridx = 0;
         i.gridy = 0;
