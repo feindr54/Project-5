@@ -229,7 +229,7 @@ public class LoginSystemTest implements Serializable {
             users = new ArrayList<User>();
         }
         do {
-            System.out.println("Sign Up, Login or Exit? (Enter 'signup', 'login', or 'exit')");
+            System.out.println("Sign Up, pages.Login or Exit? (Enter 'signup', 'login', or 'exit')");
             String option = input.nextLine();
             option = option.toLowerCase();
             while (!(option.equals("signup") || option.equals("login") || option.equals("exit"))) {

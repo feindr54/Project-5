@@ -64,7 +64,7 @@ public class CourseStudent extends JComponent implements Runnable {
         defaultPanel.add(backButton);
         welcomeLabel = new JLabel("Welcome to " + "courseName" + "!");
         defaultPanel.add(welcomeLabel);
-        settingsButton = new JButton("Settings");
+        settingsButton = new JButton("pages.Settings");
         settingsButton.addActionListener(actionListener);
         defaultPanel.add(settingsButton);
         content.add(defaultPanel, BorderLayout.NORTH);

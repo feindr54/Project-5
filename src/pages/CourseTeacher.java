@@ -71,7 +71,7 @@ public class CourseTeacher extends JComponent implements Runnable {
         public void actionPerformed(ActionEvent e) {
 
             if (e.getSource() == backButton) {
-                //LMS.access()
+                //pages.LMS.access()
             }
             if (e.getSource() == backButton) {
                 //settings.access()
@@ -216,7 +216,7 @@ public class CourseTeacher extends JComponent implements Runnable {
         defaultPanel.add(backButton);
         welcomeLabel = new JLabel("Welcome to " + "courseName" + "!");
         defaultPanel.add(welcomeLabel);
-        settingsButton = new JButton("Settings");
+        settingsButton = new JButton("pages.Settings");
         settingsButton.addActionListener(actionListener);
         defaultPanel.add(settingsButton);
 

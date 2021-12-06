@@ -44,7 +44,7 @@ public class Course extends JComponent {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == backButton) {
-                //LMS.access();
+                //pages.LMS.access();
             }
             if (e.getSource() == settingsButton) {
                 //settings.access();
@@ -77,7 +77,7 @@ public class Course extends JComponent {
 
         JPanel panelN = new JPanel();
         backButton = new JButton("Back");
-        settingsButton = new JButton("Settings");
+        settingsButton = new JButton("pages.Settings");
         backButton.addActionListener(actionListener);
         settingsButton.addActionListener(actionListener);
         panelN.add(backButton);

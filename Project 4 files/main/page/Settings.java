@@ -5,7 +5,7 @@ import java.util.Scanner;
 import users.User;
 
 /**
- * Project 4 - Settings
+ * Project 4 - pages.Settings
  *
  * Description - Simulates a settings menu.
  *
@@ -26,7 +26,7 @@ public class Settings {
      */
     public static void access(User user, Scanner sc) throws LogOutException {
         // print the setting UI
-        String prompt = "Settings menu for: " + user.getIdentifier() + "\n"
+        String prompt = "pages.Settings menu for: " + user.getIdentifier() + "\n"
                 + "1. Change identifier\n2. Change password\n3. Log out";
         int response = InputSystem.intInput(sc, 3, prompt);
         switch (response) {

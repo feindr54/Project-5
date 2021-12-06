@@ -42,7 +42,7 @@ public class Reply implements Serializable {
         // get the identifier based on the size of the Reply AL in forum
         this.identifier = forum.getReplies().size() + 1;
 
-        // get owner from the LMS system
+        // get owner from the pages.LMS system
         owner = currentUser;
 
         // using LocalDateTime and a formatter to format the date into nice string

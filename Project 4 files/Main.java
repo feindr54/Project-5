@@ -9,8 +9,8 @@ import java.util.*;
 /**
  * Project 4 - Main
  *
- * Description - This class drives the entire LMS program. It is the source of
- * everything, and it starts by creating the LMS and the login pages
+ * Description - This class drives the entire pages.LMS program. It is the source of
+ * everything, and it starts by creating the pages.LMS and the login pages
  *
  * @author Changxiang Gao
  *
@@ -37,7 +37,7 @@ public class Main {
             System.out.println("");
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Error initializing stream - LMS IS NULL");
+            System.out.println("Error initializing stream - pages.LMS IS NULL");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -70,7 +70,7 @@ public class Main {
 
     public static void main(String[] args) {
         Main main = new Main();
-        // create the LMS, login page and sign up page (idk yall gonna make the 2 pages
+        // create the pages.LMS, login page and sign up page (idk yall gonna make the 2 pages
         // separate or in the same class file)
         User user;
         LMS lms = null;
@@ -95,16 +95,16 @@ public class Main {
 
             try {
                 // when the user has successfully logged in / signed up,
-                // access the LMS
+                // access the pages.LMS
 
-                // check if there is an LMS file
-                lms = main.read("LMS.txt");
+                // check if there is an pages.LMS file
+                lms = main.read("pages.LMS.txt");
                 if (lms == null) {
                     lms = new LMS();
                 }
-                // lets the LMS add the current user to its database
+                // lets the pages.LMS add the current user to its database
 
-                // enters the LMS
+                // enters the pages.LMS
 
                 lms.access(user, scanner);
 
@@ -112,8 +112,8 @@ public class Main {
                 // needa put something in here
                 int i = 0;
             } finally {
-                // save the LMS and the login, sign up pages into a file
-                main.save(lms, "LMS.txt");
+                // save the pages.LMS and the login, sign up pages into a file
+                main.save(lms, "pages.LMS.txt");
                 LoginSystemTest.writeUsers(LoginSystemTest.users, "users.txt");
                 // print successfully logged out and
                 System.out.println("User successfully logged out!");

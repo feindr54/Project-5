@@ -1,9 +1,17 @@
+package pages;
+
+import networking.ActualClient;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 
-public class LMS extends JComponent implements Runnable, ActionListener {
+public class LMS extends JComponent implements ActionListener {
+    ActualClient client;
+
+    JFrame frame;
+    Container content;
 
     ButtonGroup radioGroup;
     JRadioButton accessButton;
@@ -33,50 +41,13 @@ public class LMS extends JComponent implements Runnable, ActionListener {
 
     JComboBox<String> courseDropdown;
 
+    public LMS(ActualClient client, JFrame frame) {
+        this.client = client;
+        this.frame = frame;
+        this.frame.setTitle("LMS");
 
-    public void actionPerformed(ActionEvent e) {
-        CardLayout cl = (CardLayout) (cards.getLayout());
-        if (e.getSource() == accessButton) {
-            cl.show(cards, "Access Panel");
-        } else if (e.getSource() == addButton) {
-            cl.show(cards, "Add Panel");
-        } else if (e.getSource() == editButton) {
-            cl.show(cards, "Edit Panel");
-        } else if (e.getSource() == deleteButton) {
-            cl.show(cards, "Delete Panel");
-        }
-        if (e.getSource() == submitButton) {
-            submit();
-        }
-        if (e.getSource() == settingsButton) {
-            settings();
-        }
-    }
-
-    public void submit() {
-        //it depends on which radio button is selected
-        //pressing submit when access is selected should take them to the course,
-        //while pressing submit when add is selected should clear the text field and
-        //add the course to the list
-    }
-
-    public void settings() {
-        //this should display the settings page
-    }
-
-
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new LMS());
-    }
-
-    public void run() {
-        JFrame frame = new JFrame("Welcome to LMS!");
-
-        Container content = frame.getContentPane();
+        content = frame.getContentPane();
         content.setLayout(new BorderLayout());
-
-        LMS lms = new LMS();
 
         JPanel radioPanel = new JPanel();
         radioPanel.setLayout(new GridBagLayout());
@@ -105,7 +76,7 @@ public class LMS extends JComponent implements Runnable, ActionListener {
 
 
         //settings Button created
-        settingsButton = new JButton("Settings");
+        settingsButton = new JButton("pages.Settings");
         settingsButton.addActionListener(this);
 
 
@@ -242,13 +213,40 @@ public class LMS extends JComponent implements Runnable, ActionListener {
         content.add(southPanel, BorderLayout.SOUTH);
         content.add(cards, BorderLayout.CENTER);
 
-
-        frame.setSize(600, 400);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-
     }
 
+    public Container getContent() {
+        return content;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        CardLayout cl = (CardLayout) (cards.getLayout());
+        if (e.getSource() == accessButton) {
+            cl.show(cards, "Access Panel");
+        } else if (e.getSource() == addButton) {
+            cl.show(cards, "Add Panel");
+        } else if (e.getSource() == editButton) {
+            cl.show(cards, "Edit Panel");
+        } else if (e.getSource() == deleteButton) {
+            cl.show(cards, "Delete Panel");
+        }
+        if (e.getSource() == submitButton) {
+            submit();
+        }
+        if (e.getSource() == settingsButton) {
+            settings();
+        }
+    }
+
+    public void submit() {
+        //it depends on which radio button is selected
+        //pressing submit when access is selected should take them to the course,
+        //while pressing submit when add is selected should clear the text field and
+        //add the course to the list
+    }
+
+    public void settings() {
+        //this should display the settings page
+    }
 
 }
