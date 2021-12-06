@@ -20,14 +20,10 @@ public class Login extends JComponent implements Runnable {
     JPanel textPanel;
     JPanel southPanel;
 
-
-
     JLabel studentLabel;
     JLabel teacherLabel;
     JCheckBox teacher;
     JCheckBox student;
-
-
 
     ActionListener actionListener = new ActionListener() {
 
@@ -45,10 +41,6 @@ public class Login extends JComponent implements Runnable {
             if (e.getSource() == teacher) {
                 teacherCheck();
             }
-
-
-
-
         }
     };
 

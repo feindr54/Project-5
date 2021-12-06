@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
+import java.util.Stack;
 
 
 public class ActualClient extends JFrame implements Runnable, ActionListener {
@@ -13,6 +14,10 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
     //private ObjectInputStream C_IFS; // c = client, i = input, f = from, s = server;
     private ObjectOutputStream C_OTS; // c = client, o = out, t = to, s = server;
 
+    // creates the stack
+    private Stack<String> pageStack;
+    // creates the cardlayout object
+    private CardLayout cl = new CardLayout();
     /**
      * This group of code is for the Login panel
      */
@@ -27,7 +32,7 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
     JTextField idText_login;
     JTextField passwordText_login;
 
-    JButton confirmButton_login;
+
 
     JPanel textPanel_login;
     JPanel southPanel_Login;
@@ -37,12 +42,15 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
     JCheckBox teacher;
     JCheckBox student;
 
-
+    boolean isLogin;
 
     ActionListener actionListener = new ActionListener() {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            /**
+             * buttons on the login screen
+             */
             if (e.getSource() == loginButton_login) {
                 login();
             }
@@ -55,18 +63,15 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
             if (e.getSource() == teacher) {
                 teacherCheck();
             }
-            if (e.getSource() == confirmButton_login) {
 
-            }
-            if (e.getSource() == accessButton) {
-                cl_LMS.show(cards, "Access Panel");
-            } else if (e.getSource() == addButton) {
-                cl_LMS.show(cards, "Add Panel");
-            } else if (e.getSource() == editButton) {
-                cl_LMS.show(cards, "Edit Panel");
-            } else if (e.getSource() == deleteButton) {
-                cl_LMS.show(cards, "Delete Panel");
-            }
+            /**
+             * end of login screen buttons
+             */
+
+            /**
+             * start of LMS screen buttons
+             */
+            /*
             if (e.getSource() == submitButton) {
                 submit();
             }
@@ -74,7 +79,43 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
                 settings();
             }
 
+             */
 
+            /**
+             * end of LMS buttons
+             */
+
+            /**
+             * start of settings buttons
+             */
+
+            /**
+             * end of settings buttons
+             */
+
+            /**
+             * start of courseTeacher buttons
+             */
+
+            /**
+             * end of courseTeacher buttons
+             */
+
+            /**
+             * start of courseStudent buttons
+             */
+
+            /**
+             * end of courseStudent buttons
+             */
+
+            /**
+             * start of forumTeacher buttons
+             */
+
+            /**
+             * end of forumTeacher buttons
+             */
         }
     };
 
@@ -92,6 +133,7 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
         teacherLabel.setVisible(false);
         teacher.setVisible(false);
 
+        isLogin = true;
     }
 
     //changes the id label to their email for signing up
@@ -109,6 +151,9 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
         student.setVisible(true);
         teacherLabel.setVisible(true);
         teacher.setVisible(true);
+
+        // states user is not logging in
+        isLogin = false;
     }
 
     public void studentCheck() {
@@ -125,6 +170,39 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
             student.setSelected(false);
         }
 
+    }
+
+    public boolean successful_login() {
+        String username = idText_login.getText();
+        String password = passwordText_login.getText();
+
+        if (username == null || username.isBlank()) {
+            // if username/email field is empty, create a JOptionPane dialog box of error
+            JOptionPane.showMessageDialog(null, "Please type your email/username",
+                    " Error: Empty username field", JOptionPane.ERROR_MESSAGE);
+            return false;
+        } else if (password == null || password.isBlank()) {
+            // if password field is empty, JOptionPane
+            return false;
+        } else if (!isLogin && !username.contains("@")) {
+            // if the email format is invalid, JOptionPane
+            return false;
+        } else {
+            // else send the data to the server to create a new user object
+            if (student.isSelected()) {
+                // checks if the student box is selected
+                return true;
+            } else if (teacher.isSelected()) {
+                return true;
+            } else {
+                // if neither box is selected
+                // create JOptionPane error message
+                return false;
+            }
+            // receives a user (currentUser) object and the LMS object
+            // loads up the LMS screen, using the info from the LMS object
+            // adds the LMS panel identifier string "LMS" to the stack object
+        }
     }
 
     /**
@@ -182,8 +260,6 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
 
     JComboBox<String> courseDropdown;
 
-    CardLayout cl_LMS = (CardLayout) (cards.getLayout());
-
     /**
      * end of LMS page stuff
      */
@@ -224,6 +300,7 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
             socket = new Socket("localhost", 42069);
             C_OTS = new ObjectOutputStream(socket.getOutputStream());
 
+            pageStack = new Stack<>();
         } catch (Exception e) {
             //TODO: handle exception
         }
@@ -234,11 +311,12 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
         SwingUtilities.invokeLater(c);
         readerThread t = new readerThread(c);
         t.start();
-
     }
 
     @Override
     public void run() {
+
+        pageStack.push("login");
 
         JFrame frame = new JFrame("Welcome to the LMS!");
         JPanel mainPanel = new JPanel();
@@ -248,7 +326,7 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
         /**
          * Start of the Login page set up
          */
-
+        JButton confirmButton_login;
 
         Container content_login = new Container();
         content_login.setLayout(new BorderLayout());
@@ -273,17 +351,16 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
         buttonPanel.add(signupButton_login, gbc);
         content_login.add(buttonPanel, BorderLayout.NORTH);
 
-
-        idLabel_settings = new JLabel("Identifier:");
+        idLabel_login = new JLabel("Identifier:");
         emailLabel_login = new JLabel("Email:");
 
         passwordLabel_settings = new JLabel("Password:");
 
-        idText_settings = new JTextField("", 10);
-        idText_settings.addActionListener(actionListener);
+        idText_login = new JTextField("", 10);
+        idText_login.addActionListener(actionListener);
 
-        passwordText_settings = new JTextField("", 10);
-        passwordText_settings.addActionListener(actionListener);
+        passwordText_login = new JTextField("", 10);
+        passwordText_login.addActionListener(actionListener);
 
         studentLabel = new JLabel("Student:");
         teacherLabel = new JLabel("Teacher:");
@@ -299,25 +376,24 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
 
         GridBagConstraints c = new GridBagConstraints();
 
-
         c.weighty = 0;
         c.gridx = 0;
         c.gridy = 0;
 
-        textPanel_login.add(idLabel_settings, c);
+        textPanel_login.add(idLabel_login, c);
 
         c.weighty = 0;
         c.gridx = 1;
         c.gridy = 0;
 
-        textPanel_login.add(idText_settings, c);
+        textPanel_login.add(idText_login, c);
 
         c.weighty = 0;
 
         c.gridx = 0;
         c.gridy = 1;
 
-        textPanel_login.add(passwordLabel_settings, c);
+        textPanel_login.add(passwordLabel_login, c);
 
         c.weighty = 0;
         c.weightx = 0;
@@ -325,8 +401,7 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
         c.gridx = 1;
         c.gridy = 1;
 
-        textPanel_login.add(passwordText_settings, c);
-
+        textPanel_login.add(passwordText_login, c);
 
         c.weightx = 0;
         c.weighty = 0;
@@ -361,9 +436,7 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
 
         textPanel_login.add(teacher, c);
 
-
         content_login.add(textPanel_login, BorderLayout.CENTER);
-
 
         southPanel_Login = new JPanel();
 
@@ -401,7 +474,6 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
         topPanel.add(logoutButton);
 
         contentSettings.add(topPanel, BorderLayout.NORTH);
-
 
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new GridBagLayout());
@@ -467,38 +539,40 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
          * start of the LMS set up
          */
 
-        Container content_LMS = frame.getContentPane();
+        Container content_LMS = new Container();
         content_LMS.setLayout(new BorderLayout());
 
         JPanel radioPanel = new JPanel();
         radioPanel.setLayout(new GridBagLayout());
+
+        CardLayout cl_LMS = new CardLayout();
 
         //creating the radiobuttons
         accessButton = new JRadioButton("access");
         accessButton.setMnemonic(KeyEvent.VK_B);
         accessButton.setActionCommand("access");
         accessButton.setSelected(true);
-        accessButton.addActionListener(this);
+        //accessButton.addActionListener(this);
 
         addButton = new JRadioButton("add");
         addButton.setMnemonic(KeyEvent.VK_C);
         addButton.setActionCommand("add");
-        addButton.addActionListener(this);
+        //addButton.addActionListener(this);
 
         editButton = new JRadioButton("edit");
         editButton.setMnemonic(KeyEvent.VK_D);
         editButton.setActionCommand("edit");
-        editButton.addActionListener(this);
+        //editButton.addActionListener(this);
 
         deleteButton = new JRadioButton("delete");
         deleteButton.setMnemonic(KeyEvent.VK_R);
         deleteButton.setActionCommand("delete");
-        deleteButton.addActionListener(this);
+        //deleteButton.addActionListener(this);
 
 
         //settings Button created
         settingsButton = new JButton("Settings");
-        settingsButton.addActionListener(this);
+        //settingsButton.addActionListener(this);
 
 
 
@@ -617,7 +691,7 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
 
 
         //implementing card layout, adding each panel to cards
-        cards = new JPanel(new CardLayout());
+        cards = new JPanel(cl_LMS);
         cards.add(accessPanel, "Access Panel");
         cards.add(addPanel, "Add Panel");
         cards.add(editPanel, "Edit Panel");
@@ -626,7 +700,7 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
         //submit Button
         southPanel_LMS = new JPanel();
         submitButton = new JButton("Submit");
-        submitButton.addActionListener(this);
+        //submitButton.addActionListener(this);
 
         southPanel_LMS.add(submitButton);
 
@@ -653,16 +727,93 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
         /**
          * end of courseTeacher
          */
+
+        /**
+         * start of forum student
+         */
+
+        /**
+         * end of forum student
+         */
+
+        /**
+         * start of forum teacher
+         */
+
+        /**
+         * end of forum teacher
+         */
+
+        // buttons functionalities by page
+        // universal buttons
+        settingsButton.addActionListener(e -> {
+            cl.show(mainPanel, "settings");
+            pageStack.push("settings");
+        });
+
+        backButton.addActionListener(e -> {
+            cl.show(mainPanel, pageStack.pop());
+        });
+
+        //login buttons
+        confirmButton_login.addActionListener(e -> {
+            if (successful_login()) {
+                cl.show(mainPanel, "LMS");
+            }
+        });
+
+        //settings buttons
+        idSubmitButton.addActionListener(e -> {
+            // modifies the current user object's username and sends it back to the server to modify
+        });
+        passwordSubmitButton.addActionListener(e -> {
+            // modifies the current user object's username and sends it back to the server to modify
+        });
+
+        // lms buttons
+        submitButton.addActionListener(e -> {
+            if (accessButton.isSelected()) {
+                //check if JComboBox is empty (when no courses added)
+            } else if (addButton.isSelected()) {
+                // check if the textfield is empty
+            } else if (editButton.isSelected()) {
+                //check if JComboBox is empty (when no courses added)
+            } else if (deleteButton.isSelected()) {
+                //check if JComboBox is empty (when no courses added)
+            }
+        });
+
+        accessButton.addActionListener(e -> {
+            cl_LMS.show(cards, "Access Panel");
+        });
+        addButton.addActionListener(e -> {
+            cl_LMS.show(cards, "Add Panel");
+        });
+        editButton.addActionListener(e -> {
+            cl_LMS.show(cards, "Edit Panel");
+        });
+        deleteButton.addActionListener(e -> {
+            cl_LMS.show(cards, "Delete Panel");
+        });
+
+        // course teacher buttons
+
+        // course student buttons
+
+        // forum teacher buttons
+
+        // forum student buttons
+
+
         // Adds all the different pages to the main panel
-        mainPanel.add(content_LMS, "login");
+        mainPanel.add(content_login, "login");
         mainPanel.add(contentSettings, "settings");
         mainPanel.add(content_LMS, "LMS");
+        // add the courses panels
+        // add the forums panels
 
         // shows the login page by default
         cl.show(mainPanel, "login");
-
-        // functionality of confirm button
-        confirmButton_login.addActionListener(e -> cl.show(mainPanel, "LMS"));
 
         //sets frame to center of screen
         frame.add(mainPanel);
