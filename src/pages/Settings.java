@@ -28,9 +28,8 @@ public class Settings extends JComponent {
     public Settings(ActualClient client, JFrame frame) {
         this.client = client;
         this.frame = frame;
-        frame.setTitle("Settings");
 
-        content = frame.getContentPane();
+        content = new Container();
         content.setLayout(new BorderLayout());
 
         JPanel topPanel = new JPanel();

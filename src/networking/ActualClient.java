@@ -19,7 +19,7 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
     private Stack<String> pageStack = new Stack<>();
 
     // creates the cardlayout object
-    private CardLayout cl = new CardLayout();
+    private CardLayout cl;
 
     public ActualClient() {
         try {
@@ -45,7 +45,10 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
     public void run() {
 
         JFrame frame = new JFrame("Welcome to the pages.LMS!");
-        JPanel mainPanel = new JPanel();
+
+        cl = new CardLayout();
+
+        Container mainPanel = frame.getContentPane();
         CardLayout cl = new CardLayout();
         mainPanel.setLayout(cl);
 
@@ -66,14 +69,12 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
         pageStack.push("login");
 
         //sets frame to center of screen
-        frame.add(mainPanel);
         frame.pack();
 
         frame.setSize(600, 400);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
-
     }
 
     public Socket getSocket() {

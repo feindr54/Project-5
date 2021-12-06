@@ -37,9 +37,8 @@ public class Login extends JComponent {
     public Login(ActualClient client, JFrame frame) {
         this.client = client;
         this.frame = frame;
-        this.frame.setTitle("Welcome to the LMS!");
 
-        content = frame.getContentPane();
+        content = new Container();
         content.setLayout(new BorderLayout());
 
         JPanel buttonPanel = new JPanel();

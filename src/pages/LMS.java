@@ -44,9 +44,8 @@ public class LMS extends JComponent implements ActionListener {
     public LMS(ActualClient client, JFrame frame) {
         this.client = client;
         this.frame = frame;
-        this.frame.setTitle("LMS");
 
-        content = frame.getContentPane();
+        content = new Container();
         content.setLayout(new BorderLayout());
 
         JPanel radioPanel = new JPanel();
