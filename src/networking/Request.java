@@ -12,11 +12,20 @@ package networking;
 * @version 12/7/2021
 */
 public class Request {
-    int operations; // 0 - access, 1 - add, 2 - edit, 3 - delete, 4 - create account, 5 - login 
-    Object obj; // this object could be an instance of LMS, course or, forum, or an array containing username and password    
+    private final int OPERATION; // 0 - access, 1 - add, 2 - edit, 3 - delete, 4 - create account, 5 - login
+    private final Object OBJ; // this object could be an instance of LMS, course or, forum, or an array containing username and
+    // password
 
     public Request(int operation, Object obj) {
-        this.operations = operation;
-        this.obj = obj; 
+        this.OPERATION = operation;
+        this.OBJ = obj;
+    }
+
+    public int getOPERATION() {
+        return OPERATION;
+    }
+
+    public Object getOBJ() {
+        return OBJ;
     }
 }

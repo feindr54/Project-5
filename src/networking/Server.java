@@ -1,5 +1,8 @@
 package networking;
 
+import main.page.Forum;
+import users.User;
+
 import java.net.*;
 import java.util.ArrayList;
 import java.io.*;
@@ -17,6 +20,9 @@ import java.io.*;
 */
 
 public class Server {
+
+    User users;
+    LMS lms;
 
     public static ArrayList<ClientHandler> clients;
     //public static LMS;
@@ -85,16 +91,49 @@ class ClientHandler extends Thread {
 
     }
 
+    public Request getRequest() throws IOException, ClassNotFoundException {
+        return (Request) s_IFC.readObject();
+    }
+
+    public void processRequest(Request request) {
+        int operation = request.getOPERATION();
+        Object object = request.getOBJ();
+        if (object instanceof LMS) {
+            // user added, edited or deleted a course
+        } else if (object instanceof Course) {
+            // user added, edited or deleted a forum
+        } else if (object instanceof Forum) {
+            // user added a reply, comment, upvoted, or asked to sort the replies
+        } else if (object instanceof String[]) {
+            // user is trying to log in or create a new account
+            // first var is the username, 2nd var is the password
+
+            // check if logging in or signing
+            if (operation == 4) {
+                // signing up
+
+            } else {
+                // logging in
+            }
+        }
+    }
+
     @Override
     public void run() {
+
+        // TODO - what should be synchronized
+        //  1) changing of any (static) variable
+        //  2) sending of any information
+        //  NOT
+        //  1) The collection of the information
         while(true) {
             try {
-
-                // getRequest()
+                // receives a request from the client side
+                Request request = getRequest();
 
                 // process request()
                 // - update the respective contents of the lms by calling a synchronized method in the server
-
+                //
 
                 
                 // generateResponse()
