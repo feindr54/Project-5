@@ -13,51 +13,50 @@ import java.util.*;
  * @version December 7, 2021
  *
  */
-public class CourseTeacher extends JComponent implements Runnable {
+public class CourseTeacher extends JComponent {
 
-    static ArrayList<String> forums;
-    static ArrayList<String> studentsArr;
-    static ArrayList<String> repliesArr;
-    static JFrame frame;
-    static JPanel defaultPanel;
-    static JButton backButton;
-    static JLabel welcomeLabel;
-    static JButton settingsButton;
-    static JPanel centerPanel;
-    static JPanel radioPanel;
-    static ButtonGroup buttonGroup;
-    static JPanel accessPanel;
-    static JRadioButton addButton;
-    static JRadioButton editButton;
-    static JRadioButton deleteButton;
-    static JRadioButton gradeButton;
-    static JRadioButton accessButton;
-    static JLabel accessPrompt;
-    static JComboBox<String> accessForums;
-    static JButton accessSubmitButton;
-    static JPanel addPanel;
-    static JLabel addPrompt;
-    static JTextField addCourse;
-    static JButton newTopic;
-    static JButton topicFromFile;
-    static JPanel editPanel;
-    static JLabel editPrompt;
-    static JComboBox<String> editForums;
-    static JTextField editCourse;
-    static JButton editSubmitButton;
-    static JPanel deletePanel;
-    static JLabel deletePrompt;
-    static JComboBox<String> deleteForums;
-    static JButton deleteSubmitButton;
-    static JPanel gradePanel;
-    static JLabel gradePrompt;
-    static JComboBox<String> students;
-    static JButton gradeSubmitButton;
-    static JPanel replyPanel;
-    static JLabel replyPrompt;
-    static JComboBox<String> replies;
-    static JTextField replyGrade;
-    static JButton replySubmitButton;
+     ArrayList<String> forums;
+     ArrayList<String> studentsArr;
+     ArrayList<String> repliesArr;
+     JPanel defaultPanel;
+     JButton backButton;
+     JLabel welcomeLabel;
+     JButton settingsButton;
+     JPanel centerPanel;
+     JPanel radioPanel;
+     ButtonGroup buttonGroup;
+     JPanel accessPanel;
+     JRadioButton addButton;
+     JRadioButton editButton;
+     JRadioButton deleteButton;
+     JRadioButton gradeButton;
+     JRadioButton accessButton;
+     JLabel accessPrompt;
+     JComboBox<String> accessForums;
+     JButton accessSubmitButton;
+     JPanel addPanel;
+     JLabel addPrompt;
+     JTextField addCourse;
+     JButton newTopic;
+     JButton topicFromFile;
+     JPanel editPanel;
+     JLabel editPrompt;
+     JComboBox<String> editForums;
+     JTextField editCourse;
+     JButton editSubmitButton;
+     JPanel deletePanel;
+     JLabel deletePrompt;
+     JComboBox<String> deleteForums;
+     JButton deleteSubmitButton;
+     JPanel gradePanel;
+     JLabel gradePrompt;
+     JComboBox<String> students;
+     JButton gradeSubmitButton;
+     JPanel replyPanel;
+     JLabel replyPrompt;
+     JComboBox<String> replies;
+     JTextField replyGrade;
+     JButton replySubmitButton;
 
 
 
@@ -214,11 +213,8 @@ public class CourseTeacher extends JComponent implements Runnable {
             }
     };
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new CourseTeacher());
-    }
 
-    public void run() {
+    public CourseTeacher() {
         forums = new ArrayList<>();
         forums.add("Forum 1");
         forums.add("Forum 2");
@@ -234,10 +230,8 @@ public class CourseTeacher extends JComponent implements Runnable {
         repliesArr.add("Reply 2");
         repliesArr.add("Reply 3");
         repliesArr.add("Reply 4");
-        frame = new JFrame("courseName");
-        Container content = frame.getContentPane();
+        Container content = new Container();
         content.setLayout(new BorderLayout());
-        CourseTeacher course = new CourseTeacher();
 
         //header and back/settings buttons
         defaultPanel = new JPanel();
@@ -440,11 +434,5 @@ public class CourseTeacher extends JComponent implements Runnable {
         gradePanel.add(replyPanel, h);
 
         content.add(centerPanel, BorderLayout.CENTER);
-
-
-        frame.setSize(500, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setVisible(true);
     }
 }
