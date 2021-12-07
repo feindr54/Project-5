@@ -2,6 +2,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * LMSTeacher
+ *
+ * The Teacher's class of LMS
+ *
+ * @author Chloe Click, CS180
+ *
+ * @version November 30, 2021
+ *
+ */
+
 
 public class LMSTeacher extends JComponent implements Runnable, ActionListener {
 
