@@ -12,22 +12,22 @@ import java.util.*;
  * @version December 7, 2021
  *
  */
-public class CourseStudent extends JComponent implements Runnable {
+public class CourseStudent extends JComponent {
 
     // TODO - remove all static references - CX
 
-    static ArrayList<String> forumsArr;
-    static JFrame frame;
-    static JPanel defaultPanel;
-    static JButton backButton;
-    static JLabel welcomeLabel;
-    static JButton settingsButton;
-    static JPanel accessPanel;
-    static JLabel gradeSentence;
-    static JLabel gradeCourse;
-    static JLabel accessPrompt;
-    static JComboBox<String> forums;
-    static JButton accessSubmitButton;
+    ArrayList<String> forumsArr;
+    JPanel defaultPanel;
+    JButton backButton;
+    JLabel welcomeLabel;
+    JButton settingsButton;
+    JPanel accessPanel;
+    JLabel gradeSentence;
+    JLabel gradeCourse;
+    JLabel accessPrompt;
+    JComboBox<String> forums;
+    JButton accessSubmitButton;
+
     /*public void clear() {
     }*/
 
@@ -42,7 +42,7 @@ public class CourseStudent extends JComponent implements Runnable {
                 //else show error message
                 forums.setSelectedIndex(0);
             }
-            if (e.getSource() == backButton) {
+            if (e.getSource() == settingsButton) {
                 //settings.access()
             }
             if (e.getSource() == backButton) {
@@ -51,20 +51,15 @@ public class CourseStudent extends JComponent implements Runnable {
         }
     };
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new CourseStudent());
-    }
-
-    public void run() {
+    public CourseStudent() {
         forumsArr = new ArrayList<>();
         //TODO replace with getForums()
         forumsArr.add("Forum 1");
         forumsArr.add("Forum 2");
         forumsArr.add("Forum 3");
         forumsArr.add("Forum 4");
-        frame = new JFrame("courseName");
         //TODO replace with getCourseName()
-        Container content = frame.getContentPane();
+        Container content = new Container;
         content.setLayout(new BorderLayout());
 
         //header and back/settings buttons
@@ -75,7 +70,7 @@ public class CourseStudent extends JComponent implements Runnable {
         welcomeLabel = new JLabel("Welcome to " + "courseName" + "!");
         //TODO replace with getCourseName()
         defaultPanel.add(welcomeLabel);
-        settingsButton = new JButton("pages.Settings");
+        settingsButton = new JButton("Settings");
         settingsButton.addActionListener(actionListener);
         defaultPanel.add(settingsButton);
         content.add(defaultPanel, BorderLayout.NORTH);
@@ -118,9 +113,5 @@ public class CourseStudent extends JComponent implements Runnable {
         accessPanel.add(accessSubmitButton, c);
         accessPanel.setVisible(true);
         content.add(accessPanel, BorderLayout.CENTER);
-        frame.setSize(500, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setVisible(true);
     }
 }

@@ -1,5 +1,7 @@
 package pages;
 
+import networking.ActualClient;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -16,7 +18,10 @@ import java.awt.event.*;
  */
 
 
-public class LMSStudent extends JComponent implements Runnable, ActionListener {
+public class LMSStudent extends JComponent implements ActionListener {
+
+    ActualClient client;
+    Container content;
 
     JButton submitButton;
     JButton settingsButton;
@@ -30,23 +35,15 @@ public class LMSStudent extends JComponent implements Runnable, ActionListener {
             //show selected course
         }
         if (e.getSource() == settingsButton) {
-            //settings.access();
+            client.getPageStack().push("settings");
+            client.getCl().show(client.getMainPanel(), "settings");
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new LMSStudent());
-    }
-
-    public void run() {
-        JFrame frame = new JFrame("Welcome to LMS!");
-
-        Container content = frame.getContentPane();
+    public LMSStudent(ActualClient client) {
+        this.client = client;
+        this.content = new Container();
         content.setLayout(new BorderLayout());
-
-        LMSStudent lmsStudent = new LMSStudent();
-
-
 
         JPanel accessPanel = new JPanel();
         accessPanel.setLayout(new GridBagLayout());
@@ -91,13 +88,9 @@ public class LMSStudent extends JComponent implements Runnable, ActionListener {
         content.add(accessPanel, BorderLayout.CENTER);
         content.add(northPanel, BorderLayout.NORTH);
         content.add(southPanel, BorderLayout.SOUTH);
-
-        frame.setSize(600, 400);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-
-
     }
 
+    public Container getContent() {
+        return content;
+    }
 }
