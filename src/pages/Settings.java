@@ -1,10 +1,27 @@
+package pages;
+
+import networking.ActualClient;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Settings extends JComponent implements Runnable {
+/**
+* Project 5 - Settings
+*
+* Description - TODO
+*
+* @author Alex Younkers
+*
+* @version 12/7/2021
+*/
 
+public class Settings extends JComponent {
+    ActualClient client;
+
+    JFrame frame;
+    Container content;
 
     JButton idSubmitButton;
     JButton passwordSubmitButton;
@@ -18,44 +35,12 @@ public class Settings extends JComponent implements Runnable {
     JButton backButton;
     JButton logoutButton;
 
+    public Settings(ActualClient client, JFrame frame) {
+        this.client = client;
+        this.frame = frame;
 
-    ActionListener actionListener = new ActionListener() {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            //  if (e.getSource() == clearButton) {
-
-
-            //   }
-            //   if (e.getSource() == fillButton) {
-
-
-
-            //   }
-
-            //  if (e.getSource() == eraseButton) {
-
-
-            //   }
-
-
-
-        }
-    };
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Settings());
-    }
-
-
-    public void run() {
-
-        JFrame frame = new JFrame("Settings");
-
-        Container content = frame.getContentPane();
+        content = new Container();
         content.setLayout(new BorderLayout());
-
-        Settings settings = new Settings();
 
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
@@ -132,21 +117,33 @@ public class Settings extends JComponent implements Runnable {
 
         content.add(centerPanel, BorderLayout.CENTER);
 
-
-
-        //sets frame to center of screen
-        frame.setSize(600, 400);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-
-
-
-
     }
 
+    public Container getContent() {
+        return content;
+    }
+
+    ActionListener actionListener = new ActionListener() {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            //  if (e.getSource() == clearButton) {
+
+
+            //   }
+            //   if (e.getSource() == fillButton) {
 
 
 
+            //   }
 
+            //  if (e.getSource() == eraseButton) {
+
+
+            //   }
+
+
+
+        }
+    };
 }

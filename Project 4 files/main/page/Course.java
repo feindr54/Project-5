@@ -15,7 +15,7 @@ import java.io.Serializable;
 /**
  * main.page.Course
  * <p>
- * This program simulates a course and allows the user to interact with the course or go further into the LMS.
+ * This program simulates a course and allows the user to interact with the course or go further into the pages.LMS.
  *
  * @author Qasim Ali
  * @version November 15, 2021
@@ -26,9 +26,9 @@ public class Course implements Serializable {
     private static String teacherMenu = "Choose what you would like to do:" +
             "\n1. Create a new forum \n2. Import a file and create a new forum" +
             "\n3. Access an existing forum \n4. Edit a forum \n5. Delete a forum \n6. Add a grade" +
-            "\n7. Settings \n8. Exit";
+            "\n7. pages.Settings \n8. Exit";
     private static String studentMenu = "Choose what you would like to do:" +
-            "\n1. Access a forum \n2. Access grade \n3. Settings \n4. Exit";
+            "\n1. Access a forum \n2. Access grade \n3. pages.Settings \n4. Exit";
     private static String errorMessage = "Unexpected value. Please choose one of the options above";
 
 

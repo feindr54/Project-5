@@ -1,10 +1,14 @@
+package networking;
+
+import networking.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 /**
- * Course
+ * Project 5 - Course
  *
- * course
+ * Desciption - course
  *
  * @author Qasim Ali, CS180
  *
@@ -12,8 +16,11 @@ import java.awt.event.*;
  *
  */
 public class Course extends JComponent {
-    private static String courseName;
+    ActualClient client;
+    Container content;
 
+    // TODO - remove all the static references
+    private static String courseName;
 
     static JButton backButton;
     static JButton settingsButton;
@@ -40,14 +47,18 @@ public class Course extends JComponent {
 
 
 
-    static ActionListener actionListener = new ActionListener() {
+    ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == backButton) {
-                //LMS.access();
+                //removes the top item of the page stack and accesses the page before this
+                client.getPageStack().pop();
+                client.getCl().show(client.getMainPanel(), client.getPageStack().peek());
             }
             if (e.getSource() == settingsButton) {
-                //settings.access();
+                //accesses the settings menu
+                client.getPageStack().push("settings");
+                client.getCl().show(client.getMainPanel(), client.getPageStack().peek());
             }
             if (e.getSource() == accessButton) {
 
@@ -67,8 +78,15 @@ public class Course extends JComponent {
         }
     };
 
+    public Course(ActualClient client) {
+        this.client = client;
+
+
+    }
 
     public static void main(String[] args) {
+        // TODO - modify this so that max hierarchy is a container, not a frame
+        // TODO - remove the main method and insert all these into the constructor
         JFrame frame = new JFrame("Course");
         Container content = frame.getContentPane();
         content.setLayout(new BorderLayout());
@@ -77,7 +95,7 @@ public class Course extends JComponent {
 
         JPanel panelN = new JPanel();
         backButton = new JButton("Back");
-        settingsButton = new JButton("Settings");
+        settingsButton = new JButton("pages.Settings");
         backButton.addActionListener(actionListener);
         settingsButton.addActionListener(actionListener);
         panelN.add(backButton);
@@ -118,13 +136,6 @@ public class Course extends JComponent {
         panelS.add(submitButton);
         //content.add(panelS, BorderLayout.SOUTH);
 
-
-
-
-        frame.setSize(500, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setVisible(true);
     }
 
 

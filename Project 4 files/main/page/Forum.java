@@ -10,7 +10,7 @@ import users.*;
 /**
  * Project 4 - Forum
  * <p>
- * Description - simulates a forum and allows the user to interact with the forum or go deeper into the LMS.
+ * Description - simulates a forum and allows the user to interact with the forum or go deeper into the pages.LMS.
  *
  * @author Changxiang Gao
  * @version 11/5/2021
@@ -101,7 +101,7 @@ public class Forum implements Serializable {
                 System.out.println("Options: ");
 
                 // prints options to the Teacher
-                String teacherPrompt = "1. Comment on a student's reply\n2. View Dashboard\n3. Settings \n4. Back\n";
+                String teacherPrompt = "1. Comment on a student's reply\n2. View Dashboard\n3. pages.Settings \n4. Back\n";
                 response = InputSystem.intInput(sc, 4, teacherPrompt);
 
                 switch (response) {
@@ -217,7 +217,7 @@ public class Forum implements Serializable {
 
                 // prints options to the students
                 String prompt = "1. Reply to the forum post\n2. Comment on a student's reply\n3. Upvote a reply\n" +
-                        "4. Settings\n5. Back\n";
+                        "4. pages.Settings\n5. Back\n";
 
                 responseStud = InputSystem.intInput(sc, 5, prompt);
                 switch (responseStud) {

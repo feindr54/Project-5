@@ -14,6 +14,8 @@ import java.util.*;
  */
 public class CourseStudent extends JComponent implements Runnable {
 
+    // TODO - remove all static references - CX
+
     static ArrayList<String> forumsArr;
     static JFrame frame;
     static JPanel defaultPanel;
@@ -73,7 +75,7 @@ public class CourseStudent extends JComponent implements Runnable {
         welcomeLabel = new JLabel("Welcome to " + "courseName" + "!");
         //TODO replace with getCourseName()
         defaultPanel.add(welcomeLabel);
-        settingsButton = new JButton("Settings");
+        settingsButton = new JButton("pages.Settings");
         settingsButton.addActionListener(actionListener);
         defaultPanel.add(settingsButton);
         content.add(defaultPanel, BorderLayout.NORTH);
