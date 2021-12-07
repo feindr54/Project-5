@@ -179,6 +179,18 @@ public class ForumPage extends JComponent {
         }
     };
 
+    
+
+    MouseAdapter replyClick = new MouseAdapter() {
+        @Override
+        public void mouseEntered(MouseEvent evt) {
+            JPanel selectedReply = (JPanel) evt.getSource();
+            // creates a border around the reply 
+            // makes the isSelected variable in the Panel true 
+        }
+
+    };
+
     public Comment createComment(Reply reply, String commentMessage) {
         Comment newComment = new Comment(reply, currentUser, commentMessage);
         return newComment; 

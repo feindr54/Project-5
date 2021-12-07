@@ -15,8 +15,8 @@ public class ForumStudent extends JComponent {
     JButton Settings, Back;
 
     JPanel middle;
-    JPanel chat;
-    JScrollPane chatDisplay;
+    JPanel forumDisplay;
+    JScrollPane forumDisplayScroll;
 
     JPanel bot;
     JLabel prompt;
@@ -65,18 +65,18 @@ public class ForumStudent extends JComponent {
         GridBagConstraints optionConstraint = new GridBagConstraints();
         GridBagConstraints middleConstraint = new GridBagConstraints();
 
-        chat = new JPanel();
-        chat.setPreferredSize(new Dimension(500, 500));
-        chat.setLayout(new BoxLayout(chat, BoxLayout.Y_AXIS));
-        chat.setBorder(BorderFactory.createTitledBorder("Forum Title"));
+        forumDisplay = new JPanel();
+        forumDisplay.setPreferredSize(new Dimension(500, 500));
+        forumDisplay.setLayout(new BoxLayout(forumDisplay, BoxLayout.Y_AXIS));
+        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum Title"));
 
-        chatDisplay = new JScrollPane(chat);
+        forumDisplayScroll = new JScrollPane(forumDisplay);
 
         middleConstraint.gridx = 0;
         middleConstraint.gridy = 0;
         middleConstraint.weightx = 1;
         // middle.add(chatDisplay, middleConstraint);
-        middle.add(chatDisplay);
+        middle.add(forumDisplayScroll);
         middle.add(Box.createHorizontalGlue());
 
         content.add(middle, BorderLayout.CENTER);
@@ -121,8 +121,8 @@ public class ForumStudent extends JComponent {
                 // to display the new reply! --> updateForumDisplay() method
 
                 JLabel newChat = new JLabel(input.getText());
-                chat.add(newChat);
-                chat.revalidate();
+                forumDisplay.add(newChat);
+                forumDisplay.revalidate();
                 input.setText("");
             }
         }
