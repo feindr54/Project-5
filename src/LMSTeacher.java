@@ -2,8 +2,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * LMSTeacher
+ *
+ * The Teacher's class of LMS
+ *
+ * @author Chloe Click, CS180
+ *
+ * @version November 30, 2021
+ *
+ */
 
-public class LMS extends JComponent implements Runnable, ActionListener {
+
+public class LMSTeacher extends JComponent implements Runnable, ActionListener {
 
     ButtonGroup radioGroup;
     JRadioButton accessButton;
@@ -67,7 +78,7 @@ public class LMS extends JComponent implements Runnable, ActionListener {
 
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new LMS());
+        SwingUtilities.invokeLater(new LMSTeacher());
     }
 
     public void run() {
@@ -76,7 +87,7 @@ public class LMS extends JComponent implements Runnable, ActionListener {
         Container content = frame.getContentPane();
         content.setLayout(new BorderLayout());
 
-        LMS lms = new LMS();
+        LMSTeacher lmsTeacher = new LMSTeacher();
 
         JPanel radioPanel = new JPanel();
         radioPanel.setLayout(new GridBagLayout());
