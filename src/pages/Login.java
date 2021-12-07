@@ -192,7 +192,7 @@ public class Login extends JComponent {
             }
             if (e.getSource() == confirmButton) {
                 client.getPageStack().push("lms");
-                client.getCl().show(client.getContentPane(), "lms");
+                client.getCl().show(client.getMainPanel(), "lms");
                 /*
                 if (successful_login()) {
                     // receives a user (currentUser) object and the pages.LMS object

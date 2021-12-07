@@ -1,3 +1,5 @@
+package pages;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -59,7 +61,7 @@ public class CourseStudent extends JComponent {
         forumsArr.add("Forum 3");
         forumsArr.add("Forum 4");
         //TODO replace with getCourseName()
-        Container content = new Container;
+        Container content = new Container();
         content.setLayout(new BorderLayout());
 
         //header and back/settings buttons

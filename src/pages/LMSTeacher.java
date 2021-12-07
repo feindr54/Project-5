@@ -1,5 +1,7 @@
 package pages;
 
+import networking.ActualClient;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -16,7 +18,10 @@ import java.awt.event.*;
  */
 
 
-public class LMSTeacher extends JComponent implements Runnable, ActionListener {
+public class LMSTeacher extends JComponent implements ActionListener {
+
+    ActualClient client;
+    Container content;
 
     ButtonGroup radioGroup;
     JRadioButton accessButton;
@@ -77,19 +82,14 @@ public class LMSTeacher extends JComponent implements Runnable, ActionListener {
         //this should display the settings page
     }
 
+    public LMSTeacher(ActualClient client) {
 
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new LMSTeacher());
-    }
-
-    public void run() {
-        JFrame frame = new JFrame("Welcome to LMS!");
-
-        Container content = frame.getContentPane();
+        this.client = client;
+        this.content = new Container();
         content.setLayout(new BorderLayout());
 
-        LMSTeacher lmsTeacher = new LMSTeacher();
+
+
 
         JPanel radioPanel = new JPanel();
         radioPanel.setLayout(new GridBagLayout());
@@ -256,11 +256,11 @@ public class LMSTeacher extends JComponent implements Runnable, ActionListener {
         content.add(cards, BorderLayout.CENTER);
 
 
-        frame.setSize(600, 400);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
 
+    }
+
+    public Container getContent() {
+        return content;
     }
 
 
