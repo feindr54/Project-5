@@ -3,13 +3,13 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 /**
- * Paint
+ * CourseStudent
  *
- * GUI paint
+ * This class is the GUI for Courses used by Students
  *
  * @author Qasim Ali, CS180
  *
- * @version November 16, 2021
+ * @version December 7, 2021
  *
  */
 public class CourseStudent extends JComponent implements Runnable {

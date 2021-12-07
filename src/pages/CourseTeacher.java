@@ -6,11 +6,11 @@ import java.util.*;
 /**
  * CourseTeacher
  *
- *
+ *This class is the GUI for the Courses used by Teachers
  *
  * @author Qasim Ali, CS180
  *
- * @version November 16, 2021
+ * @version December 7, 2021
  *
  */
 public class CourseTeacher extends JComponent implements Runnable {
