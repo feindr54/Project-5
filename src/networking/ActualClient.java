@@ -8,15 +8,18 @@ import java.io.*;
 import java.net.*;
 import java.util.Stack;
 
-import pages.*;
 
+// THIS CLASS RECEIVES INPUT FROM THE SERVER
 public class ActualClient extends JFrame implements Runnable, ActionListener {
     private Socket socket;
-    //private ObjectInputStream C_IFS; // c = client, i = input, f = from, s = server;
+    // private ObjectInputStream C_IFS; // c = client, i = input, f = from, s =
+    // server;
     private ObjectOutputStream C_OTS; // c = client, o = out, t = to, s = server;
 
     // creates the stack
     private Stack<String> pageStack = new Stack<>();
+
+    public static Container mainPanel;
 
     // creates the cardlayout object
     private CardLayout cl;
@@ -26,12 +29,20 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
             socket = new Socket("localhost", 42069);
             C_OTS = new ObjectOutputStream(socket.getOutputStream());
         } catch (Exception e) {
-            //TODO: handle exception
+            // TODO: handle exception
         }
     }
 
     public CardLayout getCl() {
         return cl;
+    }
+
+    public Container getMainPanel() {
+        return mainPanel;
+    }
+    
+    public Stack<String> getPageStack() {
+        return pageStack;
     }
 
     public static void main(String[] args) {
@@ -44,12 +55,11 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
     @Override
     public void run() {
 
-        JFrame frame = new JFrame("Welcome to the pages.LMS!");
+        JFrame frame = new JFrame("Welcome to the LMS!");
 
         cl = new CardLayout();
 
-        Container mainPanel = frame.getContentPane();
-        CardLayout cl = new CardLayout();
+        mainPanel = frame.getContentPane();
         mainPanel.setLayout(cl);
 
         // create a page object for every page
@@ -68,7 +78,7 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
         cl.show(mainPanel, "login");
         pageStack.push("login");
 
-        //sets frame to center of screen
+        // sets frame to center of screen
         frame.pack();
 
         frame.setSize(600, 400);
@@ -76,6 +86,16 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
     }
+
+    // so whenever we go into a panel ex course, we would add it to the stack, thats wat i thought
+    // so whenever we leave we just pop it from the stack, the stack would be like the history of visited tabs yknow?
+    // u can talk i can hear u but i cant talk lol
+    // yea for example i was in login --> lms --> settings if wanna go back to lms i pop settings, now lms is at the top so
+    // so it will navigate to lms but im not sure how its implemented lol
+    // yeaa ok i guess we need a reference of the stack i think we could use getPageStac lmaoo yea we could do that
+    // we gota be careful tho by referencing the entire client maybe there are some sync issues? we could do the same as the card layout
+    // like a getPanelStack() method
+    
 
     public Socket getSocket() {
         return socket;
@@ -87,14 +107,12 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
     }
 }
 
-
-
 class readerThread extends Thread {
 
     private final ActualClient gui;
 
     public readerThread(ActualClient gui) {
-        this.gui = gui; //store reference to the gui thread
+        this.gui = gui; // store reference to the gui thread
     }
 
     @Override
@@ -103,16 +121,17 @@ class readerThread extends Thread {
             Socket socket = gui.getSocket();
             System.out.println("Connected");
             /*
-            ObjectInputStream C_IFS = new ObjectInputStream(socket.getInputStream());
-            //ObjectOutputStream C_OTS = new ObjectOutputStream(socket.getOutputStream());
-            String line;
-            do {
-                line = (String) C_IFS.readObject();
-                if (!line.isEmpty() || line != null ) gui.showOtherMsg(line);
-
-
-            } while (line != null);
-
+             * ObjectInputStream C_IFS = new ObjectInputStream(socket.getInputStream());
+             * //ObjectOutputStream C_OTS = new
+             * ObjectOutputStream(socket.getOutputStream());
+             * String line;
+             * do {
+             * line = (String) C_IFS.readObject();
+             * if (!line.isEmpty() || line != null ) gui.showOtherMsg(line);
+             * 
+             * 
+             * } while (line != null);
+             * 
              */
 
         } catch (Exception e) {
@@ -120,4 +139,3 @@ class readerThread extends Thread {
         }
     }
 }
-
