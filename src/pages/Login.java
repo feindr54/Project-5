@@ -44,6 +44,7 @@ public class Login extends JComponent {
 
     boolean isLogin;
 
+
     public Login(ActualClient client, JFrame frame) {
         this.client = client;
         this.frame = frame;
@@ -58,7 +59,7 @@ public class Login extends JComponent {
 
         gbc.anchor = GridBagConstraints.PAGE_START;
 
-        loginButton = new JButton("pages.Login");
+        loginButton = new JButton("Login");
         loginButton.addActionListener(actionListener);
 
         signupButton = new JButton("Sign up");
@@ -220,6 +221,9 @@ public class Login extends JComponent {
         teacherLabel.setVisible(false);
         teacher.setVisible(false);
 
+        idText.setText("");
+        passwordText.setText("");
+
         isLogin = true;
     }
 
@@ -240,6 +244,9 @@ public class Login extends JComponent {
         teacher.setVisible(true);
 
         isLogin = false;
+
+        idText.setText("");
+        passwordText.setText("");
     }
 
     public void studentCheck() {

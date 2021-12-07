@@ -22,7 +22,7 @@ import java.io.*;
 public class Server {
 
     User users;
-    LMS lms;
+    //LMS lms;
 
     public static ArrayList<ClientHandler> clients;
     //public static LMS;
@@ -98,6 +98,7 @@ class ClientHandler extends Thread {
     public void processRequest(Request request) {
         int operation = request.getOPERATION();
         Object object = request.getOBJ();
+        /*
         if (object instanceof LMS) {
             // user added, edited or deleted a course
         } else if (object instanceof Course) {
@@ -116,6 +117,8 @@ class ClientHandler extends Thread {
                 // logging in
             }
         }
+
+         */
     }
 
     @Override
@@ -169,7 +172,7 @@ class ClientHandler extends Thread {
 
     // this method is used to create the sendResponse method
     public void writeToOthers(String input) {
-        Response response = new Response(); 
+        //Response response = new Response();
         for (ClientHandler client : Server.clients) {
             
             try {

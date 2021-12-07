@@ -77,12 +77,12 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
         // create a page object for every page
         Login login = new Login(this, frame);
         Settings settings = new Settings(this, frame);
-        LMS lms = new LMS(this, frame);
+        //LMSStudent lms = new LMSStudent(this, frame);
 
         // Adds all the different pages to the main panel
         mainPanel.add(login.getContent(), "login");
         mainPanel.add(settings.getContent(), "settings");
-        mainPanel.add(lms.getContent(), "lms");
+        //mainPanel.add(lms.getContent(), "lms");
         // add the courses panels
         // add the forums panels
 
