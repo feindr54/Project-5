@@ -4,9 +4,9 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.*;
 /**
- * Paint
+ * CourseTeacher
  *
- * GUI paint
+ *
  *
  * @author Qasim Ali, CS180
  *
@@ -73,7 +73,7 @@ public class CourseTeacher extends JComponent implements Runnable {
             if (e.getSource() == backButton) {
                 //pages.LMS.access()
             }
-            if (e.getSource() == backButton) {
+            if (e.getSource() == settingsButton) {
                 //settings.access()
             }
 
@@ -101,12 +101,20 @@ public class CourseTeacher extends JComponent implements Runnable {
                 replyPanel.setVisible(false);
             }
             if (e.getSource() == newTopic) {
+                if (addCourse.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null, "Error, unexpected input", "Error",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
                 //Forum forum = new Forum(course, addCourse.getText())
                 //forums AR add(forum)
                 addCourse.setText("");
             }
 
             if (e.getSource() == topicFromFile) {
+                if (addCourse.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null, "Error, unexpected input", "Error",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
                 /*try {
                     File file = new File(addCourse.getText());
                     BufferedReader br = new BufferedReader(new FileReader(file));
@@ -135,6 +143,10 @@ public class CourseTeacher extends JComponent implements Runnable {
                 replyPanel.setVisible(false);
             }
             if (e.getSource() == editSubmitButton) {
+                if (editCourse.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null, "Error, unexpected input", "Error",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
                 //get selected forumName from list
                 //check if forumName equals an existing forum
                 //if true, forum.setForumName(editCourse.getText())
@@ -158,6 +170,7 @@ public class CourseTeacher extends JComponent implements Runnable {
                 //check if forumName equals an existing forum
                 //if true, remove that forum from the forum AL
                 //else show error message
+                deleteForums.setSelectedIndex(0);
             }
 
             if (e.getSource() == gradeButton) {
@@ -184,7 +197,9 @@ public class CourseTeacher extends JComponent implements Runnable {
                     if (choice >= 0 && choice <= 100) {
                         //assigns replyGrade.getText() to the student in this course
                         replyGrade.setText("");
+                        replies.setSelectedIndex(0);
                         replyPanel.setVisible(false);//hides replies AL of chosen student
+                        students.setSelectedIndex(0);
                     } else {
                         JOptionPane.showMessageDialog(null, "Error, unexpected input", "Error",
                                 JOptionPane.INFORMATION_MESSAGE);
