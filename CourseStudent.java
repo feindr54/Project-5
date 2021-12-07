@@ -38,6 +38,7 @@ public class CourseStudent extends JComponent implements Runnable {
                 //check if forumName equals an existing forum
                 //if true, forum.access()
                 //else show error message
+                forums.setSelectedIndex(0);
             }
             if (e.getSource() == backButton) {
                 //settings.access()
