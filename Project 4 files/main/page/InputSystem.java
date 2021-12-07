@@ -41,8 +41,8 @@ public class InputSystem {
             } catch (NumberFormatException e) {
                 if (response.equalsIgnoreCase("/settings")) {
                     // checks if user is already in the settings menu
-                    if (prompt.startsWith("Settings")) {
-                        System.out.println("You are already in the Settings menu.");
+                    if (prompt.startsWith("pages.Settings")) {
+                        System.out.println("You are already in the pages.Settings menu.");
                     } else {
                         return -2;
                     }

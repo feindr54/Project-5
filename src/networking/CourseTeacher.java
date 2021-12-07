@@ -1,20 +1,25 @@
+package networking;
+
+import networking.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.*;
 /**
- * Paint
+ * Project 5 - CourseTeacher
  *
- * GUI paint
+ * Desciption - TODO
  *
  * @author Qasim Ali, CS180
  *
  * @version November 16, 2021
  *
  */
-public class CourseTeacher extends JComponent implements Runnable {
+public class CourseTeacher extends JComponent {
+    ActualClient client;
 
+    // TODO - remove all the static references
     static ArrayList<String> forums;
     static ArrayList<String> studentsArr;
     static ArrayList<String> repliesArr;
@@ -71,7 +76,7 @@ public class CourseTeacher extends JComponent implements Runnable {
         public void actionPerformed(ActionEvent e) {
 
             if (e.getSource() == backButton) {
-                //LMS.access()
+                //pages.LMS.access()
             }
             if (e.getSource() == backButton) {
                 //settings.access()
@@ -90,7 +95,6 @@ public class CourseTeacher extends JComponent implements Runnable {
                 //check if forumName equals an existing forum
                 //if true, forum.access()
                 //else show error message
-                accessForums.setSelectedIndex(0);
             }
             if (e.getSource() == addButton) {
                 accessPanel.setVisible(false);
@@ -140,7 +144,6 @@ public class CourseTeacher extends JComponent implements Runnable {
                 //if true, forum.setForumName(editCourse.getText())
                 //else show error message
                 editCourse.setText("");
-                editForums.setSelectedIndex(0);
             }
 
 
@@ -178,26 +181,17 @@ public class CourseTeacher extends JComponent implements Runnable {
             }
             if (e.getSource() == replySubmitButton) {
                 //checks if replyGrade.getText() is an integer and fits the range
-                int choice = 0;
-                try {
-                    choice = Integer.parseInt(replyGrade.getText());
-                    if (choice >= 0 && choice <= 100) {
-                        //assigns replyGrade.getText() to the student in this course
-                        replyGrade.setText("");
-                        replyPanel.setVisible(false);//hides replies AL of chosen student
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Error, unexpected input", "Error",
-                                JOptionPane.INFORMATION_MESSAGE);
-                        replyGrade.setText("");
-                    }
-                } catch (NumberFormatException exception) {
-                    JOptionPane.showMessageDialog(null, "Error, unexpected input", "Error",
-                            JOptionPane.INFORMATION_MESSAGE);
-                    replyGrade.setText("");
-                }
-                }
+                //else shows error
+                //assigns replyGrade.getText() to the student in this course
+                replyGrade.setText("");
+                replyPanel.setVisible(false);//hides replies AL of chosen student
+            }
             }
     };
+
+    public CourseTeacher(ActualClient client) {
+        this.client = client;
+    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new CourseTeacher());
@@ -231,7 +225,7 @@ public class CourseTeacher extends JComponent implements Runnable {
         defaultPanel.add(backButton);
         welcomeLabel = new JLabel("Welcome to " + "courseName" + "!");
         defaultPanel.add(welcomeLabel);
-        settingsButton = new JButton("Settings");
+        settingsButton = new JButton("pages.Settings");
         settingsButton.addActionListener(actionListener);
         defaultPanel.add(settingsButton);
 

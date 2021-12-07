@@ -1,11 +1,14 @@
+package networking;
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 /**
- * Paint
+ * Project 5 - CourseStudent
  *
- * GUI paint
+ * Description - TODO
  *
  * @author Qasim Ali, CS180
  *
@@ -39,12 +42,6 @@ public class CourseStudent extends JComponent implements Runnable {
                 //if true, forum.access()
                 //else show error message
             }
-            if (e.getSource() == backButton) {
-                //settings.access()
-            }
-            if (e.getSource() == backButton) {
-                //LMS.access()
-            }
         }
     };
 
@@ -54,15 +51,14 @@ public class CourseStudent extends JComponent implements Runnable {
 
     public void run() {
         forumsArr = new ArrayList<>();
-        //TODO replace with getForums()
         forumsArr.add("Forum 1");
         forumsArr.add("Forum 2");
         forumsArr.add("Forum 3");
         forumsArr.add("Forum 4");
         frame = new JFrame("courseName");
-        //TODO replace with getCourseName()
         Container content = frame.getContentPane();
         content.setLayout(new BorderLayout());
+        CourseStudent course = new CourseStudent();
 
         //header and back/settings buttons
         defaultPanel = new JPanel();
@@ -70,9 +66,8 @@ public class CourseStudent extends JComponent implements Runnable {
         backButton.addActionListener(actionListener);
         defaultPanel.add(backButton);
         welcomeLabel = new JLabel("Welcome to " + "courseName" + "!");
-        //TODO replace with getCourseName()
         defaultPanel.add(welcomeLabel);
-        settingsButton = new JButton("Settings");
+        settingsButton = new JButton("pages.Settings");
         settingsButton.addActionListener(actionListener);
         defaultPanel.add(settingsButton);
         content.add(defaultPanel, BorderLayout.NORTH);
@@ -88,7 +83,6 @@ public class CourseStudent extends JComponent implements Runnable {
 
         accessPanel.add(gradeSentence, c);
         gradeCourse = new JLabel("grade");
-        //TODO replace with getGrade()
 
         c.weightx = 1;
         c.gridx = 1;

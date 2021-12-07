@@ -5,7 +5,7 @@ package main.page;
  * <p>
  * Description - A custom exception that once caught, allows users to log out of the system at any
  * point in time. The try-catch statement will be located in the Main class, which allows the user
- * to quit the LMS access() method.
+ * to quit the pages.LMS access() method.
  * <p>
  * The exception will be thrown by every page.
  *

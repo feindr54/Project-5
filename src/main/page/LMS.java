@@ -7,7 +7,7 @@ import login.page.LoginSystemTest;
 import users.*;
 
 /**
- * Project 4 - LMS (Learning Management System)
+ * Project 4 - pages.LMS (Learning Management System)
  * <p>
  * Description: This class is responsible for the setup of the main page. It
  * will contain and show a list of courses that it contains.
@@ -23,10 +23,10 @@ public class LMS implements Serializable {
 
     public static String teacherMenu = ("Choose what you would like to do:"
             + "\n1. Create a new course. \n2. Access an existing course. \n3. Delete an existing course.\n" +
-            "4. Settings. \n5. Exit.");
+            "4. pages.Settings. \n5. Exit.");
 
     public static String studentMenu = "Choose what you would like to do:"
-            + "\n1. Access a course. \n2. Settings. \n3. Exit.";
+            + "\n1. Access a course. \n2. pages.Settings. \n3. Exit.";
 
     public LMS() {
         this.users = LoginSystemTest.users;
@@ -59,7 +59,7 @@ public class LMS implements Serializable {
     }
 
     /**
-     * Calling this method allows user to "enter" the LMS system after logging in,
+     * Calling this method allows user to "enter" the pages.LMS system after logging in,
      * by printing out the required content and giving options to users, depending
      * on User type (Teacher or Student)
      */

@@ -30,7 +30,7 @@ public class Comment implements Serializable {
         // saves the time that the comment was created
         this.currentTime = LocalDateTime.now();
 
-        // get owner by going up the page hierarchy to LMS (check who is using LMS)
+        // get owner by going up the page hierarchy to pages.LMS (check who is using pages.LMS)
         this.owner = owner;
     }
 
@@ -43,6 +43,10 @@ public class Comment implements Serializable {
     public String getCurrentTime() {
         String time = this.currentTime.format(DateTimeFormatter.ofPattern("E, MMM dd yyyy HH:mm:ss"));
         return time;
+    }
+
+    public String getOwner() {
+        return owner.getIdentifier();
     }
 
     /**
