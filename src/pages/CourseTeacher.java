@@ -1,4 +1,5 @@
 package pages;
+import networking.ActualClient;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,6 +17,8 @@ import java.util.*;
  *
  */
 public class CourseTeacher extends JComponent {
+    ActualClient client;
+    Container content;
 
      ArrayList<String> forums;
      ArrayList<String> studentsArr;
@@ -75,7 +78,9 @@ public class CourseTeacher extends JComponent {
                 //pages.LMS.access()
             }
             if (e.getSource() == settingsButton) {
-                //settings.access()
+                client.getPageStack().push("settings");
+                client.getCl().show(client.getMainPanel(), "settings");
+
             }
 
             if (e.getSource() == accessButton) {
@@ -216,7 +221,10 @@ public class CourseTeacher extends JComponent {
     };
 
 
-    public CourseTeacher() {
+    public CourseTeacher(ActualClient client) {
+        this.client = client;
+
+
         forums = new ArrayList<>();
         forums.add("Forum 1");
         forums.add("Forum 2");
@@ -232,7 +240,8 @@ public class CourseTeacher extends JComponent {
         repliesArr.add("Reply 2");
         repliesArr.add("Reply 3");
         repliesArr.add("Reply 4");
-        Container content = new Container();
+
+        content = new Container();
         content.setLayout(new BorderLayout());
 
         //header and back/settings buttons

@@ -1,4 +1,5 @@
 package pages;
+import networking.ActualClient;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +18,8 @@ import java.util.*;
 public class CourseStudent extends JComponent {
 
     // TODO - remove all static references - CX
+    ActualClient client;
+    Container content;
 
     ArrayList<String> forumsArr;
     JPanel defaultPanel;
@@ -45,7 +48,8 @@ public class CourseStudent extends JComponent {
                 forums.setSelectedIndex(0);
             }
             if (e.getSource() == settingsButton) {
-                //settings.access()
+                client.getPageStack().push("settings");
+                client.getCl().show(client.getMainPanel(), "settings");
             }
             if (e.getSource() == backButton) {
                 //LMS.access()
@@ -53,7 +57,9 @@ public class CourseStudent extends JComponent {
         }
     };
 
-    public CourseStudent() {
+    public CourseStudent(ActualClient client) {
+        this.client = client;
+
         forumsArr = new ArrayList<>();
         //TODO replace with getForums()
         forumsArr.add("Forum 1");
@@ -61,7 +67,7 @@ public class CourseStudent extends JComponent {
         forumsArr.add("Forum 3");
         forumsArr.add("Forum 4");
         //TODO replace with getCourseName()
-        Container content = new Container();
+        content = new Container();
         content.setLayout(new BorderLayout());
 
         //header and back/settings buttons
