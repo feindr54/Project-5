@@ -4,6 +4,18 @@ import java.net.*;
 import java.util.ArrayList;
 import java.io.*;
 
+/**
+* Project 5 - Server
+*
+* Description - This is primarily responsible for the functionalities of the server. It receives and sends information
+ * from and to the client. It is also responsible for storing the data of application and will save information
+ * intermittently to prevent loss.
+*
+* @author Ahmed Aqarooni
+*
+* @version 12/7/2021
+*/
+
 public class Server {
 
     public static ArrayList<ClientHandler> clients;
@@ -48,6 +60,15 @@ public class Server {
     }
 }
 
+/**
+* Project 5 - ClientHandler
+*
+* Description - TODO
+*
+* @author Ahmed Aqarooni
+*
+* @version 12/7/2021
+*/
 // THIS CLASS RECEIVES DATA FROM A SINGLE CLIENT
 // HAS METHOD TO BROADCAST DATA TO ALL CLIENTS
 class ClientHandler extends Thread {

@@ -7,6 +7,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+* Project 5 - Settings
+*
+* Description - TODO
+*
+* @author Alex Younkers
+*
+* @version 12/7/2021
+*/
+
 public class Settings extends JComponent {
     ActualClient client;
 

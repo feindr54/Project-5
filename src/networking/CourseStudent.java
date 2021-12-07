@@ -6,9 +6,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 /**
- * Paint
+ * Project 5 - CourseStudent
  *
- * GUI paint
+ * Description - TODO
  *
  * @author Qasim Ali, CS180
  *

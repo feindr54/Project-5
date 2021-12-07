@@ -6,6 +6,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+* Project 5 - Login
+*
+* Description - TODO
+*
+* @author Alex Younkers
+*
+* @version 12/7/2021
+*/
+
 public class Login extends JComponent {
     ActualClient client;
 

@@ -6,9 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 /**
- * Course
+ * Project 5 - Course
  *
- * course
+ * Desciption - course
  *
  * @author Qasim Ali, CS180
  *
@@ -17,7 +17,6 @@ import java.awt.event.*;
  */
 public class Course extends JComponent {
     private static String courseName;
-
 
     static JButton backButton;
     static JButton settingsButton;
@@ -37,6 +36,8 @@ public class Course extends JComponent {
     static JTextField gradeTextField;
 
     static Course course;
+
+    private ActualClient client;
 
     public void back() {
 
@@ -71,8 +72,15 @@ public class Course extends JComponent {
         }
     };
 
+    public Course(ActualClient client) {
+        this.client = client;
+
+
+    }
 
     public static void main(String[] args) {
+        // TODO - modify this so that max hierarchy is a container, not a frame
+        // TODO - remove the main method and insert all these into the constructor
         JFrame frame = new JFrame("Course");
         Container content = frame.getContentPane();
         content.setLayout(new BorderLayout());

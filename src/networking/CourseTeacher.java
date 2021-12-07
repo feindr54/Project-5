@@ -7,9 +7,9 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.*;
 /**
- * Paint
+ * Project 5 - CourseTeacher
  *
- * GUI paint
+ * Desciption - TODO
  *
  * @author Qasim Ali, CS180
  *

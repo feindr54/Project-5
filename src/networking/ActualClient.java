@@ -8,6 +8,16 @@ import java.io.*;
 import java.net.*;
 import java.util.Stack;
 
+/**
+* Project 5 - ActualClient
+*
+* Description - This class operates the client and its functions. It is responsible for connecting to the server and
+ * simultaneously displaying its content on the user interface.
+*
+* @author Changxiang Gao, Ahmed Aqarooni
+*
+* @version 12/7/2021
+*/
 
 // THIS CLASS RECEIVES INPUT FROM THE SERVER
 public class ActualClient extends JFrame implements Runnable, ActionListener {
@@ -107,6 +117,16 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
 
     }
 }
+
+/**
+* Project 5 - readerThread
+*
+* Description - TODO
+*
+* @author Ahmed Aqarooni
+*
+* @version 12/7/2021
+*/
 
 class readerThread extends Thread {
 
