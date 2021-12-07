@@ -90,6 +90,7 @@ public class CourseTeacher extends JComponent implements Runnable {
                 //check if forumName equals an existing forum
                 //if true, forum.access()
                 //else show error message
+                accessForums.setSelectedIndex(0);
             }
             if (e.getSource() == addButton) {
                 accessPanel.setVisible(false);
@@ -139,6 +140,7 @@ public class CourseTeacher extends JComponent implements Runnable {
                 //if true, forum.setForumName(editCourse.getText())
                 //else show error message
                 editCourse.setText("");
+                editForums.setSelectedIndex(0);
             }
 
 
@@ -176,11 +178,24 @@ public class CourseTeacher extends JComponent implements Runnable {
             }
             if (e.getSource() == replySubmitButton) {
                 //checks if replyGrade.getText() is an integer and fits the range
-                //else shows error
-                //assigns replyGrade.getText() to the student in this course
-                replyGrade.setText("");
-                replyPanel.setVisible(false);//hides replies AL of chosen student
-            }
+                int choice = 0;
+                try {
+                    choice = Integer.parseInt(replyGrade.getText());
+                    if (choice >= 0 && choice <= 100) {
+                        //assigns replyGrade.getText() to the student in this course
+                        replyGrade.setText("");
+                        replyPanel.setVisible(false);//hides replies AL of chosen student
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error, unexpected input", "Error",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        replyGrade.setText("");
+                    }
+                } catch (NumberFormatException exception) {
+                    JOptionPane.showMessageDialog(null, "Error, unexpected input", "Error",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    replyGrade.setText("");
+                }
+                }
             }
     };
 
