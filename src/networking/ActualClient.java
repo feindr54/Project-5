@@ -26,10 +26,11 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
 
     public ActualClient() {
         try {
-            socket = new Socket("localhost", 42069);
+            socket = new Socket("10.0.0.90", 42069);
             C_OTS = new ObjectOutputStream(socket.getOutputStream());
         } catch (Exception e) {
             // TODO: handle exception
+            System.out.println("Unable to connect");
         }
     }
 

@@ -45,6 +45,10 @@ public class Comment implements Serializable {
         return time;
     }
 
+    public String getOwner() {
+        return owner.getIdentifier();
+    }
+
     /**
      * A method that displays the comment
      * <p>

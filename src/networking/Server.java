@@ -7,7 +7,7 @@ import java.io.*;
 public class Server {
 
     public static ArrayList<ClientHandler> clients;
-    public static LMS;
+    //public static LMS;
 
     synchronized public void edittedTheLMS(){
         // added a course
