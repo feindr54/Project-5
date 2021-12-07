@@ -191,7 +191,8 @@ public class Login extends JComponent {
                 teacherCheck();
             }
             if (e.getSource() == confirmButton) {
-                client.getCl().show(client.getContentPane(), "settings");
+                client.getPageStack().push("lms");
+                client.getCl().show(client.getContentPane(), "lms");
                 /*
                 if (successful_login()) {
                     // receives a user (currentUser) object and the pages.LMS object
