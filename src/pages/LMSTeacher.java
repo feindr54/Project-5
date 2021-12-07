@@ -42,6 +42,7 @@ public class LMSTeacher extends JComponent implements Runnable, ActionListener {
     JPanel editPanel;
     JPanel deletePanel;
     JPanel southPanel;
+    int state;
 
 
     JComboBox<String> courseDropdown;
@@ -51,12 +52,16 @@ public class LMSTeacher extends JComponent implements Runnable, ActionListener {
         CardLayout cl = (CardLayout) (cards.getLayout());
         if (e.getSource() == accessButton) {
             cl.show(cards, "Access Panel");
+            state = 0;
         } else if (e.getSource() == addButton) {
             cl.show(cards, "Add Panel");
+            state = 1;
         } else if (e.getSource() == editButton) {
             cl.show(cards, "Edit Panel");
+            state = 2;
         } else if (e.getSource() == deleteButton) {
             cl.show(cards, "Delete Panel");
+            state = 3;
         }
         if (e.getSource() == submitButton) {
             submit();
@@ -67,10 +72,32 @@ public class LMSTeacher extends JComponent implements Runnable, ActionListener {
     }
 
     public void submit() {
-        //it depends on which radio button is selected
-        //pressing submit when access is selected should take them to the course,
-        //while pressing submit when add is selected should clear the text field and
-        //add the course to the list
+        //access
+        if (state == 0) {
+            //show specified course
+
+        }
+        //add
+        if (state == 1) {
+            if (addCourseText.getText().isBlank() || addCourseText.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please enter valid course name.", null, JOptionPane.ERROR_MESSAGE);
+            }
+            addCourseText.setText("");
+            //add course name to list of courses
+        }
+        //edit
+        if (state == 2) {
+            if (editCourseText.getText().isBlank() || editCourseText.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please enter valid course name.", null, JOptionPane.ERROR_MESSAGE);
+            }
+            editCourseText.setText("");
+            //change specified course to new course name
+        }
+        //delete
+        if (state == 3) {
+            //delete specified course
+
+        }
     }
 
     public void settings() {
