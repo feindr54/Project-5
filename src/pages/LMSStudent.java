@@ -1,9 +1,11 @@
+package pages;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 /**
- * LMSStudent
+ * pages.LMSStudent
  *
  * The Student's class of LMS
  *

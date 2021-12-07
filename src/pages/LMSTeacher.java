@@ -1,9 +1,11 @@
+package pages;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 /**
- * LMSTeacher
+ * pages.LMSTeacher
  *
  * The Teacher's class of LMS
  *
