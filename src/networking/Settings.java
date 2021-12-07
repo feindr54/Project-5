@@ -127,11 +127,25 @@ public class Settings extends JComponent {
             }
 
             if (e.getSource() == idSubmitButton) {
-                
+                // TODO - get the information from the textbox
+                //  Check if text is blank (isBlank)
+                //      JOptionPane error message
+
+                // else
+                // TODO - Creates a new user object based on the current user object
+                //  Create a request object to send editted user object to the server
+                //  Sends the request object to the server
             }
 
             if (e.getSource() == passwordSubmitButton) {
+                // TODO - get the information from the textbox
+                //  Check if text is blank (isBlank)
+                //      JOptionPane error message
 
+                // else
+                // TODO - Creates a new user object based on the current user object
+                //  Create a request object to send editted user object to the server
+                //  Sends the request object to the server
             }
 
 

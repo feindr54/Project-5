@@ -16,8 +16,10 @@ import java.util.*;
  * @version November 16, 2021
  *
  */
-public class CourseTeacher extends JComponent implements Runnable {
+public class CourseTeacher extends JComponent {
+    ActualClient client;
 
+    // TODO - remove all the static references
     static ArrayList<String> forums;
     static ArrayList<String> studentsArr;
     static ArrayList<String> repliesArr;
@@ -186,6 +188,10 @@ public class CourseTeacher extends JComponent implements Runnable {
             }
             }
     };
+
+    public CourseTeacher(ActualClient client) {
+        this.client = client;
+    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new CourseTeacher());

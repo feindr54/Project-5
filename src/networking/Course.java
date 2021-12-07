@@ -16,6 +16,10 @@ import java.awt.event.*;
  *
  */
 public class Course extends JComponent {
+    ActualClient client;
+    Container content;
+
+    // TODO - remove all the static references
     private static String courseName;
 
     static JButton backButton;
@@ -37,22 +41,24 @@ public class Course extends JComponent {
 
     static Course course;
 
-    private ActualClient client;
-
     public void back() {
 
     }
 
 
 
-    static ActionListener actionListener = new ActionListener() {
+    ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == backButton) {
-                //pages.LMS.access();
+                //removes the top item of the page stack and accesses the page before this
+                client.getPageStack().pop();
+                client.getCl().show(client.getMainPanel(), client.getPageStack().peek());
             }
             if (e.getSource() == settingsButton) {
-                //settings.access();
+                //accesses the settings menu
+                client.getPageStack().push("settings");
+                client.getCl().show(client.getMainPanel(), client.getPageStack().peek());
             }
             if (e.getSource() == accessButton) {
 
@@ -130,13 +136,6 @@ public class Course extends JComponent {
         panelS.add(submitButton);
         //content.add(panelS, BorderLayout.SOUTH);
 
-
-
-
-        frame.setSize(500, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setVisible(true);
     }
 
 

@@ -6,6 +6,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+* Project 5 - LMS
+*
+* Description - This displays the LMS for the user interface
+*
+* @author Chloe Click
+*
+* @version 12/7/2021
+*/
+
 public class LMS extends JComponent implements ActionListener {
     ActualClient client;
 

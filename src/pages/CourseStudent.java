@@ -14,6 +14,8 @@ import java.util.*;
  */
 public class CourseStudent extends JComponent implements Runnable {
 
+    // TODO - remove all static references - CX
+
     static ArrayList<String> forumsArr;
     static JFrame frame;
     static JPanel defaultPanel;

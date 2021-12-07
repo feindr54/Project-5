@@ -267,9 +267,7 @@ public class Login extends JComponent {
             if (isLogin) {
                 // when user is logging in
 
-                // TODO - either 1) creates a user object and send to the server to compare (and
-                // validate)
-                // TODO - 2) send the strings separately and find the user object there
+                // TODO - 1) send the strings (in a String[] array) and find the user object there
 
                 // TODO - wait for server response to see if username is valid && username and
                 // password matches
