@@ -191,8 +191,25 @@ public class Login extends JComponent {
                 teacherCheck();
             }
             if (e.getSource() == confirmButton) {
-                client.getPageStack().push("lms");
-                client.getCl().show(client.getMainPanel(), "lms");
+
+                //if login is successful, pull up the respective page
+                if (successful_login()) {
+
+                    //if student, go to lmsStudent
+                    if (student.isSelected()) {
+                        client.getPageStack().push("lmsStudent");
+                        client.getCl().show(client.getMainPanel(), "lmsStudent");
+
+                        //if teacher, go to lmsTeacher
+                    } else if (teacher.isSelected()) {
+                        client.getPageStack().push("lmsTeacher");
+                        client.getCl().show(client.getMainPanel(), "lmsTeacher");
+                    }
+
+                }
+
+
+
                 /*
                 if (successful_login()) {
                     // receives a user (currentUser) object and the pages.LMS object
@@ -271,15 +288,16 @@ public class Login extends JComponent {
         String password = passwordText.getText();
 
         if (username == null || username.isBlank()) {
-            // TODO - if username/email field is empty, create a JOptionPane dialog box of error
             JOptionPane.showMessageDialog(null, "Please type your email/username",
                     " Error: Empty username field", JOptionPane.ERROR_MESSAGE);
             return false;
         } else if (password == null || password.isBlank()) {
-            // TODO - if password field is empty, JOptionPane
+            JOptionPane.showMessageDialog(null, "Please enter your password",
+                    " Error: Empty password field", JOptionPane.ERROR_MESSAGE);
             return false;
         } else if (!isLogin && !username.contains("@")) {
-            // TODO - if the email format is invalid, JOptionPane
+            JOptionPane.showMessageDialog(null, "Please enter a valid email address",
+                    " Error: Invalid Email", JOptionPane.ERROR_MESSAGE);
             return false;
         } else {
             // else send the data to the server to create a new user object
@@ -307,7 +325,8 @@ public class Login extends JComponent {
                     return true;
                 } else {
                     // if neither box is selected
-                    // TODO - create JOptionPane error message
+                    JOptionPane.showMessageDialog(null, "Please select a user type",
+                            " Error: Empty user type", JOptionPane.ERROR_MESSAGE);
                     return false;
                 }
             }
