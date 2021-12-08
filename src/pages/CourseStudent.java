@@ -122,4 +122,7 @@ public class CourseStudent extends JComponent {
         accessPanel.setVisible(true);
         content.add(accessPanel, BorderLayout.CENTER);
     }
+    public Container getContent() {
+        return content;
+    }
 }

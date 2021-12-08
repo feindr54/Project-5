@@ -127,20 +127,20 @@ public class SettingsGUI extends JComponent {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            //  if (e.getSource() == clearButton) {
+            if (e.getSource() == backButton) {
+                //TODO: track state of page before going to settings, send user back to that page
 
+            }
 
-            //   }
-            //   if (e.getSource() == fillButton) {
+            if (e.getSource() == idSubmitButton) {
+                //TODO send new username to server, change it in the list of usernames
 
+            }
 
+            if (e.getSource() == passwordSubmitButton) {
+                //TODO send new password to server, change it in the list of passwords
 
-            //   }
-
-            //  if (e.getSource() == eraseButton) {
-
-
-            //   }
+            }
 
 
 

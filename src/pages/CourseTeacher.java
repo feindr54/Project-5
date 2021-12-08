@@ -446,4 +446,7 @@ public class CourseTeacher extends JComponent {
 
         content.add(centerPanel, BorderLayout.CENTER);
     }
+    public Container getContent() {
+        return content;
+    }
 }

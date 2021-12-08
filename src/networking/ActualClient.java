@@ -80,6 +80,7 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
         LMSStudent lmsStudent = new LMSStudent(this);
         LMSTeacher lmsTeacher = new LMSTeacher(this);
 
+        ForumTeacher forumTeacher = new ForumTeacher(this);
         // Adds all the different pages to the main panel
         mainPanel.add(login.getContent(), "login");
         mainPanel.add(settingsGUI.getContent(), "settingsGUI");
@@ -87,6 +88,8 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
         mainPanel.add(lmsTeacher.getContent(), "lmsTeacher");
         // add the courses panels
         // add the forums panels
+        mainPanel.add(forumTeacher.getContent(), "forumTeacher");
+
 
         // shows the login page by default
         cl.show(mainPanel, "login");
@@ -150,11 +153,15 @@ class ReaderThread extends Thread {
     @Override
     public void run() {
         try {
+
+        /*
             Socket socket = gui.getSocket();
             System.out.println("Connected");
 
             ObjectInputStream C_IFS = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream C_OTS = new ObjectOutputStream(socket.getOutputStream());
+
+         */
 
 
 

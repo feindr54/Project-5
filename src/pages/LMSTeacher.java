@@ -106,7 +106,10 @@ public class LMSTeacher extends JComponent implements ActionListener {
     }
 
     public void settings() {
-        //this should display the settings page
+
+        client.getPageStack().push("settings");
+        client.getCl().show(client.getMainPanel(), "settings");
+
     }
 
     public LMSTeacher(ActualClient client) {
