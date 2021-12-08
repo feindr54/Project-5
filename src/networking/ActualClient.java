@@ -37,7 +37,7 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
 
     public ActualClient() {
         try {
-            socket = new Socket("10.0.0.90", 42069);
+            socket = new Socket("localhost", 42069);
             C_OTS = new ObjectOutputStream(socket.getOutputStream());
         } catch (Exception e) {
             // TODO: handle exception
@@ -60,7 +60,7 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
     public static void main(String[] args) {
         ActualClient c = new ActualClient();
         SwingUtilities.invokeLater(c);
-        readerThread t = new readerThread(c);
+        ReaderThread t = new ReaderThread(c);
         t.start();
     }
 
@@ -120,7 +120,7 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
 }
 
 /**
-* Project 5 - readerThread
+* Project 5 - ReaderThread
 *
 * Description - TODO
 *
@@ -129,11 +129,11 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
 * @version 12/7/2021
 */
 
-class readerThread extends Thread {
+class ReaderThread extends Thread {
 
     private final ActualClient gui;
 
-    public readerThread(ActualClient gui) {
+    public ReaderThread(ActualClient gui) {
         this.gui = gui; // store reference to the gui thread
     }
 
@@ -142,19 +142,20 @@ class readerThread extends Thread {
         try {
             Socket socket = gui.getSocket();
             System.out.println("Connected");
-            /*
-             * ObjectInputStream C_IFS = new ObjectInputStream(socket.getInputStream());
-             * //ObjectOutputStream C_OTS = new
-             * ObjectOutputStream(socket.getOutputStream());
-             * String line;
-             * do {
-             * line = (String) C_IFS.readObject();
-             * if (!line.isEmpty() || line != null ) gui.showOtherMsg(line);
-             * 
-             * 
-             * } while (line != null);
-             * 
-             */
+
+            ObjectInputStream C_IFS = new ObjectInputStream(socket.getInputStream());
+            ObjectOutputStream C_OTS = new ObjectOutputStream(socket.getOutputStream());
+
+            Object object = new Object();
+
+            while (true) {
+                object
+            }
+            do {
+            line = (String) C_IFS.readObject();
+
+
+
 
         } catch (Exception e) {
             System.out.println("Cannot connect to server");

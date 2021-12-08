@@ -6,9 +6,11 @@ import java.awt.*;
 import java.awt.event.*;
 
 import main.page.*;
+import networking.*;
 import users.*;
 
 public class ForumStudent extends JComponent {
+    ActualClient client;
     Container content;
     
     JPanel top;
@@ -26,8 +28,9 @@ public class ForumStudent extends JComponent {
     Forum forum; 
     User currentUser; 
 
-    public ForumStudent() {
-        // ForumPage forumPage = new ForumPage(frame);
+    public ForumStudent(ActualClient client) {
+        // ForumTeacher forumPage = new ForumTeacher(frame);
+        this.client = client;
 
         content = new Container();
         content.setLayout(new BorderLayout());

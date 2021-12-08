@@ -1,11 +1,13 @@
 package networking;
 
-import main.page.Forum;
+import main.page.*;
+import pages.*;
 import users.User;
 
 import java.net.*;
 import java.util.ArrayList;
 import java.io.*;
+
 
 /**
 * Project 5 - Server
@@ -22,14 +24,22 @@ import java.io.*;
 public class Server {
 
     User users;
-    //LMS lms;
+    LMS lms;
+
+    final Object lockLMS = new Object();
+    final Object lockCourse = new Object();
 
     public static ArrayList<ClientHandler> clients;
     //public static LMS;
 
-    synchronized public void edittedTheLMS(){
+    public void edittedTheLMS(){
+        synchronized (lockLMS) {
+
+        }
         // added a course
     }
+
+
     public static void main(String[] args) {
         ServerSocket server = null;
         clients = new ArrayList<ClientHandler>();
@@ -98,7 +108,7 @@ class ClientHandler extends Thread {
     public void processRequest(Request request) {
         int operation = request.getOPERATION();
         Object object = request.getOBJ();
-        /*
+
         if (object instanceof LMS) {
             // user added, edited or deleted a course
         } else if (object instanceof Course) {
@@ -109,10 +119,11 @@ class ClientHandler extends Thread {
             // user is trying to log in or create a new account
             // first var is the username, 2nd var is the password
 
-            // check if logging in or signing
+            // check if logging in or signing up
             if (operation == 4) {
                 // signing up
-
+                // TODO - check through list of users, if any emails are repeated
+                //  if so, send an error message back to the user
             } else {
                 // logging in
             }

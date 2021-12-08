@@ -7,10 +7,12 @@ import java.awt.*;
 import java.awt.event.*;
 
 import main.page.*;
+import networking.*;
 import users.*;
 
-public class ForumPage extends JComponent {
-    
+public class ForumTeacher extends JComponent {
+
+    ActualClient client;
     Container content;
     
     JPanel top;
@@ -30,8 +32,9 @@ public class ForumPage extends JComponent {
     Forum forum; 
     User currentUser; 
 
-    public ForumPage() {
-        // ForumPage forumPage = new ForumPage(frame);
+    public ForumTeacher(ActualClient client) {
+        // ForumTeacher forumPage = new ForumTeacher(frame);
+        this.client = client;
 
         content = new Container();
         content.setLayout(new BorderLayout());
