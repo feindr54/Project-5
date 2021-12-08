@@ -45,6 +45,9 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
         }
     }
 
+    public ObjectOutputStream getOOS() {
+        return C_OTS;
+    }
     public CardLayout getCl() {
         return cl;
     }

@@ -1,10 +1,12 @@
 package pages;
 
 import networking.ActualClient;
+import networking.Request;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 /**
 * Project 5 - Login
@@ -193,26 +195,30 @@ public class Login extends JComponent {
             if (e.getSource() == confirmButton) {
 
                 //if login is successful, pull up the respective page
-                if (successful_login()) {
+                try {
+                    if (successful_login()) {
 
-                    //if student, go to lmsStudent
-                    if (student.isSelected()) {
-
-
-
-                        client.getPageStack().push("lmsStudent");
-                        client.getCl().show(client.getMainPanel(), "lmsStudent");
-
-                        //if teacher, go to lmsTeacher
-                    } else if (teacher.isSelected()) {
+                        //if student, go to lmsStudent
+                        if (student.isSelected()) {
 
 
 
+                            client.getPageStack().push("lmsStudent");
+                            client.getCl().show(client.getMainPanel(), "lmsStudent");
 
-                        client.getPageStack().push("lmsTeacher");
-                        client.getCl().show(client.getMainPanel(), "lmsTeacher");
+                            //if teacher, go to lmsTeacher
+                        } else if (teacher.isSelected()) {
+
+
+
+
+                            client.getPageStack().push("lmsTeacher");
+                            client.getCl().show(client.getMainPanel(), "lmsTeacher");
+                        }
+
                     }
-
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
 
 
@@ -290,7 +296,7 @@ public class Login extends JComponent {
 
     }
 
-    public boolean successful_login() {
+    public boolean successful_login() throws IOException {
         String username = idText.getText();
         String password = passwordText.getText();
 
@@ -309,12 +315,15 @@ public class Login extends JComponent {
         } else {
             // else send the data to the server to create a new user object
             // check if user is logging in or signing up
+            Request request;
+
             if (isLogin) {
                 // when user is logging in
 
                 // TODO - either 1) creates a user object and send to the server to compare (and validate)
                 // TODO - 2) send the strings separately and find the user object there
-
+                request = new Request(5, new String[]{username, password});
+                client.getOOS().writeObject(request);
 
                 // TODO - wait for server response to see if username is valid && username and password matches
             } else {
@@ -324,11 +333,13 @@ public class Login extends JComponent {
                     // checks if the student box is selected
 
                     // TODO - creates a student object and sends it to the server
-
+                    request = new Request(4, new String[]{username, password, "student"});
+                    client.getOOS().writeObject(request);
                     return true;
                 } else if (teacher.isSelected()) {
                     // TODO - creates a teacher object and send it to the server
-
+                    request = new Request(4, new String[]{username, password, "teacher"});
+                    client.getOOS().writeObject(request);
                     return true;
                 } else {
                     // if neither box is selected

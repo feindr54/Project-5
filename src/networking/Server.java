@@ -175,13 +175,16 @@ class ClientHandler extends Thread {
             // user added a reply, comment, upvoted, or asked to sort the replies
 
 
-        } else if (object instanceof String[]) {
+        } else if (object instanceof String[] userDetails) {
             // user is trying to log in or create a new account
             // first var is the username, 2nd var is the password
-            String[] userDetails = (String[]) object;
             String username = userDetails[0]; // username
             String password = userDetails[1]; // password
-            String role = userDetails[2]; // "student" or "teacher"
+            String role = "";
+            if (userDetails.length > 2) {
+                role = userDetails[2]; // "student" or "teacher"
+            }
+
 
             // check if logging in or signing up
             if (operation == 4) {
@@ -221,7 +224,7 @@ class ClientHandler extends Thread {
                         return null;
                     }
                 }
-            } else {
+            } else if (operation == 5) {
                 // logging in
                 // check through list of users, check if any username matches
                 for (User user : Server.users) {
@@ -242,7 +245,7 @@ class ClientHandler extends Thread {
                         }
                     }
                 }
-                //  TODO - send error message to client (invalid username or password)
+                // send error message to client (invalid username or password)
                 response = new Response(1, "Error: Invalid username or password");
 
                 // TODO - do these need to be synchronized?
