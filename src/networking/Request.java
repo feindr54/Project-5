@@ -17,6 +17,8 @@ public class Request {
     private final Object OBJ; // this object could be an instance of LMS, course or, forum, or an array containing username and
     // password
 
+    // in the case of accessing a page, the structure would be (0, String type_of_object/name_of_object)
+    // eg (0, "Course/CS 180")
     public Request(int operation, Object obj) {
         this.OPERATION = operation;
         this.OBJ = obj;

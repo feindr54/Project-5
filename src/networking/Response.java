@@ -14,6 +14,7 @@ public class Response {
     // TODO - settle how many types of responses there can be
     private final int TYPE; // 0 - information, 1 - errors (invalid input)
     private final Object OBJ; // object sent to the client to display
+    // this will be an
 
     public Response(int type, Object obj) {
         this.TYPE = type;

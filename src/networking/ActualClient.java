@@ -154,23 +154,20 @@ class ReaderThread extends Thread {
     public void run() {
         try {
 
-        /*
+
             Socket socket = gui.getSocket();
             System.out.println("Connected");
 
             ObjectInputStream C_IFS = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream C_OTS = new ObjectOutputStream(socket.getOutputStream());
 
-         */
-
-
-
             while (true) {
                 // receiving the response from the server
                 Response response = (Response) C_IFS.readObject();
 
+
                 // processing the response
-                if (object instanceof ) {
+                if (response instanceof ) {
 
                 }
             }

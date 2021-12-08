@@ -2,7 +2,8 @@ package networking;
 
 import main.page.*;
 import pages.*;
-import users.User;
+import users.*;
+
 
 import java.net.*;
 import java.util.ArrayList;
@@ -32,9 +33,9 @@ public class Server {
     public static ArrayList<ClientHandler> clients;
     //public static LMS;
 
-    public static void changeLMS(LMS lms){
+    public static void changeLMS(LMS newLms){
         synchronized (lockLMS) {
-            this.lms = lms;
+            lms = newLms;
         }
     }
 
@@ -50,11 +51,24 @@ public class Server {
         for (Course c : lms.getCourses()) {
             for (int i = 0; i < c.getForums().size(); i++) {
                 if (c.getForums().get(i).equals(forum)) {
-                    c.getForums().set(i, forum);
+                    // changing of the forum object in the arraylist must be sychronized
+                    synchronized (lockCourse) {
+                        c.getForums().set(i, forum);
+                    }
                 }
             }
         }
         // TODO - create a Response object to be sent to the user
+    }
+
+    public static User createUser(String email, String password, boolean isStudent) {
+        User user;
+        if (isStudent) {
+            user = new Student(email, password);
+        } else {
+            user = new Teacher(email, password);
+        }
+        return user;
     }
 
 
@@ -126,7 +140,17 @@ class ClientHandler extends Thread {
         return (Request) s_IFC.readObject();
     }
 
-    public void processRequest(Request request) {
+    /**
+     * This methods processes a request and generates a Response object to be sent to the user
+     * @param request
+     * @return Response response if info is to be sent to all clients, or a null object if it's only
+     * to be send to a particular user
+     * @throws IOException
+     */
+    public Response processRequest(Request request) throws IOException {
+        Response response; // creates a response object to send
+
+        // extracts the exact operation and the object received from the client
         int operation = request.getOPERATION();
         Object object = request.getOBJ();
 
@@ -143,6 +167,7 @@ class ClientHandler extends Thread {
         } else if (object instanceof Forum) {
             // user added a reply, comment, upvoted, or asked to sort the replies
 
+
         } else if (object instanceof String[]) {
             // user is trying to log in or create a new account
             // first var is the username, 2nd var is the password
@@ -157,19 +182,28 @@ class ClientHandler extends Thread {
                 username = username.substring(0, username.indexOf('@'));
                 for (User user : Server.users) {
                     // check through list of users, if any emails are repeated
-                    if (user.getIdentifier().equals(username)) {
+                    if (!user.getIdentifier().equals(username)) {
                         // TODO - creates a new user object
+                        User newUser;
                         //  check if user is a student or teacher
                         if (role.equals("teacher")) {
-
+                            newUser = new Teacher(username, password);
                         } else {
-
+                            newUser = new Student(username, password);
                         }
-                        //  and send the respective LMS object back
+                        //  and send the respective LMS object back to PARTICULAR USER
                         //  create a Response object and
+
                         //  send the user object back?
+                        return null;
                     } else {
-                        // TODO - send an error message back to the user
+                        // send an error message (email taken) back to the user
+                        response = new Response(1, "Error: Email is already taken");
+
+                        // TODO - must these be synchronized?
+                        s_OTC.writeObject(response);
+                        s_OTC.flush();
+                        return null;
                     }
                 }
             } else {
@@ -184,10 +218,58 @@ class ClientHandler extends Thread {
                         // TODO - return the user object and corresponding LMS to client
                     }
                 }
-                //  TODO - send error message to client
+                //  TODO - send error message to client (invalid username or password)
+                response = new Response(1, "Error: Invalid username or password");
+
+                // TODO - do these need to be synchronized?
+                s_OTC.writeObject(response);
+                s_OTC.flush();
+                return null;
+            }
+        } else if (operation == 0) {
+            // user wants to access a certain page
+            // format of the pageInfo is typeOfPage/nameOfPage
+            String pageInfo = (String) object;
+            String pageType = pageInfo.substring(0, pageInfo.indexOf('/'));
+            String pageName = pageInfo.substring(pageInfo.indexOf('/') + 1);
+
+            if (pageType.equals("lms")) {
+                //send the LMS object to the specific client
+
+                response = new Response(0, Server.lms);
+                // do you need to synchronize these?
+                s_OTC.writeObject(response);
+                s_OTC.flush();
+                return null;
+            }
+
+            for (int i = 0; i < Server.lms.getCourses().size(); i++) {
+                if (pageType.equals("course")) {
+                    if (Server.lms.getCourses().get(i).getCourseName().equals(pageName)) {
+                        // send the specific course to the specific client to load
+                        Course courseSent = Server.lms.getCourses().get(i);
+
+                        s_OTC.writeObject(courseSent);
+                        s_OTC.flush();
+                        return null;
+                    }
+                }
+
+                for (int j = 0; j < Server.lms.getCourses().get(i).getForums().size(); j++) {
+                    if (pageType.equals("forum")) {
+                        if (Server.lms.getCourses().get(i).getForums().get(j).equals(pageName)) {
+                            // sends the specific forum to the specific client to load
+                            Forum forumSent = Server.lms.getCourses().get(i).getForums().get(j);
+
+                            s_OTC.writeObject(forumSent);
+                            s_OTC.flush();
+                            return null;
+                        }
+                    }
+                }
             }
         }
-
+        return null;
     }
 
     @Override
@@ -206,14 +288,17 @@ class ClientHandler extends Thread {
                 // process request()
                 // - update the respective contents of the lms by calling a synchronized method in the server
                 //
-
+                Response response = processRequest(request);
                 
                 // generateResponse()
                 // - generates a response based on what was updated 
                 
                 // sendResponse() 
                 // - sends (broadcasts) the generated response to all the clients connected to the server (loop through the arraylist of ClientHandlers)
-                
+                if (response != null) {
+                    // TODO - sends the response to all other clients
+                }
+
                 String input = (String) s_IFC.readObject();
                 System.out.println(input);
                 if (input.equals("Exit")) {
