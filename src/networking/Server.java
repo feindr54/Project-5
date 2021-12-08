@@ -16,7 +16,7 @@ import java.io.*;
  * from and to the client. It is also responsible for storing the data of application and will save information
  * intermittently to prevent loss.
 *
-* @author Ahmed Aqarooni
+* @author Ahmed Aqarooni, Changxiang Gao
 *
 * @version 12/7/2021
 */
@@ -26,11 +26,24 @@ public class Server {
     public static ArrayList<User> users;
     public static LMS lms;
 
-    private static final Object lockLMS = new Object();
-    private static final Object lockCourse = new Object();
+    private static Object lockLMS = new Object();
+    private static Object lockCourse = new Object();
+    private static Object lockForum = new Object();
+    private static Object lockUser = new Object();
 
     public static ArrayList<ClientHandler> clients;
     //public static LMS;
+
+    public static void changeUserDetail(User user) {
+        for (int i = 0; i < Server.users.size(); i++) {
+            // searches for the user to change info
+            if (user.getUserIndex() == users.get(i).getUserIndex()) {
+                synchronized (lockUser) {
+                    users.set(i, user);
+                }
+            }
+        }
+    }
 
     public static void changeLMS(LMS newLms){
         synchronized (lockLMS) {
@@ -48,12 +61,17 @@ public class Server {
         }
     }
 
+    /**
+     *  Changes the forum object in the server list
+     * @param forum
+     */
     public static void changeForum(Forum forum) {
         for (Course c : lms.getCourses()) {
             for (int i = 0; i < c.getForums().size(); i++) {
                 if (c.getForums().get(i).equals(forum)) {
                     // changing of the forum object in the arraylist must be sychronized
-                    synchronized (lockCourse) {
+                    synchronized (lockForum) {
+                        // changes the forum in the
                         c.getForums().set(i, forum);
                     }
                 }
@@ -61,17 +79,6 @@ public class Server {
         }
         // TODO - create a Response object to be sent to the user
     }
-
-    public static User createUser(String email, String password, boolean isStudent) {
-        User user;
-        if (isStudent) {
-            user = new Student(email, password);
-        } else {
-            user = new Teacher(email, password);
-        }
-        return user;
-    }
-
 
     public static void main(String[] args) {
         users = new ArrayList<>();
@@ -115,9 +122,10 @@ public class Server {
 /**
 * Project 5 - ClientHandler
 *
-* Description - TODO
+* Description - Handles receiving Request packets from its assigned client and processes them, and then sends the
+ * requested/updated info back to the client or all clients respectively
 *
-* @author Ahmed Aqarooni
+* @author Ahmed Aqarooni, Changxiang Gao
 *
 * @version 12/7/2021
 */
@@ -151,7 +159,7 @@ class ClientHandler extends Thread {
      * This method processes a request and generates a Response object to be sent to the user
      * @param request
      * @return Response response if info is to be sent to all clients, or a null object if it's only
-     * to be send to a particular user
+     * to be sent to a particular user
      * @throws IOException
      */
     public Response processRequest(Request request) throws IOException {
@@ -161,7 +169,11 @@ class ClientHandler extends Thread {
         int operation = request.getOPERATION();
         Object object = request.getOBJ();
 
-        if (object instanceof LMS) {
+        if (operation == 7) {
+            User newUser = (User) object;
+            Server.changeUserDetail(newUser);
+
+        } else if (object instanceof LMS) {
             // user added, edited or deleted a course
             Server.changeLMS((LMS) object);
 

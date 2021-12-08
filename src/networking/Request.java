@@ -13,7 +13,7 @@ package networking;
 */
 public class Request {
     private final int OPERATION; // 0 - access, 1 - add, 2 - edit, 3 - delete, 4 - create account, 5 - login, 6 - ask
-    // to sort replies
+    // to sort replies, 7 - change username/password (sends a new User object)
     private final Object OBJ; // this object could be an instance of LMS, course or, forum, or an array containing
     // username and password, and the role ("student" or "teacher")
 
