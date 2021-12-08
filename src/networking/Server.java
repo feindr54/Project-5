@@ -32,11 +32,18 @@ public class Server {
     public static ArrayList<ClientHandler> clients;
     //public static LMS;
 
-    public void edittedTheLMS(){
+    public void changeLMS(LMS lms){
         synchronized (lockLMS) {
-
+            this.lms = lms;
         }
-        // added a course
+    }
+
+    public void changeCourse(Course course) {
+        for (Course c : lms.getCourses()) {
+            if () {
+
+            }
+        }
     }
 
 
@@ -111,6 +118,7 @@ class ClientHandler extends Thread {
 
         if (object instanceof LMS) {
             // user added, edited or deleted a course
+
         } else if (object instanceof Course) {
             // user added, edited or deleted a forum
         } else if (object instanceof Forum) {
@@ -126,6 +134,10 @@ class ClientHandler extends Thread {
                 //  if so, send an error message back to the user
             } else {
                 // logging in
+                // TODO - check through list of users, check if any username matches
+                //  if so, check if the password matches
+                //  if not, JOptionPane for invalid password
+                //  JOptionPane for invalid username
             }
         }
 

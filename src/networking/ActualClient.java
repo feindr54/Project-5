@@ -76,13 +76,13 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
 
         // create a page object for every page
         Login login = new Login(this, frame);
-        Settings settings = new Settings(this, frame);
+        SettingsGUI settingsGUI = new SettingsGUI(this, frame);
         LMSStudent lmsStudent = new LMSStudent(this);
         LMSTeacher lmsTeacher = new LMSTeacher(this);
 
         // Adds all the different pages to the main panel
         mainPanel.add(login.getContent(), "login");
-        mainPanel.add(settings.getContent(), "settings");
+        mainPanel.add(settingsGUI.getContent(), "settingsGUI");
         mainPanel.add(lmsStudent.getContent(), "lmsStudent");
         mainPanel.add(lmsTeacher.getContent(), "lmsTeacher");
         // add the courses panels
@@ -139,6 +139,14 @@ class ReaderThread extends Thread {
         this.gui = gui; // store reference to the gui thread
     }
 
+    public void processResponse(Response response) {
+        int type = response.getType();
+        Object object = new Object();
+
+        if () {
+
+        }
+    }
     @Override
     public void run() {
         try {
@@ -148,17 +156,17 @@ class ReaderThread extends Thread {
             ObjectInputStream C_IFS = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream C_OTS = new ObjectOutputStream(socket.getOutputStream());
 
-            Object object = new Object();
+
 
             while (true) {
-                object
+                // receiving the response from the server
+                Response response = (Response) C_IFS.readObject();
+
+                // processing the response
+                if (object instanceof ) {
+
+                }
             }
-            do {
-            line = (String) C_IFS.readObject();
-
-
-
-
         } catch (Exception e) {
             System.out.println("Cannot connect to server");
         }

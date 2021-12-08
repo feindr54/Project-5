@@ -12,11 +12,19 @@ package networking;
 
 public class Response {
     // TODO - settle how many types of responses there can be
-    int type; // 0 - information, 1 - errors (invalid input)
-    Object obj; // object sent to the client to display
+    private final int TYPE; // 0 - information, 1 - errors (invalid input)
+    private final Object OBJ; // object sent to the client to display
 
     public Response(int type, Object obj) {
-        this.type = type;
-        this.obj = obj;
+        this.TYPE = type;
+        this.OBJ = obj;
+    }
+
+    public int getType() {
+        return TYPE;
+    }
+
+    public Object getObj() {
+        return OBJ;
     }
 }

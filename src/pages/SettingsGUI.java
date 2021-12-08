@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
-* Project 5 - Settings
+* Project 5 - SettingsGUI
 *
 * Description - TODO
 *
@@ -17,7 +17,7 @@ import java.awt.event.ActionListener;
 * @version 12/7/2021
 */
 
-public class Settings extends JComponent {
+public class SettingsGUI extends JComponent {
     ActualClient client;
 
     JFrame frame;
@@ -35,7 +35,7 @@ public class Settings extends JComponent {
     JButton backButton;
     JButton logoutButton;
 
-    public Settings(ActualClient client, JFrame frame) {
+    public SettingsGUI(ActualClient client, JFrame frame) {
         this.client = client;
         this.frame = frame;
 

@@ -197,11 +197,18 @@ public class Login extends JComponent {
 
                     //if student, go to lmsStudent
                     if (student.isSelected()) {
+
+
+
                         client.getPageStack().push("lmsStudent");
                         client.getCl().show(client.getMainPanel(), "lmsStudent");
 
                         //if teacher, go to lmsTeacher
                     } else if (teacher.isSelected()) {
+
+
+
+
                         client.getPageStack().push("lmsTeacher");
                         client.getCl().show(client.getMainPanel(), "lmsTeacher");
                     }

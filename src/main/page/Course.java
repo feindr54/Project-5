@@ -31,16 +31,17 @@ public class Course implements Serializable {
             "\n1. Access a forum \n2. Access grade \n3. pages.Settings \n4. Exit";
     private static String errorMessage = "Unexpected value. Please choose one of the options above";
 
-
+    private LMS lms;
     private String courseName;
     private ArrayList<Forum> forums;
     private ArrayList<Student> students;
-
+    private int identifier;
     // constructor
     public Course(String courseName) {
         this.courseName = courseName;
         this.forums = new ArrayList<Forum>();
         this.students = new ArrayList<Student>();
+        this.identifier = lms.getCourses().size();
     }
 
     // setter getter
