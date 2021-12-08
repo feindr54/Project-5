@@ -23,22 +23,22 @@ import java.io.*;
 
 public class Server {
 
-    User users;
-    LMS lms;
+    public static ArrayList<User> users;
+    public static LMS lms;
 
-    final Object lockLMS = new Object();
-    final Object lockCourse = new Object();
+    private static final Object lockLMS = new Object();
+    private static final Object lockCourse = new Object();
 
     public static ArrayList<ClientHandler> clients;
     //public static LMS;
 
-    public void changeLMS(LMS lms){
+    public static void changeLMS(LMS lms){
         synchronized (lockLMS) {
             this.lms = lms;
         }
     }
 
-    public void changeCourse(Course course) {
+    public static void changeCourse(Course course) {
         for (Course c : lms.getCourses()) {
             if () {
 
@@ -46,8 +46,22 @@ public class Server {
         }
     }
 
+    public static void changeForum(Forum forum) {
+        for (Course c : lms.getCourses()) {
+            for (int i = 0; i < c.getForums().size(); i++) {
+                if (c.getForums().get(i).equals(forum)) {
+                    c.getForums().set(i, forum);
+                }
+            }
+        }
+        // TODO - create a Response object to be sent to the user
+    }
+
 
     public static void main(String[] args) {
+        users = new ArrayList<>();
+        lms = new LMS();
+
         ServerSocket server = null;
         clients = new ArrayList<ClientHandler>();
         try {
@@ -118,30 +132,62 @@ class ClientHandler extends Thread {
 
         if (object instanceof LMS) {
             // user added, edited or deleted a course
+            Server.changeLMS((LMS) object);
 
+            // TODO - create Response object to send back to the client
         } else if (object instanceof Course) {
             // user added, edited or deleted a forum
+            Server.changeCourse((Course) object);
+
+            // TODO - create Response object to send back to the client
         } else if (object instanceof Forum) {
             // user added a reply, comment, upvoted, or asked to sort the replies
+
         } else if (object instanceof String[]) {
             // user is trying to log in or create a new account
             // first var is the username, 2nd var is the password
+            String[] userDetails = (String[]) object;
+            String username = userDetails[0]; // username
+            String password = userDetails[1]; // password
+            String role = userDetails[2]; // "student" or "teacher"
 
             // check if logging in or signing up
             if (operation == 4) {
                 // signing up
-                // TODO - check through list of users, if any emails are repeated
-                //  if so, send an error message back to the user
+                username = username.substring(0, username.indexOf('@'));
+                for (User user : Server.users) {
+                    // check through list of users, if any emails are repeated
+                    if (user.getIdentifier().equals(username)) {
+                        // TODO - creates a new user object
+                        //  check if user is a student or teacher
+                        if (role.equals("teacher")) {
+
+                        } else {
+
+                        }
+                        //  and send the respective LMS object back
+                        //  create a Response object and
+                        //  send the user object back?
+                    } else {
+                        // TODO - send an error message back to the user
+                    }
+                }
             } else {
                 // logging in
-                // TODO - check through list of users, check if any username matches
-                //  if so, check if the password matches
-                //  if not, JOptionPane for invalid password
-                //  JOptionPane for invalid username
+                // check through list of users, check if any username matches
+                for (User user : Server.users) {
+                    if (username.equals(user.getIdentifier()) && password.equals(user.getPassword())) {
+                        // TODO - check if user is already logged in
+                        for (ClientHandler client : Server.clients) {
+
+                        }
+                        // TODO - return the user object and corresponding LMS to client
+                    }
+                }
+                //  TODO - send error message to client
             }
         }
 
-         */
     }
 
     @Override

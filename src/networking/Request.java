@@ -12,7 +12,8 @@ package networking;
 * @version 12/7/2021
 */
 public class Request {
-    private final int OPERATION; // 0 - access, 1 - add, 2 - edit, 3 - delete, 4 - create account, 5 - login
+    private final int OPERATION; // 0 - access, 1 - add, 2 - edit, 3 - delete, 4 - create account, 5 - login, 6 - ask
+    // to sort replies
     private final Object OBJ; // this object could be an instance of LMS, course or, forum, or an array containing username and
     // password
 

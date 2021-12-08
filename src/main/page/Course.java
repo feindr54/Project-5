@@ -36,6 +36,7 @@ public class Course implements Serializable {
     private ArrayList<Forum> forums;
     private ArrayList<Student> students;
     private int identifier;
+
     // constructor
     public Course(String courseName) {
         this.courseName = courseName;
