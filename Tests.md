@@ -10,7 +10,7 @@
 6. User enters password via the keyboard
 7. User selects the confirm button
 
-### Expected result: Application confirms the email is valid, generates an identifier for them, and shows the user their pages.LMS screen.
+### Expected result: Application confirms the email is valid, generates an identifier for them, and shows the user their LMS screen.
 
 ### Test Status:
 

@@ -34,12 +34,15 @@ public class Server {
     public static ArrayList<ClientHandler> clients;
     //public static LMS;
 
+    // TODO - includes the methods to save and load files (users and LMS)
+
     public static void changeUserDetail(User user) {
         for (int i = 0; i < Server.users.size(); i++) {
             // searches for the user to change info
             if (user.getUserIndex() == users.get(i).getUserIndex()) {
                 synchronized (lockUser) {
                     users.set(i, user);
+                    // TODO - save the user file
                 }
             }
         }
@@ -48,6 +51,7 @@ public class Server {
     public static void changeLMS(LMS newLms){
         synchronized (lockLMS) {
             lms = newLms;
+            // TODO - save the lms
         }
     }
 
@@ -56,6 +60,7 @@ public class Server {
             if (course.getIndex() == Server.lms.getCourses().get(i).getIndex()) {
                 synchronized (lockCourse) {
                     Server.lms.getCourses().set(i, course);
+                    // TODO - save the lms
                 }
             }
         }
@@ -73,6 +78,7 @@ public class Server {
                     synchronized (lockForum) {
                         // changes the forum in the
                         c.getForums().set(i, forum);
+                        // TODO - save the lms files
                     }
                 }
             }
@@ -89,6 +95,8 @@ public class Server {
         try {
             server = new ServerSocket(42069);
             System.out.println("ServerSocket: " + server);
+
+            // TODO - load the users and LMS from the file, and store them
         } catch (Exception e) {
             //TODO: handle exception
         }
