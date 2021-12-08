@@ -14,6 +14,7 @@ import java.util.*;
 
 public class User implements Serializable {
 
+    private int userIndex;
     public String identifier;
     public String email;
     public String password;
@@ -29,6 +30,14 @@ public class User implements Serializable {
 
         this.password = password;
         this.isStudent = isStudent;
+    }
+
+    public void setUserIndex(int userIndex) {
+        this.userIndex = userIndex;
+    }
+
+    public int getUserIndex() {
+        return userIndex;
     }
 
     public String getIdentifier() {

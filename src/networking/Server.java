@@ -1,7 +1,6 @@
 package networking;
 
 import main.page.*;
-import pages.*;
 import users.*;
 
 
@@ -40,9 +39,11 @@ public class Server {
     }
 
     public static void changeCourse(Course course) {
-        for (Course c : lms.getCourses()) {
-            if () {
-
+        for (int i = 0; i < Server.lms.getCourses().size(); i++) {
+            if (course.getIndex() == Server.lms.getCourses().get(i).getIndex()) {
+                synchronized (lockCourse) {
+                    Server.lms.getCourses().set(i, course);
+                }
             }
         }
     }
@@ -128,6 +129,8 @@ class ClientHandler extends Thread {
     private ObjectOutputStream s_OTC;// s = server, O = output, T = to, C = client| server output to client
     private int id;
 
+    private User user;
+
     public ClientHandler(Socket socket, ObjectInputStream in, ObjectOutputStream out, int id) {
         this.socket = socket;
         this.s_IFC = in;
@@ -136,12 +139,16 @@ class ClientHandler extends Thread {
 
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public Request getRequest() throws IOException, ClassNotFoundException {
         return (Request) s_IFC.readObject();
     }
 
     /**
-     * This methods processes a request and generates a Response object to be sent to the user
+     * This method processes a request and generates a Response object to be sent to the user
      * @param request
      * @return Response response if info is to be sent to all clients, or a null object if it's only
      * to be send to a particular user
@@ -185,16 +192,24 @@ class ClientHandler extends Thread {
                     if (!user.getIdentifier().equals(username)) {
                         // TODO - creates a new user object
                         User newUser;
-                        //  check if user is a student or teacher
+                        //  check if user is a student or teacher and initializes respectively
                         if (role.equals("teacher")) {
                             newUser = new Teacher(username, password);
                         } else {
                             newUser = new Student(username, password);
                         }
-                        //  and send the respective LMS object back to PARTICULAR USER
-                        //  create a Response object and
+                        this.user = newUser;
+                        // add the newUser to the users array list
+                        newUser.setUserIndex(Server.users.size()); // sets the index of the user
+                        Server.users.add(newUser);
 
-                        //  send the user object back?
+
+                        //  and send the respective LMS object and user back to PARTICULAR USER
+                        //  create a Response object and
+                        response = new Response(0, new Object[]{newUser, Server.lms});
+                        s_OTC.writeObject(response);
+                        s_OTC.flush();
+
                         return null;
                     } else {
                         // send an error message (email taken) back to the user
@@ -211,11 +226,20 @@ class ClientHandler extends Thread {
                 // check through list of users, check if any username matches
                 for (User user : Server.users) {
                     if (username.equals(user.getIdentifier()) && password.equals(user.getPassword())) {
-                        // TODO - check if user is already logged in
+                        //  check if user is already logged in
                         for (ClientHandler client : Server.clients) {
+                            if (user.equals(client.getUser())) {
+                                // TODO - generates an error message (user already logged in)
+                                response = new Response(1, "Error: User already logged in.");
+                                return null;
+                            } else {
+                                // successful login
+                                // TODO - send the LMS object back to the client based on the userType
 
+                                response = new Response(0, new Object[]{user, Server.lms});
+                                return null;
+                            }
                         }
-                        // TODO - return the user object and corresponding LMS to client
                     }
                 }
                 //  TODO - send error message to client (invalid username or password)

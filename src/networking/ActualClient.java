@@ -146,15 +146,18 @@ class ReaderThread extends Thread {
         int type = response.getType();
         Object object = new Object();
 
-        if () {
-
+        if (type == 0) {
+            // TODO - updates the pages to be displayed
+        } else {
+            // displays a variety of error messages
+            String errorMessage = object.toString();
+            JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
         }
+
     }
     @Override
     public void run() {
         try {
-
-
             Socket socket = gui.getSocket();
             System.out.println("Connected");
 
@@ -164,12 +167,7 @@ class ReaderThread extends Thread {
             while (true) {
                 // receiving the response from the server
                 Response response = (Response) C_IFS.readObject();
-
-
-                // processing the response
-                if (response instanceof ) {
-
-                }
+                processResponse(response);
             }
         } catch (Exception e) {
             System.out.println("Cannot connect to server");
