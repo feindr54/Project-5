@@ -34,6 +34,7 @@ public class LMSStudent extends JComponent implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == submitButton) {
             //show selected course
+            //TODO: add Student to the Course's students arraylist
         }
         if (e.getSource() == settingsButton) {
             client.getPageStack().push("settings");

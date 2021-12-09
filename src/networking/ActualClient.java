@@ -174,8 +174,6 @@ class ReaderThread extends Thread {
                     // create student lms object
                     LMSStudent lmsStudent = new LMSStudent(gui);
 
-
-
                     // add it to the main panel
                     gui.getMainPanel().add(lmsStudent.getContent(), "lmsStudent");
 

@@ -18,9 +18,10 @@ import main.page.*;
 public class Student extends User implements Serializable {
 
     public ArrayList<Reply> studentReplies;
+    public ArrayList<String> repliesToString;
 
     // index represents the index of the student reply
-    public HashMap<String, Integer> grades;
+    public HashMap<Course, String> grades;
 
     public Student(String email, String password) {
         super(email, password, true);
@@ -40,7 +41,7 @@ public class Student extends User implements Serializable {
     }
 
     // this method takes in a reply and the contents of the comment, creates a new
-    // comment, then calls the reply add comement method.
+    // comment, then calls the reply add comment method.
     public void createComment(Reply currentReply, String content) {
         Comment newComment = new Comment(currentReply, this, content);
         currentReply.addComment(newComment);
@@ -58,24 +59,19 @@ public class Student extends User implements Serializable {
 
     }
 
-    public void printReplies(Course course) {
-        for (int i = 0; i < course.getForums().size(); i++) { // for each forum in a course
-            System.out.println(identifier + "'s replies in forum: " + course.getForums().get(i).getTopic());
-            for (int j = 0; j < course.getForums().get(i).getReplies().size(); j++) { //for each reply in a forum
-                if (course.getForums().get(i).getReplies().get(j).getOwner().equals(identifier)) {
-                    course.getForums().get(i).getReplies().get(j).printContent();
-                }
-            }
-        }
-    }
-
-    public void setGrade(String course, int grade) {
+    public void setGrade(Course course, String grade) {
         grades.put(course, grade);
-        System.out.println("Set " + this.getIdentifier() + "'s grades to " + grades.get(course) + ".");
     }
 
-    public int getGrades(String course) {
+    public String getGrade(Course course) {
         return grades.get(course);
+    }
+
+    public ArrayList<String> getReplies() {
+        for (int i = 0; i < this.studentReplies.size(); i++) {
+            repliesToString.add(studentReplies.get(i).getContent());
+        }
+        return repliesToString;
     }
 
     @Override

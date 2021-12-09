@@ -96,8 +96,6 @@ public class Course implements Serializable {
 
     public ArrayList<String> studentsToString() {
         if (this.students.size() == 0) {
-            JOptionPane.showMessageDialog(null, "Error, no students found", "Error",
-                    JOptionPane.INFORMATION_MESSAGE);
             return null;
         }
         for (int i = 0; i < this.students.size(); i++) {

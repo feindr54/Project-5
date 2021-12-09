@@ -1,4 +1,5 @@
 package pages;
+import users.*;
 import main.page.*;
 import networking.ActualClient;
 
@@ -23,6 +24,7 @@ public class CourseStudent extends JComponent {
     Container content;
     Course course;
     String courseName;
+    Student student;
 
     ArrayList<String> forumsArr;
     JPanel defaultPanel;
@@ -64,12 +66,14 @@ public class CourseStudent extends JComponent {
         }
     };
 
-    public CourseStudent(ActualClient client) {
+    public CourseStudent(ActualClient client, Course course, Student student) {
         this.client = client;
 
-        forumsArr = new ArrayList<>();
-        courseName = "courseName";
-        course = new Course(courseName);
+        this.course = course;
+        this.student = student;
+        courseName = course.getCourseName();
+        forumsArr = course.forumsToString();
+
         content = new Container();
         content.setLayout(new BorderLayout());
 
@@ -78,8 +82,7 @@ public class CourseStudent extends JComponent {
         backButton = new JButton("Back");
         backButton.addActionListener(actionListener);
         defaultPanel.add(backButton);
-        welcomeLabel = new JLabel("Welcome to " + "courseName" + "!");
-        //TODO replace with getCourseName()
+        welcomeLabel = new JLabel("Welcome to " + course.getCourseName() + "!");
         defaultPanel.add(welcomeLabel);
         settingsButton = new JButton("Settings");
         settingsButton.addActionListener(actionListener);
@@ -96,9 +99,7 @@ public class CourseStudent extends JComponent {
         c.gridy = 0;
 
         accessPanel.add(gradeSentence, c);
-        gradeCourse = new JLabel("grade");
-        //TODO replace with getGrade()
-
+        gradeCourse = new JLabel(student.getGrade(course));
         c.weightx = 1;
         c.gridx = 1;
         c.gridy = 1;
@@ -126,9 +127,9 @@ public class CourseStudent extends JComponent {
         content.add(accessPanel, BorderLayout.CENTER);
     }
 
-    public void updateDisplay(Course course) {
-        // TODO - updates the current page with a Course
+    public void updateDisplay(Course course, Student student) {
         this.course = course;
+        this.student = student;
         courseName = course.getCourseName();
         forumsArr = course.forumsToString();
         // refreshes the display

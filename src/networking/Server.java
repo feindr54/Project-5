@@ -55,6 +55,12 @@ public class Server {
         }
     }
 
+    public static void addUser(User user) {
+        synchronized (lockUser) {
+            users.add(user);
+        }
+    }
+
     public static void changeUserDetail(User user) {
         for (int i = 0; i < Server.users.size(); i++) {
             // searches for the user to change info
@@ -260,7 +266,7 @@ class ClientHandler extends Thread {
                     Server.users.add(newUser);
                     System.out.println("added user");
 
-
+                    System.out.println("User successfully added");
                     //  and send the respective LMS object and user back to PARTICULAR USER
                     //  create a Response object and
                     response = new Response(0, new Object[]{newUser, Server.lms});
@@ -291,8 +297,8 @@ class ClientHandler extends Thread {
                     this.user = newUser;
                     // add the newUser to the users array list
                     newUser.setUserIndex(Server.users.size()); // sets the index of the user
-                    Server.users.add(newUser);
 
+                    Server.addUser(newUser);
 
                     //  and send the respective LMS object and user back to PARTICULAR USER
                     //  create a Response object and
