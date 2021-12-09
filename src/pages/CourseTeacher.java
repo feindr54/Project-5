@@ -1,6 +1,8 @@
 package pages;
 import main.page.*;
+import users.*;
 import networking.ActualClient;
+import java.io.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,49 +22,52 @@ import java.util.*;
 public class CourseTeacher extends JComponent {
     ActualClient client;
     Container content;
+    String courseName;
 
-     ArrayList<String> forums;
-     ArrayList<String> studentsArr;
-     ArrayList<String> repliesArr;
-     JPanel defaultPanel;
-     JButton backButton;
-     JLabel welcomeLabel;
-     JButton settingsButton;
-     JPanel centerPanel;
-     JPanel radioPanel;
-     ButtonGroup buttonGroup;
-     JPanel accessPanel;
-     JRadioButton addButton;
-     JRadioButton editButton;
-     JRadioButton deleteButton;
-     JRadioButton gradeButton;
-     JRadioButton accessButton;
-     JLabel accessPrompt;
-     JComboBox<String> accessForums;
-     JButton accessSubmitButton;
-     JPanel addPanel;
-     JLabel addPrompt;
-     JTextField addCourse;
-     JButton newTopic;
-     JButton topicFromFile;
-     JPanel editPanel;
-     JLabel editPrompt;
-     JComboBox<String> editForums;
-     JTextField editCourse;
-     JButton editSubmitButton;
-     JPanel deletePanel;
-     JLabel deletePrompt;
-     JComboBox<String> deleteForums;
-     JButton deleteSubmitButton;
-     JPanel gradePanel;
-     JLabel gradePrompt;
-     JComboBox<String> students;
-     JButton gradeSubmitButton;
-     JPanel replyPanel;
-     JLabel replyPrompt;
-     JComboBox<String> replies;
-     JTextField replyGrade;
-     JButton replySubmitButton;
+    Course course;
+
+    ArrayList<String> forums;
+    ArrayList<String> studentsArr;
+    ArrayList<String> repliesArr;
+    JPanel defaultPanel;
+    JButton backButton;
+    JLabel welcomeLabel;
+    JButton settingsButton;
+    JPanel centerPanel;
+    JPanel radioPanel;
+    ButtonGroup buttonGroup;
+    JPanel accessPanel;
+    JRadioButton addButton;
+    JRadioButton editButton;
+    JRadioButton deleteButton;
+    JRadioButton gradeButton;
+    JRadioButton accessButton;
+    JLabel accessPrompt;
+    JComboBox<String> accessForums;
+    JButton accessSubmitButton;
+    JPanel addPanel;
+    JLabel addPrompt;
+    JTextField addCourse;
+    JButton newTopic;
+    JButton topicFromFile;
+    JPanel editPanel;
+    JLabel editPrompt;
+    JComboBox<String> editForums;
+    JTextField editCourse;
+    JButton editSubmitButton;
+    JPanel deletePanel;
+    JLabel deletePrompt;
+    JComboBox<String> deleteForums;
+    JButton deleteSubmitButton;
+    JPanel gradePanel;
+    JLabel gradePrompt;
+    JComboBox<String> students;
+    JButton gradeSubmitButton;
+    JPanel replyPanel;
+    JLabel replyPrompt;
+    JComboBox<String> replies;
+    JTextField replyGrade;
+    JButton replySubmitButton;
 
 
 
@@ -92,6 +97,10 @@ public class CourseTeacher extends JComponent {
                 replyPanel.setVisible(false);
             }
             if (e.getSource() == accessSubmitButton) {
+                if (accessForums.getSelectedItem() == null) {
+                    JOptionPane.showMessageDialog(null, "Error, no forums found", "Error",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
                 //get selected forumName from list
                 //check if forumName equals an existing forum
                 //if true, forum.access()
@@ -111,8 +120,8 @@ public class CourseTeacher extends JComponent {
                     JOptionPane.showMessageDialog(null, "Error, unexpected input", "Error",
                             JOptionPane.INFORMATION_MESSAGE);
                 }
-                //Forum forum = new Forum(course, addCourse.getText())
-                //forums AR add(forum)
+                Forum newForum = new Forum(course, addCourse.getText());
+                course.getForums().add(newForum);
                 addCourse.setText("");
             }
 
@@ -121,7 +130,7 @@ public class CourseTeacher extends JComponent {
                     JOptionPane.showMessageDialog(null, "Error, unexpected input", "Error",
                             JOptionPane.INFORMATION_MESSAGE);
                 }
-                /*try {
+                try {
                     File file = new File(addCourse.getText());
                     BufferedReader br = new BufferedReader(new FileReader(file));
                     String string;
@@ -131,12 +140,12 @@ public class CourseTeacher extends JComponent {
                     }
 
                     Forum newForum = new Forum(course, topic);
-                    this.addForum(newForum);
+                    course.getForums().add(newForum);
                     br.close();
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }*/
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
                 addCourse.setText("");
             }
 
@@ -153,10 +162,15 @@ public class CourseTeacher extends JComponent {
                     JOptionPane.showMessageDialog(null, "Error, unexpected input", "Error",
                             JOptionPane.INFORMATION_MESSAGE);
                 }
+                if (editForums.getSelectedItem() == null) {
+                    JOptionPane.showMessageDialog(null, "Error, no forums found", "Error",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
                 //get selected forumName from list
                 //check if forumName equals an existing forum
                 //if true, forum.setForumName(editCourse.getText())
                 //else show error message
+                course.getForums().get(editForums.getSelectedIndex()).setTopic(editCourse.getText());
                 editCourse.setText("");
                 editForums.setSelectedIndex(0);
             }
@@ -172,10 +186,15 @@ public class CourseTeacher extends JComponent {
             }
 
             if (e.getSource() == deleteSubmitButton) {
+                if (deleteForums.getSelectedItem() == null) {
+                    JOptionPane.showMessageDialog(null, "Error, no forums found", "Error",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
                 //get selected forumName from list
                 //check if forumName equals an existing forum
                 //if true, remove that forum from the forum AL
                 //else show error message
+                course.getForums().remove(deleteForums.getSelectedIndex());
                 deleteForums.setSelectedIndex(0);
             }
 
@@ -197,7 +216,7 @@ public class CourseTeacher extends JComponent {
             }
             if (e.getSource() == replySubmitButton) {
                 //checks if replyGrade.getText() is an integer and fits the range
-                int choice = 0;
+                int choice;
                 try {
                     choice = Integer.parseInt(replyGrade.getText());
                     if (choice >= 0 && choice <= 100) {
@@ -222,27 +241,24 @@ public class CourseTeacher extends JComponent {
 
     public void updateDisplay(Course course) {
         // TODO - Update the display of the course with a Course object input
+        this.course = course;
+        courseName = course.getCourseName();
+        forums = course.forumsToString();
+        studentsArr = course.studentsToString();
     }
 
     public CourseTeacher(ActualClient client) {
         this.client = client;
+        courseName = "courseName";
+        this.course = new Course(courseName);
 
 
         forums = new ArrayList<>();
-        forums.add("Forum 1");
-        forums.add("Forum 2");
-        forums.add("Forum 3");
-        forums.add("Forum 4");
+
         studentsArr = new ArrayList<>();
-        studentsArr.add("Student 1");
-        studentsArr.add("Student 2");
-        studentsArr.add("Student 3");
-        studentsArr.add("Student 4");
+
         repliesArr = new ArrayList<>();
-        repliesArr.add("Reply 1");
-        repliesArr.add("Reply 2");
-        repliesArr.add("Reply 3");
-        repliesArr.add("Reply 4");
+        //TODO: replies arraylist in student
 
         content = new Container();
         content.setLayout(new BorderLayout());
@@ -252,7 +268,7 @@ public class CourseTeacher extends JComponent {
         backButton = new JButton("Back");
         backButton.addActionListener(actionListener);
         defaultPanel.add(backButton);
-        welcomeLabel = new JLabel("Welcome to " + "courseName" + "!");
+        welcomeLabel = new JLabel("Welcome to " + courseName + "!");
         defaultPanel.add(welcomeLabel);
         settingsButton = new JButton("pages.Settings");
         settingsButton.addActionListener(actionListener);
