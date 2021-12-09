@@ -244,31 +244,32 @@ class ClientHandler extends Thread {
             if (operation == 4) {
                 // signing up
                 username = username.substring(0, username.indexOf('@'));
+
+                if (Server.users.isEmpty()) {
+                    User newUser;
+                    //  check if user is a student or teacher and initializes respectively
+                    if (role.equals("teacher")) {
+                        newUser = new Teacher(username, password);
+                    } else {
+                        newUser = new Student(username, password);
+                    }
+                    this.user = newUser;
+                    // add the newUser to the users array list
+                    newUser.setUserIndex(Server.users.size()); // sets the index of the user
+                    Server.users.add(newUser);
+
+
+                    //  and send the respective LMS object and user back to PARTICULAR USER
+                    //  create a Response object and
+                    response = new Response(0, new Object[]{newUser, Server.lms});
+                    s_OTC.writeObject(response);
+                    s_OTC.flush();
+
+                    return null;
+                }
                 for (User user : Server.users) {
                     // check through list of users, if any emails are repeated
-                    if (!user.getIdentifier().equals(username)) {
-                        // TODO - creates a new user object
-                        User newUser;
-                        //  check if user is a student or teacher and initializes respectively
-                        if (role.equals("teacher")) {
-                            newUser = new Teacher(username, password);
-                        } else {
-                            newUser = new Student(username, password);
-                        }
-                        this.user = newUser;
-                        // add the newUser to the users array list
-                        newUser.setUserIndex(Server.users.size()); // sets the index of the user
-                        Server.users.add(newUser);
-
-
-                        //  and send the respective LMS object and user back to PARTICULAR USER
-                        //  create a Response object and
-                        response = new Response(0, new Object[]{newUser, Server.lms});
-                        s_OTC.writeObject(response);
-                        s_OTC.flush();
-
-                        return null;
-                    } else {
+                    if (user.getIdentifier().equals(username)) {
                         // send an error message (email taken) back to the user
                         response = new Response(1, "Error: Email is already taken");
 
@@ -277,9 +278,39 @@ class ClientHandler extends Thread {
                         s_OTC.flush();
                         return null;
                     }
+                    // TODO - creates a new user object
+                    User newUser;
+                    //  check if user is a student or teacher and initializes respectively
+                    if (role.equals("teacher")) {
+                        newUser = new Teacher(username, password);
+                    } else {
+                        newUser = new Student(username, password);
+                    }
+                    this.user = newUser;
+                    // add the newUser to the users array list
+                    newUser.setUserIndex(Server.users.size()); // sets the index of the user
+                    Server.users.add(newUser);
+
+
+                    //  and send the respective LMS object and user back to PARTICULAR USER
+                    //  create a Response object and
+                    response = new Response(0, new Object[]{newUser, Server.lms});
+                    s_OTC.writeObject(response);
+                    s_OTC.flush();
+
+                    return null;
                 }
             } else if (operation == 5) {
                 // logging in
+                if (Server.users.isEmpty()) {
+                    response = new Response(1, "Error: Invalid username or password");
+
+                    // TODO - do these need to be synchronized?
+                    s_OTC.writeObject(response);
+                    s_OTC.flush();
+                    return null;
+                }
+
                 // check through list of users, check if any username matches
                 for (User user : Server.users) {
                     if (username.equals(user.getIdentifier()) && password.equals(user.getPassword())) {
@@ -291,14 +322,12 @@ class ClientHandler extends Thread {
                                 s_OTC.writeObject(response);
                                 s_OTC.flush();
                                 return null;
-                            } else {
-                                // successful login
-                                // TODO - send the LMS object back to the client based on the userType
-
-                                response = new Response(0, new Object[]{user, Server.lms});
-                                return null;
                             }
                         }
+                        // TODO - send the LMS object back to the client based on the userType
+
+                        response = new Response(0, new Object[]{user, Server.lms});
+                        return null;
                     }
                 }
                 // send error message to client (invalid username or password)
