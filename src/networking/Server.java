@@ -34,7 +34,26 @@ public class Server {
     public static ArrayList<ClientHandler> clients;
     //public static LMS;
 
-    // TODO - includes the methods to save and load files (users and LMS)
+    // TODO - includes the methods to save and load files (users and LMS)\
+    public static synchronized void saveLMS(String filename) {
+
+    }
+
+    public static void saveUsers(String filename) {
+        synchronized (lockUser) {
+
+        }
+    }
+
+    public static synchronized LMS readLMS(String filename) {
+
+    }
+
+    public static synchronized ArrayList<User> readUsers(String filename) {
+        synchronized (lockUser) {
+
+        }
+    }
 
     public static void changeUserDetail(User user) {
         for (int i = 0; i < Server.users.size(); i++) {
@@ -43,6 +62,7 @@ public class Server {
                 synchronized (lockUser) {
                     users.set(i, user);
                     // TODO - save the user file
+                    saveUsers("Users.txt");
                 }
             }
         }
@@ -52,6 +72,7 @@ public class Server {
         synchronized (lockLMS) {
             lms = newLms;
             // TODO - save the lms
+            saveLMS("LMS.txt");
         }
     }
 
@@ -61,6 +82,7 @@ public class Server {
                 synchronized (lockCourse) {
                     Server.lms.getCourses().set(i, course);
                     // TODO - save the lms
+                    saveLMS("LMS.txt");
                 }
             }
         }
@@ -79,6 +101,7 @@ public class Server {
                         // changes the forum in the
                         c.getForums().set(i, forum);
                         // TODO - save the lms files
+                        saveLMS("LMS.txt");
                     }
                 }
             }
@@ -97,6 +120,8 @@ public class Server {
             System.out.println("ServerSocket: " + server);
 
             // TODO - load the users and LMS from the file, and store them
+            lms = readLMS("LMS.txt");
+            users = readUsers("Users.txt");
         } catch (Exception e) {
             //TODO: handle exception
         }
@@ -205,7 +230,6 @@ class ClientHandler extends Thread {
                 role = userDetails[2]; // "student" or "teacher"
             }
 
-
             // check if logging in or signing up
             if (operation == 4) {
                 // signing up
@@ -254,6 +278,8 @@ class ClientHandler extends Thread {
                             if (user.equals(client.getUser())) {
                                 // TODO - generates an error message (user already logged in)
                                 response = new Response(1, "Error: User already logged in.");
+                                s_OTC.writeObject(response);
+                                s_OTC.flush();
                                 return null;
                             } else {
                                 // successful login
@@ -273,6 +299,8 @@ class ClientHandler extends Thread {
                 s_OTC.flush();
                 return null;
             }
+            // TODO - saves the user list in Server
+            return null;
         } else if (operation == 0) {
             // user wants to access a certain page
             // format of the pageInfo is typeOfPage/nameOfPage

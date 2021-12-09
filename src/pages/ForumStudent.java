@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 import main.page.*;
 import networking.*;
@@ -28,9 +29,10 @@ public class ForumStudent extends JComponent {
     Forum forum; 
     User currentUser; 
 
-    public ForumStudent(ActualClient client) {
+    public ForumStudent(ActualClient client, Forum forum) {
         // ForumTeacher forumPage = new ForumTeacher(frame);
         this.client = client;
+        this.forum = forum;
 
         content = new Container();
         content.setLayout(new BorderLayout());
@@ -132,21 +134,23 @@ public class ForumStudent extends JComponent {
     };
 
     public Comment createComment(Reply reply, String commentMessage) {
-        Comment newComment = new Comment(reply, currentUser, commentMessage);
+        Comment newComment = new Comment(reply, client.getUser(), commentMessage);
         return newComment; 
     }
 
     public Reply createReply(String replyMessage) {
         // TODO - create a new reply object with 
-        Reply newReply = new Reply(forum, (Student) currentUser, replyMessage); 
+        Reply newReply = new Reply(forum, (Student) client.getUser(), replyMessage);
         return newReply;
     }
 
-    public void sendReplyToServer() {
-        
+    public void sendReplyToServer(Reply reply) throws IOException {
+        // TODO - 1) send the reply to the server OR 2) add the reply to the course then send the course over
+        client.getOOS().writeObject(reply);
+        client.getOOS().flush();
     }
 
-    synchronized public void updateForumDisplay() {
+    synchronized public void updateForumDisplay(Forum newForum) {
         
     }
 

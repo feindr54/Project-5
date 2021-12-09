@@ -1,4 +1,5 @@
 package pages;
+import main.page.*;
 import networking.ActualClient;
 
 import javax.swing.*;
@@ -80,7 +81,6 @@ public class CourseTeacher extends JComponent {
             if (e.getSource() == settingsButton) {
                 client.getPageStack().push("settings");
                 client.getCl().show(client.getMainPanel(), "settings");
-
             }
 
             if (e.getSource() == accessButton) {
@@ -220,6 +220,9 @@ public class CourseTeacher extends JComponent {
             }
     };
 
+    public void setPage(Course course) {
+
+    }
 
     public CourseTeacher(ActualClient client) {
         this.client = client;

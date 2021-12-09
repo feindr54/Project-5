@@ -1,5 +1,6 @@
 package pages;
 
+import main.page.*;
 import networking.ActualClient;
 
 import javax.swing.*;
@@ -106,10 +107,12 @@ public class LMSTeacher extends JComponent implements ActionListener {
     }
 
     public void settings() {
-
         client.getPageStack().push("settings");
         client.getCl().show(client.getMainPanel(), "settings");
+    }
 
+    public void updateDisplay(LMS lms) {
+        // TODO - display LMS as GUI
     }
 
     public LMSTeacher(ActualClient client) {

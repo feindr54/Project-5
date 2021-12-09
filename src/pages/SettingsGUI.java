@@ -1,6 +1,7 @@
 package pages;
 
-import networking.ActualClient;
+import networking.*;
+import users.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -129,7 +130,8 @@ public class SettingsGUI extends JComponent {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == backButton) {
                 //TODO: track state of page before going to settings, send user back to that page
-
+                client.getPageStack().pop();
+                client.getCl().show(client.getMainPanel(), client.getPageStack().peek());
             }
 
             if (e.getSource() == idSubmitButton) {

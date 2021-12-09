@@ -1,5 +1,6 @@
 package pages;
 
+import main.page.*;
 import networking.ActualClient;
 
 import javax.swing.*;
@@ -38,6 +39,10 @@ public class LMSStudent extends JComponent implements ActionListener {
             client.getPageStack().push("settings");
             client.getCl().show(client.getMainPanel(), "settings");
         }
+    }
+
+    public void updateDisplay(LMS lms) {
+        // TODO - convert LMS to display on GUI
     }
 
     public LMSStudent(ActualClient client) {

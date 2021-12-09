@@ -8,6 +8,8 @@ import java.io.*;
 import java.net.*;
 import java.util.Stack;
 import pages.*;
+import users.*;
+import main.page.*;
 
 /**
 * Project 5 - ActualClient
@@ -22,6 +24,7 @@ import pages.*;
 
 // THIS CLASS RECEIVES INPUT FROM THE SERVER
 public class ActualClient extends JFrame implements Runnable, ActionListener {
+    private User user;
     private Socket socket;
     // private ObjectInputStream C_IFS; // c = client, i = input, f = from, s =
     // server;
@@ -43,6 +46,14 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
             // TODO: handle exception
             System.out.println("Unable to connect");
         }
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     public ObjectOutputStream getOOS() {
@@ -80,15 +91,11 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
         // create a page object for every page
         Login login = new Login(this, frame);
         SettingsGUI settingsGUI = new SettingsGUI(this, frame);
-        LMSStudent lmsStudent = new LMSStudent(this);
-        LMSTeacher lmsTeacher = new LMSTeacher(this);
 
-        ForumTeacher forumTeacher = new ForumTeacher(this);
         // Adds all the different pages to the main panel
         mainPanel.add(login.getContent(), "login");
         mainPanel.add(settingsGUI.getContent(), "settingsGUI");
-        mainPanel.add(lmsStudent.getContent(), "lmsStudent");
-        mainPanel.add(lmsTeacher.getContent(), "lmsTeacher");
+
         // add the courses panels
         // add the forums panels
         mainPanel.add(forumTeacher.getContent(), "forumTeacher");
@@ -107,6 +114,7 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
         frame.setVisible(true);
     }
 
+    // TODO - delete this
     // so whenever we go into a panel ex course, we would add it to the stack, thats wat i thought
     // so whenever we leave we just pop it from the stack, the stack would be like the history of visited tabs yknow?
     // u can talk i can hear u but i cant talk lol
@@ -147,10 +155,57 @@ class ReaderThread extends Thread {
 
     public void processResponse(Response response) {
         int type = response.getType();
-        Object object = new Object();
+        Object object = response.getObj();
 
         if (type == 0) {
             // TODO - updates the pages to be displayed
+            if (object instanceof Object[] loginDetails) {
+                // user has just logged in
+
+                if (loginDetails[0] instanceof Student) {
+                    gui.setUser((Student) loginDetails[0]);
+                    // TODO - load student lms (this should be done in the EDT though)
+                    // push the student lms to top of page stack
+                    gui.getPageStack().push("studentLms");
+
+                    // create student lms object
+                    LMSStudent lmsStudent = new LMSStudent(gui);
+
+
+
+                    // add it to the main panel
+                    gui.getMainPanel().add(lmsStudent.getContent(), "lmsStudent");
+
+                } else {
+                    gui.setUser((Teacher) loginDetails[0]);
+                    // TODO - load teacher lms by creating teacher lms object
+                    LMSTeacher lmsTeacher = new LMSTeacher(gui);
+                    gui.getMainPanel().add(lmsTeacher.getContent(), "lmsTeacher");
+                }
+            } else if (object instanceof LMS) {
+                // check if user is at LMS page
+                if (gui.getPageStack().peek().equals("lmsStudent")) {
+                    // TODO - load student lms
+                } else if (gui.getPageStack().peek().equals("lmsStudent")) {
+                    // TODO - load teacher lms
+                }
+            } else if (object instanceof Course) {
+                if (gui.getPageStack().peek().equals("courseStudent")) {
+                    // TODO - load student course
+                } else if (gui.getPageStack().peek().equals("courseTeacher")){
+                    // TODO - load teacher course
+                }
+            } else if (object instanceof Forum) {
+                if (gui.getPageStack().peek().equals("forumStudent")) {
+                    // TODO - load student forum
+                } else if (gui.getPageStack().peek().equals("forumStudent")) {
+                    // TODO - load teacher forum
+                    ForumTeacher forumTeacher = new ForumTeacher(gui);
+
+                    // TODO - create a setPage(Forum forum) method in forumGUI method to change it
+                }
+            }
+
         } else {
             // displays a variety of error messages
             String errorMessage = object.toString();
@@ -165,8 +220,8 @@ class ReaderThread extends Thread {
             System.out.println("Connected");
 
             ObjectInputStream C_IFS = new ObjectInputStream(socket.getInputStream());
-            ObjectOutputStream C_OTS = new ObjectOutputStream(socket.getOutputStream());
 
+            // TODO - change the condition to whether the client is open
             while (true) {
                 // receiving the response from the server
                 Response response = (Response) C_IFS.readObject();

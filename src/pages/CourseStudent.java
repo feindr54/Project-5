@@ -1,4 +1,5 @@
 package pages;
+import main.page.*;
 import networking.ActualClient;
 
 import javax.swing.*;
@@ -122,6 +123,11 @@ public class CourseStudent extends JComponent {
         accessPanel.setVisible(true);
         content.add(accessPanel, BorderLayout.CENTER);
     }
+
+    public void updateDisplay(Course course) {
+        // TODO - updates the current page with a Course
+    }
+
     public Container getContent() {
         return content;
     }
