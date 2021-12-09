@@ -21,6 +21,8 @@ public class CourseStudent extends JComponent {
     // TODO - remove all static references - CX
     ActualClient client;
     Container content;
+    Course course;
+    String courseName;
 
     ArrayList<String> forumsArr;
     JPanel defaultPanel;
@@ -42,6 +44,10 @@ public class CourseStudent extends JComponent {
         public void actionPerformed(ActionEvent e) {
 
             if (e.getSource() == accessSubmitButton) {
+                if (forums.getSelectedItem() == null) {
+                    JOptionPane.showMessageDialog(null, "Error, no forums found", "Error",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
                 //get selected forumName from list
                 //check if forumName equals an existing forum
                 //if true, forum.access()
@@ -62,12 +68,8 @@ public class CourseStudent extends JComponent {
         this.client = client;
 
         forumsArr = new ArrayList<>();
-        //TODO replace with getForums()
-        forumsArr.add("Forum 1");
-        forumsArr.add("Forum 2");
-        forumsArr.add("Forum 3");
-        forumsArr.add("Forum 4");
-        //TODO replace with getCourseName()
+        courseName = "courseName";
+        course = new Course(courseName);
         content = new Container();
         content.setLayout(new BorderLayout());
 
@@ -126,7 +128,9 @@ public class CourseStudent extends JComponent {
 
     public void updateDisplay(Course course) {
         // TODO - updates the current page with a Course
-
+        this.course = course;
+        courseName = course.getCourseName();
+        forumsArr = course.forumsToString();
         // refreshes the display
         content.revalidate();
     }
