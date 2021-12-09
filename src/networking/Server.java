@@ -45,11 +45,11 @@ public class Server {
         }
     }
 
-    public static synchronized LMS readLMS(String filename) {
+    public static synchronized LMS readLMS(String filename) throws IOException {
         return null;
     }
 
-    public static synchronized ArrayList<User> readUsers(String filename) {
+    public static synchronized ArrayList<User> readUsers(String filename) throws IOException {
         synchronized (lockUser) {
             return null;
         }
@@ -121,9 +121,17 @@ public class Server {
 
             // TODO - load the users and LMS from the file, and store them
             lms = readLMS("LMS.txt");
-            users = readUsers("Users.txt");
+
+        } catch (FileNotFoundException e) {
+            // create a new LMS object
+            lms = new LMS();
         } catch (Exception e) {
             //TODO: handle exception
+        }
+        try {
+            users = readUsers("Users.txt");
+        } catch (IOException e) {
+            users = new ArrayList<>();
         }
         while (true) {
             Socket client = null;
