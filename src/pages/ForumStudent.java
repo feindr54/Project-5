@@ -114,6 +114,7 @@ public class ForumStudent extends JComponent {
                 // TODO - get the text from the textfield 
 
                 // TODO - create new reply object --> createReply() method
+                //  AND add new reply to the Student's replies AL
 
                 // TODO - Send the reply object to server --> sendReplyToServer() method
 

@@ -207,12 +207,13 @@ public class CourseTeacher extends JComponent {
                 replyPanel.setVisible(false);
             }
             if (e.getSource() == gradeSubmitButton) {
-                accessPanel.setVisible(false);
-                addPanel.setVisible(false);
-                editPanel.setVisible(false);
-                deletePanel.setVisible(false);
-                gradePanel.setVisible(true);
-                replyPanel.setVisible(true);//shows replies AL of chosen student
+                //this shows replies AL of chosen student
+                if (students.getSelectedItem() == null) {
+                    JOptionPane.showMessageDialog(null, "Error, no students found", "Error",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
+                repliesArr = course.getStudents().get(students.getSelectedIndex()).getReplies();
+                replyPanel.setVisible(true);
             }
             if (e.getSource() == replySubmitButton) {
                 //checks if replyGrade.getText() is an integer and fits the range
@@ -221,9 +222,11 @@ public class CourseTeacher extends JComponent {
                     choice = Integer.parseInt(replyGrade.getText());
                     if (choice >= 0 && choice <= 100) {
                         //assigns replyGrade.getText() to the student in this course
+                        course.getStudents().get(students.getSelectedIndex()).setGrade(course, replyGrade.getText());
                         replyGrade.setText("");
                         replies.setSelectedIndex(0);
-                        replyPanel.setVisible(false);//hides replies AL of chosen student
+                        replyPanel.setVisible(false);
+                        //this hides replies AL of chosen student
                         students.setSelectedIndex(0);
                     } else {
                         JOptionPane.showMessageDialog(null, "Error, unexpected input", "Error",
@@ -245,21 +248,20 @@ public class CourseTeacher extends JComponent {
         courseName = course.getCourseName();
         forums = course.forumsToString();
         studentsArr = course.studentsToString();
+
+        // refreshes the display
+        content.revalidate();
     }
 
-    public CourseTeacher(ActualClient client) {
+    public CourseTeacher(ActualClient client, Course course) {
         this.client = client;
-        courseName = "courseName";
-        this.course = new Course(courseName);
 
-
-        forums = new ArrayList<>();
-
-        studentsArr = new ArrayList<>();
+        this.course = course;
+        courseName = course.getCourseName();
+        forums = course.forumsToString();
+        studentsArr = course.studentsToString();
 
         repliesArr = new ArrayList<>();
-        //TODO: replies arraylist in student
-
         content = new Container();
         content.setLayout(new BorderLayout());
 
