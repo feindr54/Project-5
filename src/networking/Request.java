@@ -1,6 +1,9 @@
 package networking; 
 
 // client sends request to server
+
+import java.io.Serializable;
+
 /**
 * Project 5 - Request
 *
@@ -11,7 +14,7 @@ package networking;
 *
 * @version 12/7/2021
 */
-public class Request {
+public class Request implements Serializable {
     private final int OPERATION; // 0 - access, 1 - add, 2 - edit, 3 - delete, 4 - create account, 5 - login, 6 - ask
     // to sort replies, 7 - change username/password (sends a new User object)
     private final Object OBJ; // this object could be an instance of LMS, course or, forum, or an array containing

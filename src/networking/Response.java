@@ -1,4 +1,6 @@
-package networking; 
+package networking;
+
+import java.io.Serializable;
 
 /**
 * Project 5 - Response
@@ -10,7 +12,7 @@ package networking;
 * @version 12/7/2021
 */
 
-public class Response {
+public class Response implements Serializable {
     // TODO - settle how many types of responses there can be
     private final int TYPE; // 0 - information, 1 - errors (invalid input)
     private final Object OBJ; // object sent to the client to display
