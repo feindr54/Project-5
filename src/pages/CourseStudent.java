@@ -126,6 +126,9 @@ public class CourseStudent extends JComponent {
 
     public void updateDisplay(Course course) {
         // TODO - updates the current page with a Course
+
+        // refreshes the display
+        content.revalidate();
     }
 
     public Container getContent() {

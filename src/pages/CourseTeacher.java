@@ -220,8 +220,8 @@ public class CourseTeacher extends JComponent {
             }
     };
 
-    public void setPage(Course course) {
-
+    public void updateDisplay(Course course) {
+        // TODO - Update the display of the course with a Course object input
     }
 
     public CourseTeacher(ActualClient client) {
