@@ -46,12 +46,12 @@ public class Server {
     }
 
     public static synchronized LMS readLMS(String filename) {
-
+        return null;
     }
 
     public static synchronized ArrayList<User> readUsers(String filename) {
         synchronized (lockUser) {
-
+            return null;
         }
     }
 
@@ -220,9 +220,11 @@ class ClientHandler extends Thread {
             // user added a reply, comment, upvoted, or asked to sort the replies
 
 
-        } else if (object instanceof String[] userDetails) {
+        } else if (object instanceof String[]) {
             // user is trying to log in or create a new account
             // first var is the username, 2nd var is the password
+            String[] userDetails = (String[]) object;
+
             String username = userDetails[0]; // username
             String password = userDetails[1]; // password
             String role = "";

@@ -98,7 +98,7 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
 
         // add the courses panels
         // add the forums panels
-        mainPanel.add(forumTeacher.getContent(), "forumTeacher");
+        //mainPanel.add(forumTeacher.getContent(), "forumTeacher");
 
 
         // shows the login page by default
@@ -159,8 +159,9 @@ class ReaderThread extends Thread {
 
         if (type == 0) {
             // TODO - updates the pages to be displayed
-            if (object instanceof Object[] loginDetails) {
+            if (object instanceof Object[]) {
                 // user has just logged in
+                Object[] loginDetails = (Object[]) object;
 
                 if (loginDetails[0] instanceof Student) {
                     gui.setUser((Student) loginDetails[0]);
