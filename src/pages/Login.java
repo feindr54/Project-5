@@ -201,17 +201,11 @@ public class Login extends JComponent {
                         //if student, go to lmsStudent
                         if (student.isSelected()) {
 
-
-
                             client.getPageStack().push("lmsStudent");
                             client.getCl().show(client.getMainPanel(), "lmsStudent");
 
                             //if teacher, go to lmsTeacher
                         } else if (teacher.isSelected()) {
-
-
-
-
                             client.getPageStack().push("lmsTeacher");
                             client.getCl().show(client.getMainPanel(), "lmsTeacher");
                         }
@@ -220,8 +214,6 @@ public class Login extends JComponent {
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-
-
 
                 /*
                 if (successful_login()) {
@@ -324,6 +316,7 @@ public class Login extends JComponent {
                 // TODO - 2) send the strings separately and find the user object there
                 request = new Request(5, new String[]{username, password});
                 client.getOOS().writeObject(request);
+                client.getOOS().flush();
 
                 // TODO - wait for server response to see if username is valid && username and password matches
             } else {
@@ -335,11 +328,13 @@ public class Login extends JComponent {
                     // TODO - creates a student object and sends it to the server
                     request = new Request(4, new String[]{username, password, "student"});
                     client.getOOS().writeObject(request);
+                    client.getOOS().flush();
                     return true;
                 } else if (teacher.isSelected()) {
                     // TODO - creates a teacher object and send it to the server
                     request = new Request(4, new String[]{username, password, "teacher"});
                     client.getOOS().writeObject(request);
+                    client.getOOS().flush();
                     return true;
                 } else {
                     // if neither box is selected
