@@ -98,6 +98,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
             try {
                 client.getOOS().writeObject(request);
                 client.getOOS().flush();
+                System.out.println("add course request sent");
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

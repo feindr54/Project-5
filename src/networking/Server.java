@@ -237,6 +237,7 @@ class ClientHandler extends Thread {
             if (operand == 0) { // ADD COURSE REQUEST
                 if (Server.addCourse(object.toString())) {
                     response = new Response(0, Server.getLMS());
+                    return response;
                 } else {
                     response = new Response(1, "Course already exists.");
                     s_OTC.writeObject(response);
