@@ -17,7 +17,7 @@ import main.page.*;
 * Description - This class operates the client and its functions. It is responsible for connecting to the server and
  * simultaneously displaying its content on the user interface.
 *
-* @author Changxiang Gao, Ahmed Aqarooni
+* @author Changxiang Gao, Ahmed Qarooni
 *
 * @version 12/7/2021
 */
@@ -157,6 +157,8 @@ class ReaderThread extends Thread {
         int type = response.getType();
         Object object = response.getObj();
 
+        System.out.println(type);
+
         if (type == 0) {
             // TODO - updates the pages to be displayed
             if (object instanceof Object[]) {
@@ -215,6 +217,7 @@ class ReaderThread extends Thread {
     @Override
     public void run() {
         try {
+            
             Socket socket = gui.getSocket();
             System.out.println("Connected");
 
@@ -224,6 +227,7 @@ class ReaderThread extends Thread {
             while (true) {
                 // receiving the response from the server
                 Response response = (Response) C_IFS.readObject();
+                System.out.println(response.toString());
                 processResponse(response);
             }
         } catch (Exception e) {

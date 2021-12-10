@@ -329,6 +329,7 @@ public class Login extends JComponent {
                     request = new Request(4, new String[]{username, password, "student"});
                     client.getOOS().writeObject(request);
                     client.getOOS().flush();
+                    System.out.println("sign up student");
                     return true;
                 } else if (teacher.isSelected()) {
                     // TODO - creates a teacher object and send it to the server

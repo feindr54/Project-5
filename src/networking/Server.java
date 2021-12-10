@@ -126,7 +126,7 @@ public class Server {
             System.out.println("ServerSocket: " + server);
 
             // TODO - load the users and LMS from the file, and store them
-            lms = readLMS("LMS.txt");
+            //lms = readLMS("LMS.txt");
 
         } catch (FileNotFoundException e) {
             // create a new LMS object
@@ -134,12 +134,11 @@ public class Server {
         } catch (Exception e) {
             //TODO: handle exception
         }
-        try {
-            users = readUsers("Users.txt");
-        } catch (IOException e) {
-            users = new ArrayList<>();
-        }
-
+        // try {
+        //     users = readUsers("Users.txt");
+        // } catch (IOException e) {
+        //     users = new ArrayList<>();
+        // }
         while (true) {
             Socket client = null;
             try {
@@ -155,9 +154,9 @@ public class Server {
                 clients.add(clientThread);
                 clientThread.start();
                 
-                for (ClientHandler c : clients) {
-                    c.join();
-                }
+                // for (ClientHandler c : clients) {
+                //     c.join();
+                // }
 
             } catch (Exception e) {
                 //TODO: handle exception
@@ -250,8 +249,9 @@ class ClientHandler extends Thread {
             // check if logging in or signing up
             if (operation == 4) {
                 // signing up
-                username = username.substring(0, username.indexOf('@'));
-
+                System.out.println("signup event");
+                //username = username.substring(0, username.indexOf('@'));
+                System.out.println(Server.users.isEmpty() + " meoememeomoeme");
                 if (Server.users.isEmpty()) {
                     User newUser;
                     //  check if user is a student or teacher and initializes respectively
@@ -264,6 +264,7 @@ class ClientHandler extends Thread {
                     // add the newUser to the users array list
                     newUser.setUserIndex(Server.users.size()); // sets the index of the user
                     Server.users.add(newUser);
+                    System.out.println("added user");
 
                     System.out.println("User successfully added");
                     //  and send the respective LMS object and user back to PARTICULAR USER
@@ -405,6 +406,7 @@ class ClientHandler extends Thread {
             try {
                 // receives a request from the client side
                 Request request = getRequest();
+                System.out.println(request.getOPERATION());
 
                 // process request()
                 // - update the respective contents of the lms by calling a synchronized method in the server
@@ -420,17 +422,17 @@ class ClientHandler extends Thread {
                     // TODO - sends the response to all other clients
                 }
 
-                String input = (String) s_IFC.readObject();
-                System.out.println(input);
-                if (input.equals("Exit")) {
-                    System.out.println(socket + " has exited!");
-                    break;
-                }
+                // String input = (String) s_IFC.readObject();
+                // System.out.println(input);
+                // if (input.equals("Exit")) {
+                //     System.out.println(socket + " has exited!");
+                //     break;
+                // }
 
-                writeToOthers(input);
+                // writeToOthers(input);
                 
             } catch (Exception e) {
-                //e.printStackTrace();
+                e.printStackTrace();
             }
         }
     }

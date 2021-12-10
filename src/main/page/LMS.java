@@ -107,7 +107,7 @@ public class LMS implements Serializable {
                             break; //
                         }
 
-                        // this.courses.get(courseChoice - 1).access(currentUser, scanner);
+                        //this.courses.get(courseChoice - 1).access(currentUser, scanner);
 
                         break;
                     case 3:
