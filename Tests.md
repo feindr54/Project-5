@@ -139,6 +139,115 @@
 ### Test Status:
 
 
+## Test 11: Log out (From settings)
+
+1. User must be on the settings page
+2. User selects the log out button
+
+### Expected result: The user is brought back to the login page; their information appears in the textboxes.
+
+### Test Status:
+
+
+
+## Test 12: Access a forum (Teacher)
+
+1. User must be logged in as a teacher on a Course page
+
+
+### Expected result: 
+
+### Test Status:
+
+
+## Test 13: Edit a forum (Teacher)
+
+
+
+### Expected result: 
+
+### Test Status:
+
+
+## Test 14: Delete a forum (Teacher)
+
+
+
+### Expected result: 
+
+### Test Status:
+
+
+## Test 15: Add a new forum (Teacher)
+
+
+
+### Expected result: 
+
+### Test Status:
+
+
+
+## Test 16: Access a forum (Student)
+
+
+
+### Expected result: 
+
+### Test Status:
+
+
+## Test 17: Reply to a forum topic (Student)
+
+
+
+### Expected result: 
+
+### Test Status:
+
+
+
+## Test 18: Comment to a reply on a forum (Student)
+
+
+
+### Expected result: 
+
+### Test Status:
+
+
+
+## Test 19: Comment to a reply on a forum (Teacher)
+
+
+
+### Expected result: 
+
+### Test Status:
+
+
+
+## Test 20: Upvote a reply on a forum (Student)
+
+
+
+### Expected result: 
+
+### Test Status:
+
+
+
+## Test 21: Grade a student (Teacher)
+
+
+
+### Expected result: 
+
+### Test Status:
+
+
+
+
 
 
 
