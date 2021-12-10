@@ -68,11 +68,11 @@ public class CourseStudent extends JComponent {
 
             }
             if (e.getSource() == settingsButton) {
-                client.getPageStack().push("settings");
-                client.getCl().show(client.getMainPanel(), "settings");
+                client.goToSettings();
             }
             if (e.getSource() == backButton) {
                 //LMS.access()
+                client.changeToPreviousPanel();
             }
         }
     };
@@ -117,11 +117,12 @@ public class CourseStudent extends JComponent {
 
         accessPanel.add(gradeCourse, c);
 
-        accessPrompt = new JLabel("Choose a course to view:");
+        accessPrompt = new JLabel("Choose a forum to view:");
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 0;
         accessPanel.add(accessPrompt, c);
+        forumsArr = new ArrayList<>();
         forums = new JComboBox<>(Arrays.copyOf(forumsArr.toArray(), forumsArr.toArray().length, String[].class));
         forums.setMaximumRowCount(3);
         c.weightx = 1;
@@ -138,7 +139,7 @@ public class CourseStudent extends JComponent {
         content.add(accessPanel, BorderLayout.CENTER);
     }
 
-    public void updateDisplay(Course course, Student student) {
+    synchronized public void updateDisplay(Course course, Student student) {
         this.course = course;
         this.student = student;
         courseName = course.getCourseName();

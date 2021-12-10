@@ -206,13 +206,10 @@ public class Login extends JComponent {
                         //if student, go to lmsStudent
                         if (student.isSelected()) {
 
-                            client.getPageStack().push("lmsStudent");
-                            client.getCl().show(client.getMainPanel(), "lmsStudent");
-
+                            client.changePanel("lmsStudent");
                             //if teacher, go to lmsTeacher
                         } else if (teacher.isSelected()) {
-                            client.getPageStack().push("lmsTeacher");
-                            client.getCl().show(client.getMainPanel(), "lmsTeacher");
+                            client.changePanel("lmsTeacher");
                         }
 
                     }
@@ -321,9 +318,9 @@ public class Login extends JComponent {
                 // TODO - either 1) creates a user object and send to the server to compare (and validate)
                 // TODO - 2) send the strings separately and find the user object there
                 request = new Request(5, new String[]{username, password});
-                client.getOOS().writeObject(request);
-                client.getOOS().flush();
-
+                client.sendToServer(request);
+                
+                return true; 
                 // TODO - wait for server response to see if username is valid && username and password matches
             } else {
                 // when user is signing up
@@ -333,15 +330,12 @@ public class Login extends JComponent {
 
                     // TODO - creates a student object and sends it to the server
                     request = new Request(4, new String[]{username, password, "student"});
-                    client.getOOS().writeObject(request);
-                    client.getOOS().flush();
-                    System.out.println("sign up student");
+                    client.sendToServer(request);
                     return true;
                 } else if (teacher.isSelected()) {
                     // TODO - creates a teacher object and send it to the server
                     request = new Request(4, new String[]{username, password, "teacher"});
-                    client.getOOS().writeObject(request);
-                    client.getOOS().flush();
+                    client.sendToServer(request);
                     return true;
                 } else {
                     // if neither box is selected
@@ -352,6 +346,5 @@ public class Login extends JComponent {
             }
 
         }
-        return false;
     }
 }

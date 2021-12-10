@@ -24,7 +24,7 @@ public class CourseTeacher extends JComponent {
     ActualClient client;
     Container content;
     String courseName;
-
+    Teacher teacher;
     Course course;
 
     ArrayList<String> forums;
@@ -83,10 +83,10 @@ public class CourseTeacher extends JComponent {
 
             if (e.getSource() == backButton) {
                 //pages.LMS.access()
+                client.changeToPreviousPanel();;
             }
             if (e.getSource() == settingsButton) {
-                client.getPageStack().push("settings");
-                client.getCl().show(client.getMainPanel(), "settings");
+                client.goToSettings();
             }
 
             if (e.getSource() == accessButton) {
@@ -106,16 +106,14 @@ public class CourseTeacher extends JComponent {
                 //check if forumName equals an existing forum
                 //if true, forum.access()
                 //else show error message
-                accessForums.setSelectedIndex(0);
-
-                Request request = new Request(0, course);
+                
                 // send the updated course to the server
-                try {
-                    client.getOOS().writeObject(request);
-                    client.getOOS().flush();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+                // try {
+                //     client.getOOS().writeObject(request);
+                //     client.getOOS().flush();
+                // } catch (IOException ex) {
+                //     ex.printStackTrace();
+                // }
             }
             if (e.getSource() == addButton) {
                 accessPanel.setVisible(false);
@@ -237,12 +235,7 @@ public class CourseTeacher extends JComponent {
 
                 Request request = new Request(3, course);
                 // send the updated course to the server
-                try {
-                    client.getOOS().writeObject(request);
-                    client.getOOS().flush();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+                client.sendToServer(request);
             }
 
             if (e.getSource() == gradeButton) {
@@ -301,9 +294,9 @@ public class CourseTeacher extends JComponent {
         content.revalidate();
     }
 
-    public CourseTeacher(ActualClient client, Course course) {
+    public CourseTeacher(ActualClient client, Course course, Teacher teacher) {
         this.client = client;
-
+        this.teacher = teacher;
         this.course = course;
         courseName = course.getCourseName();
         forums = course.forumsToString();

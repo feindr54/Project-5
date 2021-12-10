@@ -164,7 +164,6 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
         mainPanel.add(forumTeacher.getContent(), "forumTeacher");
         mainPanel.add(forumStudent.getContent(), "forumStudent");
 
-
         // shows the login page by default
         cl.show(mainPanel, "login");
         pageStack.push("login");
@@ -174,7 +173,7 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
 
         frame.setSize(600, 400);
         frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
 
@@ -205,11 +204,33 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
     synchronized public void changePanel(String name) {
         pageStack.push(name);
         cl.show(mainPanel, name);
-        
+    }
+    
+    synchronized public void changeToPreviousPanel() {
+        pageStack.pop();
+        cl.show(mainPanel, pageStack.peek());
     }
 
+    synchronized public void goToSettings() {
+        changePanel("settings");
+    }
 
+    synchronized public void logout() {
+        pageStack.clear();
+        pageStack.push("login");
+        cl.show(mainPanel, pageStack.peek());
+    }
 
+    public void sendToServer(Request request) {
+        try {
+            C_OTS.writeObject(request);
+            C_OTS.flush();
+            C_OTS.reset();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 }
 
 /**
@@ -229,6 +250,8 @@ class ReaderThread extends Thread {
     public ReaderThread(ActualClient gui) {
         this.gui = gui; // store reference to the gui thread
     }
+
+    
 
     public void processResponse(Response response) {
         int type = response.getType();
@@ -279,6 +302,7 @@ class ReaderThread extends Thread {
                 } else if (gui.getPageStack().peek().equals("lmsTeacher")) {
                     gui.getLmsTeacher().updateDisplay((LMS) object);
                 }
+            
 
 
 

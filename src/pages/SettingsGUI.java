@@ -130,18 +130,44 @@ public class SettingsGUI extends JComponent {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == backButton) {
                 //TODO: track state of page before going to settings, send user back to that page
-                client.getPageStack().pop();
-                client.getCl().show(client.getMainPanel(), client.getPageStack().peek());
+                client.changeToPreviousPanel();
             }
 
             if (e.getSource() == idSubmitButton) {
                 //TODO send new username to server, change it in the list of usernames
-
+                // Get new username from textField
+                String newUsername = idText.getText();
+                if (newUsername == null || newUsername.isBlank()) { // check if the field is blank
+                    // TODO - JOptionPane error message (please fill in textfield)
+                    JOptionPane.showMessageDialog(null, "Please fill in the textfield.", "Error",
+                     JOptionPane.ERROR_MESSAGE);
+                } else {
+                    Request request = new Request(7, new String[]{client.getUser().getIdentifier(), newUsername});
+                    client.sendToServer(request);
+                }
             }
 
             if (e.getSource() == passwordSubmitButton) {
                 //TODO send new password to server, change it in the list of passwords
+                // Get new password from textField
+                String newPassword = idText.getText();
+                if (newPassword == null || newPassword.isBlank()) { // check if the field is blank
+                    // TODO - JOptionPane error message (please fill in textfield)
+                    JOptionPane.showMessageDialog(null, "Please fill in the textfield.", "Error",
+                     JOptionPane.ERROR_MESSAGE);
+                } else {
+                    Request request = new Request(8, new String[]{client.getUser().getPassword(), newPassword});
+                    client.sendToServer(request);
+                }
+            }
 
+            if (e.getSource() == logoutButton) {
+                //TODO logout implementation
+                // step 1: go back to login page
+                client.logout(); 
+                // step 2: send a "logout" request to ClientHandler, which removes the user reference 
+                Request request = new Request(9, null);
+                client.sendToServer(request);
             }
 
 

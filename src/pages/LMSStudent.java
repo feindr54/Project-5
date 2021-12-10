@@ -2,6 +2,7 @@ package pages;
 
 import main.page.*;
 import networking.ActualClient;
+import users.Student;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,14 +38,33 @@ public class LMSStudent extends JComponent implements ActionListener {
         if (e.getSource() == submitButton) {
             //show selected course
             //TODO: add Student to the Course's students arraylist
+            if (courseDropdown.getSelectedItem() == null) {
+                JOptionPane.showMessageDialog(null, "No course selected. ", null, JOptionPane.ERROR_MESSAGE);
+            } else {
+                String selectedCourse = (String) courseDropdown.getSelectedItem();
+                Course selectedCourseObject = null;
+                for (Course c : courses) {
+                    if (selectedCourse.equals(c.getCourseName())) {
+                        selectedCourseObject = c;
+                        break;
+                    }
+                }
+                CourseStudent cs = new CourseStudent(client, selectedCourseObject, (Student) client.getUser());
+                client.setCourseStudent(cs);
+                client.addPanelToCardLayout(client.getCourseStudent().getContent(), "courseStudent");
+                //client.getCl().con(client.getCourseStudent());
+                client.changePanel("courseStudent");
+                System.out.println("student switched to " + selectedCourse + " course.");
+            
+            }
         }
         if (e.getSource() == settingsButton) {
-            client.getPageStack().push("settings");
-            client.getCl().show(client.getMainPanel(), "settings");
+            client.goToSettings();
         }
     }
 
     synchronized public void updateDisplay(LMS lms) {
+        courses = lms.getCourses();
         courseDropdown.removeAllItems();
         if (lms.getCourses().size() > 0) {
             for (Course c : lms.getCourses()) {

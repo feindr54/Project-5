@@ -3,6 +3,7 @@ package pages;
 import main.page.*;
 import networking.ActualClient;
 import networking.Request;
+import users.Teacher;
 
 import javax.swing.*;
 import java.awt.*;
@@ -81,7 +82,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
             submit();
         }
         if (e.getSource() == settingsButton) {
-            settings();
+            client.goToSettings();
         }
     }
 
@@ -89,6 +90,25 @@ public class LMSTeacher extends JComponent implements ActionListener {
         //access
         if (state == 0) {
             //show specified course
+            if (accessCourseDropdown.getSelectedItem() == null) {
+                JOptionPane.showMessageDialog(null, "No course selected. ", null, JOptionPane.ERROR_MESSAGE);
+            } else {
+                String selectedCourse = (String) accessCourseDropdown.getSelectedItem();
+                Course selectedCourseObject = null;
+                for (Course c : courses) {
+                    if (selectedCourse.equals(c.getCourseName())) {
+                        selectedCourseObject = c;
+                        break;
+                    }
+                }
+                CourseTeacher ct = new CourseTeacher(client, selectedCourseObject, (Teacher) client.getUser());
+                client.setCourseTeacher(ct);
+                client.addPanelToCardLayout(client.getCourseTeacher().getContent(), "courseTeacher");
+                //client.getCl().con(client.getCourseStudent());
+                client.changePanel("courseTeacher");
+                System.out.println("teacher switched to " + selectedCourse + " course.");
+            
+            }
 
         }
         //add
@@ -99,14 +119,10 @@ public class LMSTeacher extends JComponent implements ActionListener {
             
             //add course name to list of courses
             Request request = new Request(1, 0, addCourseText.getText());
-            try {
-                client.getOOS().writeObject(request);
-                client.getOOS().flush();
-                System.out.println("add course request sent");
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            
+            client.sendToServer(request);
+            System.out.println("add course request sent");
+            
             addCourseText.setText("");
             
         }
@@ -120,14 +136,9 @@ public class LMSTeacher extends JComponent implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Please a different name for this course.", null, JOptionPane.ERROR_MESSAGE);
                 } else {
                     Request request = new Request(2, 0, new String[]{selectedCourse , editCourseText.getText()}); // operation 2 is edit, operand 0 is course = edit course
-                    try {
-                        client.getOOS().writeObject(request);
-                        client.getOOS().flush();
-                        System.out.println("edit course request sent");
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+                    client.sendToServer(request);
+                    System.out.println("edit course request sent");
+                    
                 }
             }
             //change specified course to new course name
@@ -145,30 +156,20 @@ public class LMSTeacher extends JComponent implements ActionListener {
             } else {
                 String selectedCourse = (String) editCourseDropdown.getSelectedItem();
                 Request request = new Request(3, 0, selectedCourse); // operation 3 is delete, operand 0 is course = delete course
-                try {
-                    client.getOOS().writeObject(request);
-                    client.getOOS().flush();
-                    System.out.println("edit course request sent");
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                client.sendToServer(request);
+                System.out.println("edit course request sent");
             
             }
 
         }
     }
 
-    public void settings() {
-        client.getPageStack().push("settingsGUI");
-        client.getCl().show(client.getMainPanel(), "settingsGUI");
-    }
 
     synchronized public void updateDisplay(LMS lms) {
         accessCourseDropdown.removeAllItems();
         editCourseDropdown.removeAllItems();
         deleteCourseDropdown.removeAllItems();
-        System.out.println("if u see this i am trying to upate the combo box");
+
         if (lms.getCourses().size() > 0) {
             for (Course c : lms.getCourses()) {
                 accessCourseDropdown.addItem(c.getCourseName());
@@ -177,11 +178,9 @@ public class LMSTeacher extends JComponent implements ActionListener {
                 System.out.println(c.getCourseName());
             }
         }
-        //courseDropDown.addItem("I received this telepathically");
         accessCourseDropdown.revalidate();
         editCourseDropdown.revalidate();
         deleteCourseDropdown.revalidate();
-        //client.refreshPanel();
     }
 
     public LMSTeacher(ActualClient client) {
@@ -189,9 +188,6 @@ public class LMSTeacher extends JComponent implements ActionListener {
         this.client = client;
         this.content = new Container();
         content.setLayout(new BorderLayout());
-
-
-
 
         JPanel radioPanel = new JPanel();
         radioPanel.setLayout(new GridBagLayout());

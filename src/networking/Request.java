@@ -16,10 +16,12 @@ import java.io.Serializable;
 */
 public class Request implements Serializable {
     private final int OPERATION; // 0 - access, 1 - add, 2 - edit, 3 - delete, 4 - create account, 5 - login, 6 - ask
-    // to sort replies, 7 - change username/password (sends a new User object)
+    // to sort replies, 7 - change username, 8 - change password, 9 - logout
     private final int OPERAND; // 0 - course, 1 - forum, 2 - reply, 3 - comment
     private final Object OBJ; // this object could be an instance of LMS, course or, forum, or an array containing
     // username and password, and the role ("student" or "teacher")
+
+    // when the user logs out, object sent is null 
 
     // in the case of accessing a page, the structure would be (0, String type_of_object/name_of_object)
     // eg (0, "Course/CS 180")

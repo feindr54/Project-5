@@ -34,31 +34,88 @@ public class Server implements Serializable {
     public static ArrayList<ClientHandler> clients;
     //public static LMS;
 
-    // TODO - includes the methods to save and load files (users and LMS)\
-    public static synchronized void saveLMS(String filename) {
+    public final static String LMSFILE = "LMS.txt";
+    public final static String USERSFILE = "Users.txt";
 
+    // TODO - includes the methods to save and load files (users and LMS)\
+    public synchronized static void saveLMS(String filename) {
+        try (ObjectOutputStream oo = new ObjectOutputStream(new FileOutputStream(filename))) {
+            // write the users list
+            oo.writeObject(users);
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        } catch (IOException e) {
+            //e.printStackTrace();
+            System.out.println("Error initializing stream");
+        } catch (Exception e) {
+            //e.printStackTrace();
+        }
     }
 
     public static void saveUsers(String filename) {
         synchronized (lockUser) {
-
+            try (ObjectOutputStream oo = new ObjectOutputStream(new FileOutputStream(filename))) {
+                // write the users list
+                oo.writeObject(users);
+                for (User u: users) {
+                    System.out.println(u.toString());
+                }
+            } catch (FileNotFoundException e) {
+                System.out.println("File not found");
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Error initializing stream");
+            } catch (Exception e) {
+                //e.printStackTrace();
+            }
         }
     }
 
-    public static synchronized LMS readLMS(String filename) throws IOException {
-        return null;
+    public static synchronized LMS readLMS(String filename) {
+        LMS lms; 
+        try (ObjectInputStream oi = new ObjectInputStream(new FileInputStream(filename))) {
+            lms = (LMS) oi.readObject();
+            return lms;
+        } catch (FileNotFoundException e) {
+            System.out.println("LMS file not found exception");
+            //e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Error reading LMS!");
+            //e.printStackTrace();
+        }
+        return new LMS(); 
     }
 
-    public static synchronized ArrayList<User> readUsers(String filename) throws IOException {
-        synchronized (lockUser) {
-            return null;
+    public static ArrayList<User> readUsers(String filename) throws IOException {
+        ArrayList<User> usersForReading = new ArrayList<User>();
+        try (ObjectInputStream oi = new ObjectInputStream(new FileInputStream(filename))) {
+            // Read the userlist object and cast the object into a user arraylist type
+            usersForReading = (ArrayList<User>) oi.readObject();
+
+            return usersForReading;
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Users file not found exception!");
+            //e.printStackTrace();
+        } catch (IOException e) {
+            //e.printStackTrace();
+            System.out.println("Error initializing stream");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return new ArrayList<User>();
     }
 
     public static void addUser(User user) {
         synchronized (lockUser) {
             users.add(user);
+            saveUsers(USERSFILE);
         }
+    }
+    public static ArrayList<User> getUsers() {
+        return users;
     }
 
     public static void changeUserDetail(User user) {
@@ -68,7 +125,7 @@ public class Server implements Serializable {
                 synchronized (lockUser) {
                     users.set(i, user);
                     // TODO - save the user file
-                    saveUsers("Users.txt");
+                    saveUsers(USERSFILE);
                 }
             }
         }
@@ -78,7 +135,7 @@ public class Server implements Serializable {
         synchronized (lockLMS) {
             lms = newLms;
             // TODO - save the lms
-            saveLMS("LMS.txt");
+            saveLMS(LMSFILE);
         }
     }
 
@@ -88,7 +145,7 @@ public class Server implements Serializable {
                 synchronized (lockCourse) {
                     Server.lms.getCourses().set(i, course);
                     // TODO - save the lms
-                    saveLMS("LMS.txt");
+                    saveLMS(LMSFILE);
                 }
             }
         }
@@ -108,7 +165,7 @@ public class Server implements Serializable {
                         // changes the forum in the
                         c.getForums().set(i, forum);
                         // TODO - save the lms files
-                        saveLMS("LMS.txt");
+                        saveLMS(LMSFILE);
                     }
                 }
             }
@@ -127,19 +184,17 @@ public class Server implements Serializable {
             System.out.println("ServerSocket: " + server);
 
             // TODO - load the users and LMS from the file, and store them
-            //lms = readLMS("LMS.txt");
+            lms = readLMS(LMSFILE);
 
-        } catch (FileNotFoundException e) {
-            // create a new LMS object
-            lms = new LMS();
         } catch (Exception e) {
             //TODO: handle exception
+            e.printStackTrace();
         }
-        // try {
-        //     users = readUsers("Users.txt");
-        // } catch (IOException e) {
-        //     users = new ArrayList<>();
-        // }
+        try {
+            users = readUsers(USERSFILE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         while (true) {
             Socket client = null;
             try {
@@ -181,6 +236,9 @@ public class Server implements Serializable {
         Course course = new Course(courseName); 
         lms.getCourses().add(course);
 
+        // save the LMS file 
+        saveLMS(LMSFILE);
+
         System.out.println("There are " + lms.getCourses().size() + "courses.");
         return true; 
     }
@@ -196,6 +254,7 @@ public class Server implements Serializable {
         }
         if (index != -1) {
             lms.getCourses().get(index).setCourseName(newName);
+            saveLMS(LMSFILE);
             return true;
         } else {
             return false;
@@ -206,6 +265,7 @@ public class Server implements Serializable {
         for (int i = 0; i < lms.getCourses().size(); i++) {
             if (courseName.equals(lms.getCourses().get(i).getCourseName())) {
                 lms.getCourses().remove(i);
+                saveLMS(LMSFILE);
                 return; 
             }
         }
@@ -238,6 +298,18 @@ class ClientHandler extends Thread implements Serializable {
         this.s_OTC = out;
         this.id = id;
 
+    }
+
+    public void sendToClient(Response response) {
+        
+        try {
+            s_OTC.writeObject(response);
+            s_OTC.flush();
+            s_OTC.reset();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     public User getUser() {
@@ -356,7 +428,7 @@ class ClientHandler extends Thread implements Serializable {
             if (operation == 4) {
                 // signing up
                 
-                if (Server.users.isEmpty()) {
+                if (Server.getUsers().isEmpty()) {
                     User newUser;
                     //  check if user is a student or teacher and initializes respectively
                     if (role.equals("teacher")) {
@@ -378,9 +450,9 @@ class ClientHandler extends Thread implements Serializable {
 
                     return null;
                 }
-                for (User user : Server.users) {
+                for (User user : Server.getUsers()) {
                     // check through list of users, if any emails are repeated
-                    if (user.getIdentifier().equals(username)) {
+                    if (user.getEmail().equals(username)) {
                         // send an error message (email taken) back to the user
                         response = new Response(1, "Error: Email is already taken");
 
@@ -415,9 +487,9 @@ class ClientHandler extends Thread implements Serializable {
                 }
             } else if (operation == 5) {
                 // logging in
-                if (Server.users.isEmpty()) {
-                    response = new Response(1, "Error: Invalid username or password");
-
+                if (Server.getUsers().isEmpty()) {
+                    response = new Response(1, "No users signed up yet!");
+                    
                     // TODO - do these need to be synchronized?
                     s_OTC.writeObject(response);
                     s_OTC.flush();
@@ -426,7 +498,7 @@ class ClientHandler extends Thread implements Serializable {
                 }
 
                 // check through list of users, check if any username matches
-                for (User user : Server.users) {
+                for (User user : Server.getUsers()) {
                     if (username.equals(user.getIdentifier()) && password.equals(user.getPassword())) {
                         //  check if user is already logged in
                         for (ClientHandler client : Server.clients) {
@@ -442,6 +514,9 @@ class ClientHandler extends Thread implements Serializable {
                         // TODO - send the LMS object back to the client based on the userType
 
                         response = new Response(0, new Object[]{user, Server.lms});
+                        s_OTC.writeObject(response);
+                        s_OTC.flush();
+                        s_OTC.reset();
                         return null;
                     }
                 }
@@ -501,6 +576,9 @@ class ClientHandler extends Thread implements Serializable {
                     }
                 }
             }
+        } else if (operation == 9) { // user is logging out 
+            this.user = null;
+            return null;
         }
         return null;
     }
@@ -545,7 +623,29 @@ class ClientHandler extends Thread implements Serializable {
                 // writeToOthers(input);
                 
             } catch (Exception e) {
-                e.printStackTrace();
+                System.out.println("uh oh stinky");
+                int index = -1;
+                for (int i = 0; i < Server.clients.size(); i ++) {
+                    if (Server.clients.get(i).getID() == this.id) {
+                        index = i;
+                        break;
+                        
+                    }
+                }
+                if (index != -1) {
+
+                    try {
+                        Server.clients.get(index).socket.close();
+                        Server.clients.get(index).interrupt();
+                        Server.clients.remove(index);
+                    } catch (IOException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+                } else {
+                    System.out.println("thers sumtin wrong");
+                }
+                break;
             }
         }
     }
