@@ -142,7 +142,8 @@ public class SettingsGUI extends JComponent {
                     JOptionPane.showMessageDialog(null, "Please fill in the textfield.", "Error",
                      JOptionPane.ERROR_MESSAGE);
                 } else {
-                    Request request = new Request(7, new String[]{client.getUser().getIdentifier(), newUsername});
+                    Request request = new Request(7,
+                            new String[]{client.getUser().getIdentifier(), newUsername});
                     client.sendToServer(request);
                 }
             }
@@ -152,11 +153,11 @@ public class SettingsGUI extends JComponent {
                 // Get new password from textField
                 String newPassword = idText.getText();
                 if (newPassword == null || newPassword.isBlank()) { // check if the field is blank
-                    // TODO - JOptionPane error message (please fill in textfield)
+                    // JOptionPane error message (please fill in textfield)
                     JOptionPane.showMessageDialog(null, "Please fill in the textfield.", "Error",
                      JOptionPane.ERROR_MESSAGE);
                 } else {
-                    Request request = new Request(8, new String[]{client.getUser().getPassword(), newPassword});
+                    Request request = new Request(8, new Object[]{client.getUser(), newPassword});
                     client.sendToServer(request);
                 }
             }
