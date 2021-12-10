@@ -126,9 +126,8 @@ public class Server implements Serializable {
             // searches for the user to change info
             if (user.getUserIndex() == users.get(i).getUserIndex()) {
                 synchronized (lockUser) {
-                    users.set(i, user);
-                    // TODO - save the user file
-                    saveUsers(USERSFILE);
+                    users.set(i, user); // replaces old user with new user
+                    saveUsers(USERSFILE); // save the user file
                 }
             }
         }
@@ -137,7 +136,7 @@ public class Server implements Serializable {
     public static void changeLMS(LMS newLms){
         synchronized (lockLMS) {
             lms = newLms;
-            // TODO - save the lms
+            // save the lms
             saveLMS(LMSFILE);
         }
     }
@@ -300,6 +299,14 @@ public class Server implements Serializable {
 
 
     synchronized public static void addReply(Reply reply) {
+        /*
+        for (Course c : lms.getCourses()) {
+            for (Forum f : c.getForums()) {
+                f.addReply(reply);
+            }
+        }
+
+         */
 
         ReplyPanel replyPanel = new ReplyPanel(reply);
         replies.add(replyPanel);
@@ -308,6 +315,59 @@ public class Server implements Serializable {
 
     }
 
+    synchronized public static boolean addForum(String courseName, String forumName) {
+        for (Course c : lms.getCourses()) {
+            if (courseName.equals(c.getCourseName())) {
+                if (c.getForums().size() > 0) { // checks if the list of forums is empty
+                    // check if there is a repeated name
+                    for (Forum f : c.getForums()) {
+                        if (forumName.equals(f.getTopic())) {
+                            return false;
+                        }
+                    }
+                    // add a new Forum in the current course
+                    Forum forum = new Forum(c, forumName);
+                    c.addForum(forum);
+                    //save the LMS
+                } else {
+                    // add a new Forum in the current course
+                    Forum forum = new Forum(c, forumName);
+                    c.addForum(forum);
+                    //save the LMS
+                }
+                saveLMS(LMSFILE);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    synchronized public static void deleteForum(String forumToDelete) {
+        for (int i = 0; i < lms.getCourses().size(); i++) {
+            for (int j = 0; j < lms.getCourses().get(i).getForums().size(); j++) {
+                if (forumToDelete.equals(lms.getCourses().get(i).getForums().get(j).getTopic())) {
+                    lms.getCourses().remove(i);
+                    saveLMS(LMSFILE);
+                    return;
+                }
+            }
+        }
+    }
+
+    public synchronized static void editForum(String oldName, String newName) {
+        for (Course c : lms.getCourses()) {
+            if (c.getForums().size() > 0) {
+                for (int i = 0; i < c.getForums().size(); i++) {
+                    if (oldName.equals(c.getForums().get(i).getTopic())) {
+                        c.getForums().get(i).setTopic(newName); // sets new name of forum
+                        saveLMS(LMSFILE);// saveLMS
+                        return;
+                    }
+                }
+            }
+
+        }
+    }
 }
 
 /**
@@ -395,31 +455,48 @@ class ClientHandler extends Thread implements Serializable {
                         return response;
                     } else {
                         response = new Response(1, "Course already exists.");
-                        s_OTC.writeObject(response);
-                        s_OTC.flush();
-                        s_OTC.reset();
+                        sendToClient(response);
 
                         return null; 
                     }
-                case 1: // ADD FORUM REQUEST
-                    break;
-                case 2: // ADD REPLY REQUEST
+                case 1: // ADD FORUM REQUEST (object received is the course name and the new forum name)
+                    String[] names = (String[]) object;
+                    String cName = names[0];
+                    String forumName = names[1];
+
+                    if (Server.addForum(cName, forumName)) {
+                        response = new Response(0, Server.getLMS());
+                        return response;
+                    } else {
+                        response = new Response(1, "Forum already exists.");
+                        sendToClient(response);
+                        return null;
+                    }
+                case 2: // TODO - ADD REPLY REQUEST
                     break; 
-                case 3: // ADD COMMENT REQUEST
+                case 3: // TODO - ADD COMMENT REQUEST
                     break;
             }
         } else if (operation == 2) { // EDIT OPERATION
+            String[] oldNameNewName = (String[]) object;
+            String oldName = oldNameNewName[0];
+            String newName = oldNameNewName[1];
             switch (operand) {
                 case 0: // EDIT COURSE REQUEST
-                    String[] oldNameNewName = (String[]) object;
-                    String oldName = oldNameNewName[0];
-                    String newName = oldNameNewName[1];
                     if (Server.editCourse(oldName, newName)) {
                         System.out.println("Edited course!");
                         response = new Response(0, Server.getLMS());
                         return response;
                     }
-                    
+                case 1:
+                    Server.editForum(oldName, newName);
+                    // TODO - remove the test below
+                    System.out.println("Edited Forum!");
+                    response = new Response(0, Server.getLMS());
+                    return response;
+
+                default:
+                    break;
             } 
         } else if (operation == 3) { // DELETE OPERATION
             switch (operand) {
@@ -427,6 +504,12 @@ class ClientHandler extends Thread implements Serializable {
                     String courseToDelete = (String) object;
                     Server.deleteCourse(courseToDelete);
                     System.out.println("Deleted " + courseToDelete + "!");
+                    response = new Response(0, Server.getLMS());
+                    return response;
+                case 1:
+                    String forumToDelete = (String) object;
+                    Server.deleteForum(forumToDelete);
+                    // create response to send to all clients
                     response = new Response(0, Server.getLMS());
                     return response;
             } 

@@ -20,6 +20,9 @@ public class Request implements Serializable {
     private final int OPERAND; // 0 - course, 1 - forum, 2 - reply, 3 - comment
     private final Object OBJ; // this object could be an instance of LMS, course or, forum, or an array containing
     // username and password, and the role ("student" or "teacher")
+    // if the user is trying to add/delete, the user will send the String nameOfObject
+    // if the user is trying to edit, user will send 2 Strings, oldName and newName
+    // if the user is trying to
 
     // when the user logs out, object sent is null 
 

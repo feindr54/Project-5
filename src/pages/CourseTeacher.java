@@ -82,8 +82,8 @@ public class CourseTeacher extends JComponent {
         public void actionPerformed(ActionEvent e) {
 
             if (e.getSource() == backButton) {
-                //pages.LMS.access()
-                client.changeToPreviousPanel();;
+                //returns to the LMS
+                client.changeToPreviousPanel();
             }
             if (e.getSource() == settingsButton) {
                 client.goToSettings();
@@ -128,51 +128,38 @@ public class CourseTeacher extends JComponent {
                     JOptionPane.showMessageDialog(null, "Error, unexpected input", "Error",
                             JOptionPane.INFORMATION_MESSAGE);
                 }
-                Forum newForum = new Forum(course, addCourse.getText());
-                course.getForums().add(newForum);
+                String topic = addCourse.getText();
                 addCourse.setText("");
 
-                Request request = new Request(1, course);
+                Request request = new Request(1, 0, topic);
                 // send the updated course to the server
-                try {
-                    client.getOOS().writeObject(request);
-                    client.getOOS().flush();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+                client.sendToServer(request);
             }
 
             if (e.getSource() == topicFromFile) {
-                if (addCourse.getText().equals("")) {
+                if (addCourse.getText().isBlank() || addCourse.getText() == null) {
                     JOptionPane.showMessageDialog(null, "Error, unexpected input", "Error",
-                            JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.INFORMATION_MESSAGE); // shows error message
                 }
-                try {
-                    File file = new File(addCourse.getText());
-                    BufferedReader br = new BufferedReader(new FileReader(file));
+                try (BufferedReader br = new BufferedReader(new FileReader(addCourse.getText()))){
                     String string;
                     String topic = "";
                     while ((string = br.readLine()) != null) {
                         topic = string;
                     }
 
+                    /*
                     Forum newForum = new Forum(course, topic);
                     course.getForums().add(newForum);
-                    br.close();
+                     */
+
+                    Request request = new Request(1, 1, new String[]{course.getCourseName(), topic});
+                    client.sendToServer(request);
 
                 } catch (IOException ioException) {
-                    ioException.printStackTrace();
+                    // TODO - if file is not read(invalid filename eg), throw JOptionPane at user
                 }
                 addCourse.setText("");
-
-                Request request = new Request(1, course);
-                // send the updated course to the server
-                try {
-                    client.getOOS().writeObject(request);
-                    client.getOOS().flush();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
             }
 
             if (e.getSource() == editButton) {
@@ -184,7 +171,7 @@ public class CourseTeacher extends JComponent {
                 replyPanel.setVisible(false);
             }
             if (e.getSource() == editSubmitButton) {
-                if (editCourse.getText().equals("")) {
+                if (editCourse.getText().isBlank()) {
                     JOptionPane.showMessageDialog(null, "Error, unexpected input", "Error",
                             JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -196,19 +183,15 @@ public class CourseTeacher extends JComponent {
                 //check if forumName equals an existing forum
                 //if true, forum.setForumName(editCourse.getText())
                 //else show error message
-                course.getForums().get(editForums.getSelectedIndex()).setTopic(editCourse.getText());
+                //course.getForums().get(editForums.getSelectedIndex()).setTopic(editCourse.getText());
+                // TODO - delete comments above
+                String oldTopic = (String) editForums.getSelectedItem();
+                String newTopic = editCourse.getText();
                 editCourse.setText("");
                 editForums.setSelectedIndex(0);
 
-                Request request = new Request(2, course);
-                // send the updated course to the server
-                try {
-                    client.getOOS().writeObject(request);
-                    client.getOOS().flush();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-
+                Request request = new Request(2, 1, new String[]{oldTopic, newTopic});
+                client.sendToServer(request);
             }
 
 
@@ -230,12 +213,14 @@ public class CourseTeacher extends JComponent {
                 //check if forumName equals an existing forum
                 //if true, remove that forum from the forum AL
                 //else show error message
-                course.getForums().remove(deleteForums.getSelectedIndex());
-                deleteForums.setSelectedIndex(0);
-
-                Request request = new Request(3, course);
+                //course.getForums().remove(deleteForums.getSelectedIndex());
+                String deletedForum = (String) deleteForums.getSelectedItem();
+                Request request = new Request(3, 1, deletedForum);
                 // send the updated course to the server
                 client.sendToServer(request);
+
+                deleteForums.setSelectedIndex(0); // resets the selection
+
             }
 
             if (e.getSource() == gradeButton) {
@@ -268,9 +253,12 @@ public class CourseTeacher extends JComponent {
                         replies.setSelectedIndex(0);
                         replyPanel.setVisible(false);
                         //this hides replies AL of chosen student
+                        // TODO - sends the updated scores and a particular student to the server
+
                         students.setSelectedIndex(0);
                     } else {
-                        JOptionPane.showMessageDialog(null, "Error, unexpected input", "Error",
+                        JOptionPane.showMessageDialog(null, "Error, please enter an " +
+                                        "integer between 0 and 100!", "Error",
                                 JOptionPane.INFORMATION_MESSAGE);
                         replyGrade.setText("");
                     }
@@ -279,8 +267,8 @@ public class CourseTeacher extends JComponent {
                             JOptionPane.INFORMATION_MESSAGE);
                     replyGrade.setText("");
                 }
-                }
             }
+        }
     };
 
     public void updateDisplay(Course course) {
@@ -313,7 +301,7 @@ public class CourseTeacher extends JComponent {
         defaultPanel.add(backButton);
         welcomeLabel = new JLabel("Welcome to " + courseName + "!");
         defaultPanel.add(welcomeLabel);
-        settingsButton = new JButton("pages.Settings");
+        settingsButton = new JButton("Settings");
         settingsButton.addActionListener(actionListener);
         defaultPanel.add(settingsButton);
 
