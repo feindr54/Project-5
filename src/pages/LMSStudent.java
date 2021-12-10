@@ -6,6 +6,8 @@ import networking.ActualClient;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * pages.LMSStudent
@@ -28,7 +30,7 @@ public class LMSStudent extends JComponent implements ActionListener {
     JButton settingsButton;
     JLabel viewCourseLabel;
     JPanel accessPanel;
-    String[] courses;
+    ArrayList<Course> courses;
     JComboBox<String> courseDropdown;
 
     public void actionPerformed(ActionEvent e) {
@@ -42,8 +44,13 @@ public class LMSStudent extends JComponent implements ActionListener {
         }
     }
 
-    public void updateDisplay(LMS lms) {
-        // TODO - convert LMS to display on GUI
+    synchronized public void updateDisplay(LMS lms) {
+        courseDropdown.removeAllItems();
+        for (Course c : lms.getCourses()) {
+            courseDropdown.addItem(c.getCourseName());
+
+        }
+        courseDropdown.revalidate();
     }
 
     public LMSStudent(ActualClient client) {
@@ -74,8 +81,9 @@ public class LMSStudent extends JComponent implements ActionListener {
 
 
         GridBagConstraints a = new GridBagConstraints();
-        String[] courses = {"CS 180", "MA 261"};
-        courseDropdown = new JComboBox<>(courses);
+        //String[] courses = {"CS 180", "MA 261"};
+        courses = new ArrayList<>();
+        courseDropdown = new JComboBox<>();
         viewCourseLabel = new JLabel("Choose a course to view.");
 
         a.weighty = 0;

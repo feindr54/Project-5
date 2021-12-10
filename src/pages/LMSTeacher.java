@@ -2,10 +2,13 @@ package pages;
 
 import main.page.*;
 import networking.ActualClient;
+import networking.Request;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * pages.LMSTeacher
@@ -52,13 +55,14 @@ public class LMSTeacher extends JComponent implements ActionListener {
 
 
     JComboBox<String> courseDropdown;
+    ArrayList<Course> courses;
 
 
     public void actionPerformed(ActionEvent e) {
         CardLayout cl = (CardLayout) (cards.getLayout());
         if (e.getSource() == accessButton) {
             cl.show(cards, "Access Panel");
-            state = 0;
+            state = 0; // ACCESS PANEL
         } else if (e.getSource() == addButton) {
             cl.show(cards, "Add Panel");
             state = 1;
@@ -90,6 +94,15 @@ public class LMSTeacher extends JComponent implements ActionListener {
             }
             addCourseText.setText("");
             //add course name to list of courses
+            Request request = new Request(1, 0, addCourseText.getText());
+            try {
+                client.getOOS().writeObject(request);
+                client.getOOS().flush();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            
         }
         //edit
         if (state == 2) {
@@ -112,7 +125,12 @@ public class LMSTeacher extends JComponent implements ActionListener {
     }
 
     public void updateDisplay(LMS lms) {
-        // TODO - display LMS as GUI
+        courseDropdown.removeAllItems();
+        for (Course c : lms.getCourses()) {
+            courseDropdown.addItem(c.getCourseName());
+
+        }
+        courseDropdown.revalidate();
     }
 
     public LMSTeacher(ActualClient client) {
@@ -192,8 +210,10 @@ public class LMSTeacher extends JComponent implements ActionListener {
         accessPanel = new JPanel();
         accessPanel.setLayout(new GridBagLayout());
         GridBagConstraints a = new GridBagConstraints();
-        String[] courses = {"CS 180", "MA 261"};
-        courseDropdown = new JComboBox<>(courses);
+        courses = new ArrayList<>();
+        courseDropdown = new JComboBox<>();
+
+        viewCourseLabel = new JLabel("Choose a course to view.");
 
         a.weighty = 0;
         a.gridx = 0;
@@ -212,7 +232,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
         addPanel = new JPanel();
         addPanel.setLayout(new GridBagLayout());
         GridBagConstraints b = new GridBagConstraints();
-        courseDropdown = new JComboBox<>(courses);
+        courseDropdown = new JComboBox<>();
 
         b.weighty = 0;
         b.gridx = 0;
@@ -231,7 +251,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
         editPanel = new JPanel();
         editPanel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        courseDropdown = new JComboBox<>(courses);
+        courseDropdown = new JComboBox<>();
 
         c.weighty = 0;
         c.gridx = 0;
@@ -255,7 +275,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
         deletePanel = new JPanel();
         deletePanel.setLayout(new GridBagLayout());
         GridBagConstraints d = new GridBagConstraints();
-        courseDropdown = new JComboBox<>(courses);
+        courseDropdown = new JComboBox<>();
 
         d.weighty = 0;
         d.gridx = 0;

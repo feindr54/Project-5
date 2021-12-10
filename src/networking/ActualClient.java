@@ -38,6 +38,61 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
     // creates the cardlayout object
     private CardLayout cl;
 
+    LMSStudent lmsStudent;
+    LMSTeacher lmsTeacher;
+    CourseStudent courseStudent;
+    CourseTeacher courseTeacher;
+    ForumStudent forumStudent;
+    ForumTeacher forumTeacher;
+
+    public LMSStudent getLmsStudent() {
+        return lmsStudent;
+    }
+
+    public void setLmsStudent(LMSStudent lmsStudent) {
+        this.lmsStudent = lmsStudent;
+    }
+
+    public LMSTeacher getLmsTeacher() {
+        return lmsTeacher;
+    }
+
+    public void setLmsTeacher(LMSTeacher lmsTeacher) {
+        this.lmsTeacher = lmsTeacher;
+    }
+
+    public CourseStudent getCourseStudent() {
+        return courseStudent;
+    }
+
+    public void setCourseStudent(CourseStudent courseStudent) {
+        this.courseStudent = courseStudent;
+    }
+
+    public CourseTeacher getCourseTeacher() {
+        return courseTeacher;
+    }
+
+    public void setCourseTeacher(CourseTeacher courseTeacher) {
+        this.courseTeacher = courseTeacher;
+    }
+
+    public ForumStudent getForumStudent() {
+        return forumStudent;
+    }
+
+    public void setForumStudent(ForumStudent forumStudent) {
+        this.forumStudent = forumStudent;
+    }
+
+    public ForumTeacher getForumTeacher() {
+        return forumTeacher;
+    }
+
+    public void setForumTeacher(ForumTeacher forumTeacher) {
+        this.forumTeacher = forumTeacher;
+    }
+
     public ActualClient() {
         try {
             socket = new Socket("localhost", 42069);
@@ -133,6 +188,18 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
     public void actionPerformed(ActionEvent e) {
 
     }
+
+    synchronized public void addPanelToCardLayout(Container container, String name) {
+        mainPanel.add(container, name);
+    }
+
+    synchronized public void changePanel(String name) {
+        cl.show(mainPanel, name);
+        
+    }
+
+
+
 }
 
 /**
@@ -172,23 +239,31 @@ class ReaderThread extends Thread {
                     gui.getPageStack().push("studentLms");
 
                     // create student lms object
-                    LMSStudent lmsStudent = new LMSStudent(gui);
+                    gui.setLmsStudent(new LMSStudent(gui));
 
                     // add it to the main panel
-                    gui.getMainPanel().add(lmsStudent.getContent(), "lmsStudent");
+                    //gui.getMainPanel().add(, );
+                    gui.addPanelToCardLayout(gui.getLmsStudent().getContent(), "lmsStudent");
+                    gui.getLmsStudent().updateDisplay((LMS) loginDetails[1]);
+                    //gui.getCl().show(gui.getMainPanel(), "lmsStudent");
+                    gui.changePanel("lmsStudent");
 
                 } else {
                     gui.setUser((Teacher) loginDetails[0]);
                     // TODO - load teacher lms by creating teacher lms object
-                    LMSTeacher lmsTeacher = new LMSTeacher(gui);
-                    gui.getMainPanel().add(lmsTeacher.getContent(), "lmsTeacher");
+                    gui.setLmsTeacher(new LMSTeacher(gui));
+                    gui.addPanelToCardLayout(gui.getLmsTeacher().getContent(), "lmsTeacher");
+                    gui.getLmsTeacher().updateDisplay((LMS) loginDetails[1]);
+                    gui.changePanel("lmsTeacher");
+
                 }
             } else if (object instanceof LMS) {
                 // check if user is at LMS page
                 if (gui.getPageStack().peek().equals("lmsStudent")) {
                     // TODO - load student lms
-                } else if (gui.getPageStack().peek().equals("lmsStudent")) {
-                    // TODO - load teacher lms
+                    gui.getLmsStudent().updateDisplay((LMS) object);
+                } else if (gui.getPageStack().peek().equals("lmsTeacher")) {
+                    gui.getLmsTeacher().updateDisplay((LMS) object);
                 }
             } else if (object instanceof Course) {
                 if (gui.getPageStack().peek().equals("courseStudent")) {

@@ -94,6 +94,7 @@ public class Server {
         }
     }
 
+
     /**
      *  Changes the forum object in the server list
      * @param forum
@@ -164,6 +165,21 @@ public class Server {
         }
 
     }
+
+    synchronized public static LMS getLMS() {
+        return lms;
+    }
+
+    synchronized public static boolean addCourse(String courseName) {
+        for (Course course : lms.getCourses()) {
+            if (course.getCourseName().equals(courseName)) {
+                return false; 
+            }
+        }
+        Course course = new Course(courseName); 
+        lms.getCourses().add(course);
+        return true; 
+    }
 }
 
 /**
@@ -214,7 +230,22 @@ class ClientHandler extends Thread {
 
         // extracts the exact operation and the object received from the client
         int operation = request.getOPERATION();
+        int operand = request.getOPERAND();
         Object object = request.getOBJ();
+
+        if (operation == 1) { // ADD OPERATION
+            if (operand == 0) { // ADD COURSE REQUEST
+                if (Server.addCourse(object.toString())) {
+                    response = new Response(0, Server.getLMS());
+                } else {
+                    response = new Response(1, "Course already exists.");
+                    s_OTC.writeObject(response);
+                    s_OTC.flush();
+
+                    return null; 
+                }
+            }
+        }
 
         if (operation == 7) {
             User newUser = (User) object;
@@ -420,6 +451,7 @@ class ClientHandler extends Thread {
                 // - sends (broadcasts) the generated response to all the clients connected to the server (loop through the arraylist of ClientHandlers)
                 if (response != null) {
                     // TODO - sends the response to all other clients
+                    broadCastReponse(response);
                 }
 
                 // String input = (String) s_IFC.readObject();
@@ -448,12 +480,12 @@ class ClientHandler extends Thread {
     }
 
     // this method is used to create the sendResponse method
-    public void writeToOthers(String input) {
+    public void broadCastReponse(Response response) {
         //Response response = new Response();
         for (ClientHandler client : Server.clients) {
             
             try {
-                client.getOut().writeObject("Client " + id + ": " + input);
+                client.getOut().writeObject(response);
                 client.getOut().flush();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
