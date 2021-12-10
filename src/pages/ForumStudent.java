@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import main.page.*;
 import networking.*;
@@ -27,7 +28,11 @@ public class ForumStudent extends JComponent {
     JButton Submit;
 
     Forum forum; 
-    User currentUser; 
+    User currentUser;
+
+    //tracks all replyPanels in a given forum
+    ArrayList<ReplyPanel> replies = new ArrayList<>();
+
 
     public ForumStudent(ActualClient client, Forum forum) {
         // ForumTeacher forumPage = new ForumTeacher(frame);
@@ -109,30 +114,89 @@ public class ForumStudent extends JComponent {
         public void actionPerformed(ActionEvent e) {
             
             if (e.getSource() == Submit) {
-                // TODO - check if the textbox is empty or just full of whitespace (isBlank()), JOptionPane
 
-                // TODO - get the text from the textfield 
 
-                // TODO - create new reply object --> createReply() method
-                //  AND add new reply to the Student's replies AL
+                String inputText = input.getText();
 
-                // TODO - Send the reply object to server --> sendReplyToServer() method
+                updateForumDisplay(forum);
 
-                // TODO - server will update the forum with the new reply --> done in server
-                
-                // TODO - server will send the updated forum to every client --> done in server
+                //checks if the input is empty or just whitespace
+                //if yes, throws an error menu
+                //else, continue making the reply
 
-                // TODO - each client will recieve the updated forum
-                // and call an update forum method that updates the gui
-                // to display the new reply! --> updateForumDisplay() method
+                if (inputText == null || inputText.isBlank()) {
+                    JOptionPane.showMessageDialog(null, "Please enter a reply or comment",
+                            " Error: Empty input", JOptionPane.ERROR_MESSAGE);
+                } else {
+
+                    //TODO make isReply boolean to check if it is a reply or comment
+                    /*
+                    if (isReply) {
+
+                        Reply reply = createReply(inputText);
+                        //  TODO add new reply to the Student's replies AL
+                        // TODO - Send the reply object to server --> sendReplyToServer() method
+                        try {
+                            sendReplyToServer(reply);
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                        // TODO - server will update the forum with the new reply --> done in server
+
+                        // TODO - server will send the updated forum to every client --> done in server
+
+                        // TODO - each client will recieve the updated forum
+                        // and call an update forum method that updates the gui
+                        // to display the new reply! --> updateForumDisplay() method
+
+
+                    } else {
+
+                        //TODO createComment()
+                    }
+
+                     */
+
+                }
+
+
+                //TODO To add replies:
+                /*
+                1. ArrayList<ReplyPanel> with all current replies
+                2. for loop to print all existing reply panels
+                3.when user hits submit with text:
+                    -makes the text a formatted reply panel:
+                        "Username: reply goes here."
+                    - adds this to the replyPanel arraylist
+                    - updates GUI and redisplays every replyPanel object
+
+                 */
 
                 JLabel newChat = new JLabel(input.getText());
                 forumDisplay.add(newChat);
                 forumDisplay.revalidate();
                 input.setText("");
             }
+
+            if (e.getSource() == Back) {
+                back();
+            }
+            if (e.getSource() == Settings) {
+                client.getPageStack().push("settingsGUI");
+                client.getCl().show(client.getMainPanel(), "settingsGUI");
+            }
         }
     };
+
+    public void settings() {
+        client.getPageStack().push("settingsGUI");
+        client.getCl().show(client.getMainPanel(), "settingsGUI");
+    }
+    public void back() {
+        //TODO: make course page object
+        //client.getPageStack().push("course");
+        //client.getCl().show(client.getMainPanel(), "course");
+    }
 
     public Comment createComment(Reply reply, String commentMessage) {
         Comment newComment = new Comment(reply, client.getUser(), commentMessage);
@@ -152,7 +216,12 @@ public class ForumStudent extends JComponent {
     }
 
     synchronized public void updateForumDisplay(Forum newForum) {
-        
+
+        //adds the last new reply to the display
+        //could work if we add each new reply to the replyPanel list after processing them
+        forumDisplay.add(replies.get(replies.size() - 1));
+
+
     }
 
     
