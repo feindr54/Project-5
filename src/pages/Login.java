@@ -195,11 +195,11 @@ public class Login extends JComponent {
             }
             if (e.getSource() == confirmButton) {
 
-                client.getPageStack().push("forumStudent");
-                client.getCl().show(client.getMainPanel(), "forumStudent");
+                //client.getPageStack().push("forumStudent");
+                //client.getCl().show(client.getMainPanel(), "forumStudent");
 
                 //if login is successful, pull up the respective page
-                /*
+                
                 try {
                     if (successful_login()) {
 
@@ -226,8 +226,9 @@ public class Login extends JComponent {
                     // loads up the pages.LMS screen, using the info from the pages.LMS object
                     // adds the pages.LMS panel identifier string "pages.LMS" to the stack object
                 }
+                */
 
-                 */
+                 
             }
         }
     };

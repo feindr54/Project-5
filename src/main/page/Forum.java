@@ -20,8 +20,9 @@ public class Forum implements Serializable {
     // fixed String menu 
     //private final String = 
 
-    private Course course; // know who is the parent course
+    
     // a number that indicates which course it is
+    private Course course; 
     private String topic;
     private ArrayList<Reply> replies; // an AL that lists replies from latest to earliest
     private LocalDateTime currentTime;

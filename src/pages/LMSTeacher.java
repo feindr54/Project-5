@@ -54,7 +54,11 @@ public class LMSTeacher extends JComponent implements ActionListener {
     int state;
 
 
-    JComboBox<String> courseDropdown;
+    JComboBox<String> courseDropDown;
+    JComboBox<String> accessCourseDropdown;
+    JComboBox<String> editCourseDropdown;
+    JComboBox<String> deleteCourseDropdown;
+
     ArrayList<Course> courses;
 
 
@@ -108,10 +112,27 @@ public class LMSTeacher extends JComponent implements ActionListener {
         }
         //edit
         if (state == 2) {
-            if (editCourseText.getText().isBlank() || editCourseText.getText().isEmpty()) {
+            if (editCourseText.getText().isBlank() || editCourseText.getText().isEmpty() || editCourseDropdown.getSelectedItem() == null) {
                 JOptionPane.showMessageDialog(null, "Please enter valid course name.", null, JOptionPane.ERROR_MESSAGE);
+            } else {
+                String selectedCourse = (String) editCourseDropdown.getSelectedItem();
+                if (selectedCourse.equals(editCourseText.getText())) {
+                    JOptionPane.showMessageDialog(null, "Please a different name for this course.", null, JOptionPane.ERROR_MESSAGE);
+                } else {
+                    Request request = new Request(2, 0, new String[]{selectedCourse , editCourseText.getText()}); // operation 2 is edit, operand 0 is course = edit course
+                    try {
+                        client.getOOS().writeObject(request);
+                        client.getOOS().flush();
+                        System.out.println("edit course request sent");
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
             }
             //change specified course to new course name
+            
+           
             
 
             editCourseText.setText("");
@@ -119,6 +140,21 @@ public class LMSTeacher extends JComponent implements ActionListener {
         //delete
         if (state == 3) {
             //delete specified course
+            if (editCourseDropdown.getSelectedItem() == null) {
+                JOptionPane.showMessageDialog(null, "No course selected. ", null, JOptionPane.ERROR_MESSAGE);
+            } else {
+                String selectedCourse = (String) editCourseDropdown.getSelectedItem();
+                Request request = new Request(3, 0, selectedCourse); // operation 3 is delete, operand 0 is course = delete course
+                try {
+                    client.getOOS().writeObject(request);
+                    client.getOOS().flush();
+                    System.out.println("edit course request sent");
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            
+            }
 
         }
     }
@@ -129,17 +165,23 @@ public class LMSTeacher extends JComponent implements ActionListener {
     }
 
     synchronized public void updateDisplay(LMS lms) {
-        courseDropdown.removeAllItems();
+        accessCourseDropdown.removeAllItems();
+        editCourseDropdown.removeAllItems();
+        deleteCourseDropdown.removeAllItems();
         System.out.println("if u see this i am trying to upate the combo box");
         if (lms.getCourses().size() > 0) {
             for (Course c : lms.getCourses()) {
-                courseDropdown.addItem(c.getCourseName());
+                accessCourseDropdown.addItem(c.getCourseName());
+                editCourseDropdown.addItem(c.getCourseName());
+                deleteCourseDropdown.addItem(c.getCourseName());
                 System.out.println(c.getCourseName());
             }
         }
-        courseDropdown.addItem("I received this telepathically");
+        //courseDropDown.addItem("I received this telepathically");
+        accessCourseDropdown.revalidate();
+        editCourseDropdown.revalidate();
+        deleteCourseDropdown.revalidate();
         //client.refreshPanel();
-        revalidate();
     }
 
     public LMSTeacher(ActualClient client) {
@@ -220,7 +262,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
         accessPanel.setLayout(new GridBagLayout());
         GridBagConstraints a = new GridBagConstraints();
         courses = new ArrayList<>();
-        courseDropdown = new JComboBox<>();
+        accessCourseDropdown = new JComboBox<>();
 
         viewCourseLabel = new JLabel("Choose a course to view.");
 
@@ -234,7 +276,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
         a.gridx = 0;
         a.gridy = 1;
 
-        accessPanel.add(courseDropdown, a);
+        accessPanel.add(accessCourseDropdown, a);
 
 
         //addPanel layout
@@ -242,6 +284,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
         addPanel.setLayout(new GridBagLayout());
         GridBagConstraints b = new GridBagConstraints();
         //courseDropdown = new JComboBox<>();
+        
 
         b.weighty = 0;
         b.gridx = 0;
@@ -260,7 +303,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
         editPanel = new JPanel();
         editPanel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        //courseDropdown = new JComboBox<>();
+        editCourseDropdown = new JComboBox<>();
 
         c.weighty = 0;
         c.gridx = 0;
@@ -272,7 +315,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
         c.gridx = 0;
         c.gridy = 1;
 
-        editPanel.add(courseDropdown, c);
+        editPanel.add(editCourseDropdown, c);
 
         c.weighty = 0;
         c.gridx = 0;
@@ -285,6 +328,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
         deletePanel.setLayout(new GridBagLayout());
         GridBagConstraints d = new GridBagConstraints();
         //courseDropdown = new JComboBox<>();
+        deleteCourseDropdown = new JComboBox<>();
 
         d.weighty = 0;
         d.gridx = 0;
@@ -296,7 +340,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
         d.gridx = 0;
         d.gridy = 1;
 
-        deletePanel.add(courseDropdown, d);
+        deletePanel.add(deleteCourseDropdown, d);
 
 
         //implementing card layout, adding each panel to cards

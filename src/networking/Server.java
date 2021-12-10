@@ -184,6 +184,32 @@ public class Server implements Serializable {
         System.out.println("There are " + lms.getCourses().size() + "courses.");
         return true; 
     }
+
+    synchronized public static boolean editCourse(String oldName, String newName) {
+        int index = -1;
+        for (int i = 0; i < lms.getCourses().size(); i++) {
+            if (oldName.equals(lms.getCourses().get(i).getCourseName())) {
+                 // replaces the course name with a new name 
+                index = i;
+                break;
+            }
+        }
+        if (index != -1) {
+            lms.getCourses().get(index).setCourseName(newName);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    synchronized public static void deleteCourse(String courseName) {
+        for (int i = 0; i < lms.getCourses().size(); i++) {
+            if (courseName.equals(lms.getCourses().get(i).getCourseName())) {
+                lms.getCourses().remove(i);
+                return; 
+            }
+        }
+    }
 }
 
 /**
@@ -236,22 +262,64 @@ class ClientHandler extends Thread implements Serializable {
         int operation = request.getOPERATION();
         int operand = request.getOPERAND();
         Object object = request.getOBJ();
+        if (operation == 0) { // ACCESS OPERATION
+            switch (operand) {
+                case 0: // ACCESS COURSE REQUEST
+                    break;
+                case 1: // ACCESS FORUM REQUEST
+                    break;
+                case 2: // ACCESS REPLY REQUEST
+                    break;
+                case 3: // ACCESS COMMENT REQUEST
+                    break;
+            }
+        }
 
-        if (operation == 1) { // ADD OPERATION
-            if (operand == 0) { // ADD COURSE REQUEST
-                String courseName = (String) object;
-                if (Server.addCourse(courseName)) {
-                    System.out.println("There are " + Server.getLMS().getCourses().size() + " courses.");
+        else if (operation == 1) { // ADD OPERATION
+            switch (operand) { 
+                case 0: // ADD COURSE REQUEST
+                    String courseName = (String) object;
+                    if (Server.addCourse(courseName)) {
+                        System.out.println("There are " + Server.getLMS().getCourses().size() + " courses.");
+                        response = new Response(0, Server.getLMS());
+                        return response;
+                    } else {
+                        response = new Response(1, "Course already exists.");
+                        s_OTC.writeObject(response);
+                        s_OTC.flush();
+                        s_OTC.reset();
+
+                        return null; 
+                    }
+                case 1: // ADD FORUM REQUEST
+                    break;
+                case 2: // ADD REPLY REQUEST
+                    break; 
+                case 3: // ADD COMMENT REQUEST
+                    break;
+            }
+        } else if (operation == 2) { // EDIT OPERATION
+            switch (operand) {
+                case 0: // EDIT COURSE REQUEST
+                    String[] oldNameNewName = (String[]) object;
+                    String oldName = oldNameNewName[0];
+                    String newName = oldNameNewName[1];
+                    if (Server.editCourse(oldName, newName)) {
+                        System.out.println("Edited course!");
+                        response = new Response(0, Server.getLMS());
+                        return response;
+                    }
+                    
+            } 
+        } else if (operation == 3) { // DELETE OPERATION
+            switch (operand) {
+                case 0: // DELETE COURSE REQUEST
+                    String courseToDelete = (String) object;
+                    Server.deleteCourse(courseToDelete);
+                    System.out.println("Deleted " + courseToDelete + "!");
                     response = new Response(0, Server.getLMS());
                     return response;
-                } else {
-                    response = new Response(1, "Course already exists.");
-                    s_OTC.writeObject(response);
-                    s_OTC.flush();
-
-                    return null; 
-                }
-            }
+            } 
         }
 
         if (operation == 7) {
@@ -306,6 +374,7 @@ class ClientHandler extends Thread implements Serializable {
                     response = new Response(0, new Object[]{newUser, Server.lms});
                     s_OTC.writeObject(response);
                     s_OTC.flush();
+                    s_OTC.reset();
 
                     return null;
                 }
@@ -318,6 +387,7 @@ class ClientHandler extends Thread implements Serializable {
                         // TODO - must these be synchronized?
                         s_OTC.writeObject(response);
                         s_OTC.flush();
+                        s_OTC.reset();
                         return null;
                     }
                     // TODO - creates a new user object
@@ -339,6 +409,7 @@ class ClientHandler extends Thread implements Serializable {
                     response = new Response(0, new Object[]{newUser, Server.lms});
                     s_OTC.writeObject(response);
                     s_OTC.flush();
+                    s_OTC.reset();
 
                     return null;
                 }
@@ -350,6 +421,7 @@ class ClientHandler extends Thread implements Serializable {
                     // TODO - do these need to be synchronized?
                     s_OTC.writeObject(response);
                     s_OTC.flush();
+                    s_OTC.reset();
                     return null;
                 }
 
@@ -363,6 +435,7 @@ class ClientHandler extends Thread implements Serializable {
                                 response = new Response(1, "Error: User already logged in.");
                                 s_OTC.writeObject(response);
                                 s_OTC.flush();
+                                s_OTC.reset();
                                 return null;
                             }
                         }
@@ -378,6 +451,7 @@ class ClientHandler extends Thread implements Serializable {
                 // TODO - do these need to be synchronized?
                 s_OTC.writeObject(response);
                 s_OTC.flush();
+                s_OTC.reset();
                 return null;
             }
             // TODO - saves the user list in Server
@@ -396,6 +470,7 @@ class ClientHandler extends Thread implements Serializable {
                 // do you need to synchronize these?
                 s_OTC.writeObject(response);
                 s_OTC.flush();
+                s_OTC.reset();
                 return null;
             }
 
@@ -407,6 +482,7 @@ class ClientHandler extends Thread implements Serializable {
 
                         s_OTC.writeObject(courseSent);
                         s_OTC.flush();
+                        s_OTC.reset();
                         return null;
                     }
                 }
@@ -419,6 +495,7 @@ class ClientHandler extends Thread implements Serializable {
 
                             s_OTC.writeObject(forumSent);
                             s_OTC.flush();
+                            s_OTC.reset();
                             return null;
                         }
                     }
@@ -454,6 +531,7 @@ class ClientHandler extends Thread implements Serializable {
                 // - sends (broadcasts) the generated response to all the clients connected to the server (loop through the arraylist of ClientHandlers)
                 if (response != null) {
                     // TODO - sends the response to all other clients
+                    
                     broadCastReponse(response);
                 }
 
@@ -490,6 +568,7 @@ class ClientHandler extends Thread implements Serializable {
             try {
                 client.getOut().writeObject(response);
                 client.getOut().flush();
+                client.getOut().reset();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

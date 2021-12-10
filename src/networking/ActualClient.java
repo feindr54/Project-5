@@ -203,6 +203,7 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
     }
 
     synchronized public void changePanel(String name) {
+        pageStack.push(name);
         cl.show(mainPanel, name);
         
     }
@@ -216,7 +217,7 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
 *
 * Description - TODO
 *
-* @author Ahmed Aqarooni
+* @author Ahmed Qarooni
 *
 * @version 12/7/2021
 */
@@ -245,7 +246,7 @@ class ReaderThread extends Thread {
                     gui.setUser((Student) loginDetails[0]);
                     // TODO - load student lms (this should be done in the EDT though)
                     // push the student lms to top of page stack
-                    gui.getPageStack().push("studentLms");
+                   // gui.getPageStack().push("lmsStudent");
 
                     // create student lms object
                     gui.setLmsStudent(new LMSStudent(gui));
@@ -268,16 +269,8 @@ class ReaderThread extends Thread {
                 }
             } else if (object instanceof LMS) {
                 // check if user is at LMS page
-                System.out.println("Recieved success response to add course, now we gotta update display");
+                System.out.println("Received success response to add course, now we gotta update display");
                 // make sure LMS is correct
-
-                LMS newLms = (LMS) object;
-
-                System.out.println("There are " + newLms.getCourses().size() + "courses.");
-
-                for (Course c : newLms.getCourses()) {
-                    System.out.println(c.getCourseName());
-                }
 
                 if (gui.getPageStack().peek().equals("lmsStudent")) {
                     // TODO - load student lms
@@ -286,6 +279,9 @@ class ReaderThread extends Thread {
                 } else if (gui.getPageStack().peek().equals("lmsTeacher")) {
                     gui.getLmsTeacher().updateDisplay((LMS) object);
                 }
+
+
+
             } else if (object instanceof Course) {
                 if (gui.getPageStack().peek().equals("courseStudent")) {
                     // TODO - load student course
