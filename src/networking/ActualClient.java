@@ -45,6 +45,10 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
     ForumStudent forumStudent;
     ForumTeacher forumTeacher;
 
+    public synchronized void refreshPanel() {
+        mainPanel.revalidate();
+    }
+
     public LMSStudent getLmsStudent() {
         return lmsStudent;
     }
@@ -259,9 +263,11 @@ class ReaderThread extends Thread {
                 }
             } else if (object instanceof LMS) {
                 // check if user is at LMS page
+                System.out.println("Recieved success response to add course, now we gotta update display");
                 if (gui.getPageStack().peek().equals("lmsStudent")) {
                     // TODO - load student lms
                     gui.getLmsStudent().updateDisplay((LMS) object);
+                    //gui.getCourseStudent().updateDisplay((LMS) object);
                 } else if (gui.getPageStack().peek().equals("lmsTeacher")) {
                     gui.getLmsTeacher().updateDisplay((LMS) object);
                 }

@@ -92,7 +92,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
             if (addCourseText.getText().isBlank() || addCourseText.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please enter valid course name.", null, JOptionPane.ERROR_MESSAGE);
             }
-            addCourseText.setText("");
+            
             //add course name to list of courses
             Request request = new Request(1, 0, addCourseText.getText());
             try {
@@ -103,6 +103,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+            addCourseText.setText("");
             
         }
         //edit
@@ -110,8 +111,10 @@ public class LMSTeacher extends JComponent implements ActionListener {
             if (editCourseText.getText().isBlank() || editCourseText.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please enter valid course name.", null, JOptionPane.ERROR_MESSAGE);
             }
-            editCourseText.setText("");
             //change specified course to new course name
+            
+
+            editCourseText.setText("");
         }
         //delete
         if (state == 3) {
@@ -125,13 +128,17 @@ public class LMSTeacher extends JComponent implements ActionListener {
         client.getCl().show(client.getMainPanel(), "settings");
     }
 
-    public void updateDisplay(LMS lms) {
+    synchronized public void updateDisplay(LMS lms) {
         courseDropdown.removeAllItems();
-        for (Course c : lms.getCourses()) {
-            courseDropdown.addItem(c.getCourseName());
+        System.out.println("if u see this i am trying to upate the combo box");
+        if (lms.getCourses().size() > 0) {
+            for (Course c : lms.getCourses()) {
+                courseDropdown.addItem(c.getCourseName());
 
+            }
         }
-        courseDropdown.revalidate();
+        //client.refreshPanel();
+        revalidate();
     }
 
     public LMSTeacher(ActualClient client) {

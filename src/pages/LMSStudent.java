@@ -46,11 +46,14 @@ public class LMSStudent extends JComponent implements ActionListener {
 
     synchronized public void updateDisplay(LMS lms) {
         courseDropdown.removeAllItems();
-        for (Course c : lms.getCourses()) {
-            courseDropdown.addItem(c.getCourseName());
+        if (lms.getCourses().size() > 0) {
+            for (Course c : lms.getCourses()) {
+                courseDropdown.addItem(c.getCourseName());
 
+            }
         }
-        courseDropdown.revalidate();
+        //client.refreshPanel();
+        revalidate();
     }
 
     public LMSStudent(ActualClient client) {

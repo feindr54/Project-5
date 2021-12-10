@@ -171,9 +171,11 @@ public class Server {
     }
 
     synchronized public static boolean addCourse(String courseName) {
-        for (Course course : lms.getCourses()) {
-            if (course.getCourseName().equals(courseName)) {
-                return false; 
+        if (lms.getCourses().size() > 0) {
+            for (Course course : lms.getCourses()) {
+                if (course.getCourseName().equals(courseName)) {
+                    return false; 
+                }
             }
         }
         Course course = new Course(courseName); 
@@ -235,7 +237,8 @@ class ClientHandler extends Thread {
 
         if (operation == 1) { // ADD OPERATION
             if (operand == 0) { // ADD COURSE REQUEST
-                if (Server.addCourse(object.toString())) {
+                String courseName = (String) object;
+                if (Server.addCourse(courseName)) {
                     response = new Response(0, Server.getLMS());
                     return response;
                 } else {
@@ -281,9 +284,7 @@ class ClientHandler extends Thread {
             // check if logging in or signing up
             if (operation == 4) {
                 // signing up
-                System.out.println("signup event");
-                //username = username.substring(0, username.indexOf('@'));
-                System.out.println(Server.users.isEmpty() + " meoememeomoeme");
+                
                 if (Server.users.isEmpty()) {
                     User newUser;
                     //  check if user is a student or teacher and initializes respectively
@@ -295,9 +296,7 @@ class ClientHandler extends Thread {
                     this.user = newUser;
                     // add the newUser to the users array list
                     newUser.setUserIndex(Server.users.size()); // sets the index of the user
-                    Server.users.add(newUser);
-                    System.out.println("added user");
-
+                    Server.addUser(newUser);
                     System.out.println("User successfully added");
                     //  and send the respective LMS object and user back to PARTICULAR USER
                     //  create a Response object and
