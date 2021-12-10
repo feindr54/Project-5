@@ -303,9 +303,9 @@ public class Server implements Serializable {
 
     public synchronized static User editPassword(String username, String oldPassword, String newPassword) {
         // check if there is any difference in password
-        if () {
+        // if () {
 
-        }
+        // }
         for (User user : users) {
             if (username.equals(user.getIdentifier())) {
                 user.setPassword(newPassword);
@@ -557,7 +557,7 @@ class ClientHandler extends Thread implements Serializable {
             User user = (User) info[0];
             String newUsername = (String) info[1];
 
-            Server.editUsername(user, newUsername);
+            Server.editUsername(user.getIdentifier(), newUsername);
 
             response = new Response(0, user);
             // send the response to the client
@@ -691,7 +691,7 @@ class ClientHandler extends Thread implements Serializable {
             String studentName = (String) info[0];
             Course course = (Course) info[1];
             int score = (int) info[2];
-            Server.gradeStudent(studentName, score);
+            Server.gradeStudent(studentName, course , score);
         }
         return null;
     }
