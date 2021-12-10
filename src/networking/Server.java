@@ -21,7 +21,7 @@ import java.io.*;
 * @version 12/7/2021
 */
 
-public class Server {
+public class Server implements Serializable {
 
     public static ArrayList<User> users;
     public static LMS lms;
@@ -180,6 +180,8 @@ public class Server {
         }
         Course course = new Course(courseName); 
         lms.getCourses().add(course);
+
+        System.out.println("There are " + lms.getCourses().size() + "courses.");
         return true; 
     }
 }
@@ -196,7 +198,7 @@ public class Server {
 */
 // THIS CLASS RECEIVES DATA FROM A SINGLE CLIENT
 // HAS METHOD TO BROADCAST DATA TO ALL CLIENTS
-class ClientHandler extends Thread {
+class ClientHandler extends Thread implements Serializable {
     private Socket socket;
     private ObjectInputStream s_IFC; // s = server, I = input, F = from, C = client| server input from client
     private ObjectOutputStream s_OTC;// s = server, O = output, T = to, C = client| server output to client
@@ -239,6 +241,7 @@ class ClientHandler extends Thread {
             if (operand == 0) { // ADD COURSE REQUEST
                 String courseName = (String) object;
                 if (Server.addCourse(courseName)) {
+                    System.out.println("There are " + Server.getLMS().getCourses().size() + " courses.");
                     response = new Response(0, Server.getLMS());
                     return response;
                 } else {

@@ -264,6 +264,16 @@ class ReaderThread extends Thread {
             } else if (object instanceof LMS) {
                 // check if user is at LMS page
                 System.out.println("Recieved success response to add course, now we gotta update display");
+                // make sure LMS is correct
+
+                LMS newLms = (LMS) object;
+
+                System.out.println("There are " + newLms.getCourses().size() + "courses.");
+
+                for (Course c : newLms.getCourses()) {
+                    System.out.println(c.getCourseName());
+                }
+
                 if (gui.getPageStack().peek().equals("lmsStudent")) {
                     // TODO - load student lms
                     gui.getLmsStudent().updateDisplay((LMS) object);

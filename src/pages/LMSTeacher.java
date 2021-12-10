@@ -134,9 +134,10 @@ public class LMSTeacher extends JComponent implements ActionListener {
         if (lms.getCourses().size() > 0) {
             for (Course c : lms.getCourses()) {
                 courseDropdown.addItem(c.getCourseName());
-
+                System.out.println(c.getCourseName());
             }
         }
+        courseDropdown.addItem("I received this telepathically");
         //client.refreshPanel();
         revalidate();
     }
@@ -240,7 +241,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
         addPanel = new JPanel();
         addPanel.setLayout(new GridBagLayout());
         GridBagConstraints b = new GridBagConstraints();
-        courseDropdown = new JComboBox<>();
+        //courseDropdown = new JComboBox<>();
 
         b.weighty = 0;
         b.gridx = 0;
@@ -259,7 +260,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
         editPanel = new JPanel();
         editPanel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        courseDropdown = new JComboBox<>();
+        //courseDropdown = new JComboBox<>();
 
         c.weighty = 0;
         c.gridx = 0;
@@ -283,7 +284,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
         deletePanel = new JPanel();
         deletePanel.setLayout(new GridBagLayout());
         GridBagConstraints d = new GridBagConstraints();
-        courseDropdown = new JComboBox<>();
+        //courseDropdown = new JComboBox<>();
 
         d.weighty = 0;
         d.gridx = 0;

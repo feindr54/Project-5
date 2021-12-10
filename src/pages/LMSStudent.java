@@ -52,6 +52,8 @@ public class LMSStudent extends JComponent implements ActionListener {
 
             }
         }
+
+        courseDropdown.addItem("I received this telepathically");
         //client.refreshPanel();
         revalidate();
     }
