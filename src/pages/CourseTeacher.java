@@ -27,8 +27,8 @@ public class CourseTeacher extends JComponent {
     Teacher teacher;
     Course course;
 
-    ArrayList<String> forums;
-    ArrayList<String> studentsArr;
+    ArrayList<Forum> forums;
+    ArrayList<Student> studentsArr;
     ArrayList<String> repliesArr;
     JPanel defaultPanel;
     JButton backButton;
@@ -271,12 +271,21 @@ public class CourseTeacher extends JComponent {
         }
     };
 
-    public void updateDisplay(Course course) {
+    synchronized public void updateDisplay(Course course) {
         // TODO - Update the display of the course with a Course object input
         this.course = course;
         courseName = course.getCourseName();
-        forums = course.forumsToString();
-        studentsArr = course.studentsToString();
+        forums = course.getForums();
+        studentsArr = course.getStudents();
+
+        for (Forum f: forums) {
+            accessForums.addItem(f.getTopic());
+
+        }
+
+        for (Student s: studentsArr) {
+            students.addItem(s.getIdentifier());
+        }
 
         // refreshes the display
         content.revalidate();
@@ -287,8 +296,8 @@ public class CourseTeacher extends JComponent {
         this.teacher = teacher;
         this.course = course;
         courseName = course.getCourseName();
-        forums = course.forumsToString();
-        studentsArr = course.studentsToString();
+        forums = course.getForums();
+        studentsArr = course.getStudents();
 
         repliesArr = new ArrayList<>();
         content = new Container();
@@ -342,11 +351,12 @@ public class CourseTeacher extends JComponent {
         accessPanel = new JPanel();
         accessPanel.setLayout(new GridBagLayout());
         GridBagConstraints d = new GridBagConstraints();
-        accessPrompt = new JLabel("Choose a course to view:");
+        accessPrompt = new JLabel("Choose a forum to view:");
         d.gridx = 0;
         d.gridy = 0;
         accessPanel.add(accessPrompt, d);
-        accessForums = new JComboBox<>(Arrays.copyOf(forums.toArray(), forums.toArray().length, String[].class));
+        //accessForums = new JComboBox<>(Arrays.copyOf(forums.toArray(), forums.toArray().length, String[].class));
+        accessForums = new JComboBox<>();
         accessForums.setMaximumRowCount(3);
         d.gridx = 0;
         d.gridy = 1;
@@ -423,7 +433,7 @@ public class CourseTeacher extends JComponent {
         deletePanel = new JPanel();
         deletePanel.setLayout(new GridBagLayout());
         GridBagConstraints g = new GridBagConstraints();
-        deletePrompt = new JLabel("Choose a course to delete:");
+        deletePrompt = new JLabel("Choose a forum to delete:");
         g.gridx = 0;
         g.gridy = 0;
         deletePanel.add(deletePrompt, g);
@@ -451,7 +461,7 @@ public class CourseTeacher extends JComponent {
         h.gridx = 0;
         h.gridy = 0;
         gradePanel.add(gradePrompt, h);
-        students = new JComboBox<>(Arrays.copyOf(studentsArr.toArray(), studentsArr.toArray().length, String[].class));
+        students = new JComboBox<>();
         students.setMaximumRowCount(3);
         h.gridx = 0;
         h.gridy = 1;

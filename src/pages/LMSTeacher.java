@@ -94,9 +94,12 @@ public class LMSTeacher extends JComponent implements ActionListener {
                 JOptionPane.showMessageDialog(null, "No course selected. ", null, JOptionPane.ERROR_MESSAGE);
             } else {
                 String selectedCourse = (String) accessCourseDropdown.getSelectedItem();
+                System.out.println(selectedCourse);
                 Course selectedCourseObject = null;
                 for (Course c : courses) {
+                    System.out.println(c.getCourseName());
                     if (selectedCourse.equals(c.getCourseName())) {
+                        System.out.println(c.toString());
                         selectedCourseObject = c;
                         break;
                     }
@@ -104,6 +107,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
                 CourseTeacher ct = new CourseTeacher(client, selectedCourseObject, (Teacher) client.getUser());
                 client.setCourseTeacher(ct);
                 client.addPanelToCardLayout(client.getCourseTeacher().getContent(), "courseTeacher");
+                ct.updateDisplay(selectedCourseObject);
                 //client.getCl().con(client.getCourseStudent());
                 client.changePanel("courseTeacher");
                 System.out.println("teacher switched to " + selectedCourse + " course.");
@@ -166,6 +170,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
 
 
     synchronized public void updateDisplay(LMS lms) {
+        courses = lms.getCourses();
         accessCourseDropdown.removeAllItems();
         editCourseDropdown.removeAllItems();
         deleteCourseDropdown.removeAllItems();
@@ -257,7 +262,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
         accessPanel = new JPanel();
         accessPanel.setLayout(new GridBagLayout());
         GridBagConstraints a = new GridBagConstraints();
-        courses = new ArrayList<>();
+        courses = new ArrayList<Course>();
         accessCourseDropdown = new JComboBox<>();
 
         viewCourseLabel = new JLabel("Choose a course to view.");
