@@ -1,5 +1,6 @@
 package pages;
 import main.page.*;
+import networking.Request;
 import users.*;
 import networking.ActualClient;
 import java.io.*;
@@ -106,6 +107,15 @@ public class CourseTeacher extends JComponent {
                 //if true, forum.access()
                 //else show error message
                 accessForums.setSelectedIndex(0);
+
+                Request request = new Request(0, course);
+                // send the updated course to the server
+                try {
+                    client.getOOS().writeObject(request);
+                    client.getOOS().flush();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
             if (e.getSource() == addButton) {
                 accessPanel.setVisible(false);
@@ -123,6 +133,15 @@ public class CourseTeacher extends JComponent {
                 Forum newForum = new Forum(course, addCourse.getText());
                 course.getForums().add(newForum);
                 addCourse.setText("");
+
+                Request request = new Request(1, course);
+                // send the updated course to the server
+                try {
+                    client.getOOS().writeObject(request);
+                    client.getOOS().flush();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
 
             if (e.getSource() == topicFromFile) {
@@ -147,6 +166,15 @@ public class CourseTeacher extends JComponent {
                     ioException.printStackTrace();
                 }
                 addCourse.setText("");
+
+                Request request = new Request(1, course);
+                // send the updated course to the server
+                try {
+                    client.getOOS().writeObject(request);
+                    client.getOOS().flush();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
 
             if (e.getSource() == editButton) {
@@ -173,6 +201,16 @@ public class CourseTeacher extends JComponent {
                 course.getForums().get(editForums.getSelectedIndex()).setTopic(editCourse.getText());
                 editCourse.setText("");
                 editForums.setSelectedIndex(0);
+
+                Request request = new Request(2, course);
+                // send the updated course to the server
+                try {
+                    client.getOOS().writeObject(request);
+                    client.getOOS().flush();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
             }
 
 
@@ -196,6 +234,15 @@ public class CourseTeacher extends JComponent {
                 //else show error message
                 course.getForums().remove(deleteForums.getSelectedIndex());
                 deleteForums.setSelectedIndex(0);
+
+                Request request = new Request(3, course);
+                // send the updated course to the server
+                try {
+                    client.getOOS().writeObject(request);
+                    client.getOOS().flush();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
 
             if (e.getSource() == gradeButton) {
@@ -207,6 +254,7 @@ public class CourseTeacher extends JComponent {
                 replyPanel.setVisible(false);
             }
             if (e.getSource() == gradeSubmitButton) {
+                //TODO request for grading
                 //this shows replies AL of chosen student
                 if (students.getSelectedItem() == null) {
                     JOptionPane.showMessageDialog(null, "Error, no students found", "Error",

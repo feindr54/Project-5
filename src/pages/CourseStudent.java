@@ -1,4 +1,5 @@
 package pages;
+import networking.Request;
 import users.*;
 import main.page.*;
 import networking.ActualClient;
@@ -6,6 +7,7 @@ import networking.ActualClient;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.*;
 /**
  * CourseStudent
@@ -19,7 +21,6 @@ import java.util.*;
  */
 public class CourseStudent extends JComponent {
 
-    // TODO - remove all static references - CX
     ActualClient client;
     Container content;
     Course course;
@@ -55,6 +56,16 @@ public class CourseStudent extends JComponent {
                 //if true, forum.access()
                 //else show error message
                 forums.setSelectedIndex(0);
+
+                Request request = new Request(0, course);
+                // send the updated course to the server
+                try {
+                    client.getOOS().writeObject(request);
+                    client.getOOS().flush();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
             }
             if (e.getSource() == settingsButton) {
                 client.getPageStack().push("settings");
