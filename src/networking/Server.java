@@ -1,6 +1,7 @@
 package networking;
 
 import main.page.*;
+import pages.ReplyPanel;
 import users.*;
 
 
@@ -25,6 +26,8 @@ public class Server implements Serializable {
 
     public static ArrayList<User> users;
     public static LMS lms;
+
+    public static ArrayList<ReplyPanel> replies;
 
     private static Object lockLMS = new Object();
     private static Object lockCourse = new Object();
@@ -270,6 +273,41 @@ public class Server implements Serializable {
             }
         }
     }
+
+    //not sure if this is totally correct, should take in the request from settings and do the
+    //same thing which ahmed did to make the editCourse method
+
+    synchronized public static boolean editUsername(String oldUsername, String newUsername) {
+        int index = -1;
+        for (int i = 0; i < lms.getCourses().size(); i++) {
+            if (oldUsername.equals(users.get(i).getIdentifier())) {
+                // replaces the course name with a new name
+                index = i;
+                break;
+            }
+        }
+        if (index != -1) {
+
+            users.get(index).setIdentifier(newUsername);
+            saveUsers(USERSFILE);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+
+    synchronized public static void addReply(Reply reply) {
+
+        ReplyPanel replyPanel = new ReplyPanel(reply);
+        replies.add(replyPanel);
+
+        //TODO save reply and add it to the forum
+
+    }
+
 }
 
 /**

@@ -212,7 +212,7 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
     }
 
     synchronized public void goToSettings() {
-        changePanel("settings");
+        changePanel("settingsGUI");
     }
 
     synchronized public void logout() {
