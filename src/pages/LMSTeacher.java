@@ -124,8 +124,8 @@ public class LMSTeacher extends JComponent implements ActionListener {
     }
 
     public void settings() {
-        client.getPageStack().push("settings");
-        client.getCl().show(client.getMainPanel(), "settings");
+        client.getPageStack().push("settingsGUI");
+        client.getCl().show(client.getMainPanel(), "settingsGUI");
     }
 
     synchronized public void updateDisplay(LMS lms) {

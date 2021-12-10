@@ -163,6 +163,7 @@ public class Login extends JComponent {
         content.add(textPanel, BorderLayout.CENTER);
 
 
+
         southPanel = new JPanel();
 
         confirmButton = new JButton("Confirm");
@@ -194,7 +195,11 @@ public class Login extends JComponent {
             }
             if (e.getSource() == confirmButton) {
 
+                client.getPageStack().push("forumStudent");
+                client.getCl().show(client.getMainPanel(), "forumStudent");
+
                 //if login is successful, pull up the respective page
+                /*
                 try {
                     if (successful_login()) {
 
