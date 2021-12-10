@@ -1,4 +1,5 @@
 package pages;
+import com.sun.jdi.request.DuplicateRequestException;
 import main.page.*;
 import networking.Request;
 import users.*;
@@ -248,13 +249,17 @@ public class CourseTeacher extends JComponent {
                     choice = Integer.parseInt(replyGrade.getText());
                     if (choice >= 0 && choice <= 100) {
                         //assigns replyGrade.getText() to the student in this course
-                        course.getStudents().get(students.getSelectedIndex()).setGrade(course, replyGrade.getText());
+                        //course.getStudents().get(students.getSelectedIndex()).setGrade(course, replyGrade.getText());
+                        // TODO - delete above comments
+                        String studentName = (String) students.getSelectedItem();
+                        // TODO - sends the updated scores and a particular student to the server
+                        Request request = new Request(10, new Object[]{studentName, choice});
+                        client.sendToServer(request);
+
                         replyGrade.setText("");
                         replies.setSelectedIndex(0);
                         replyPanel.setVisible(false);
                         //this hides replies AL of chosen student
-                        // TODO - sends the updated scores and a particular student to the server
-
                         students.setSelectedIndex(0);
                     } else {
                         JOptionPane.showMessageDialog(null, "Error, please enter an " +

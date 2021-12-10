@@ -295,12 +295,27 @@ class ReaderThread extends Thread {
                 System.out.println("Received success response to add course, now we gotta update display");
                 // make sure LMS is correct
 
-                if (gui.getPageStack().peek().equals("lmsStudent")) {
-                    // TODO - load student lms
-                    gui.getLmsStudent().updateDisplay((LMS) object);
-                    //gui.getCourseStudent().updateDisplay((LMS) object);
-                } else if (gui.getPageStack().peek().equals("lmsTeacher")) {
-                    gui.getLmsTeacher().updateDisplay((LMS) object);
+                switch (gui.getPageStack().peek()) {
+                    case "lmsStudent":
+                        // TODO - load student lms
+                        // TODO - do we need to check if that specific component has changed?
+                        gui.getLmsStudent().updateDisplay((LMS) object);
+                        break;
+                    case "lmsTeacher":
+                        // TODO - do we need to check if that specific component has changed?
+                        gui.getLmsTeacher().updateDisplay((LMS) object);
+                        break;
+                    case "courseStudent":
+                        //gui.getCourseStudent().updateDisplay((LMS) object);
+
+                        break;
+                    case "courseTeacher":
+                        // gui.getCourseStudent().updateDisplay((LMS) object);
+                        break;
+                    case "forumStudent":
+                        break;
+                    case "forumTeacher":
+                        break;
                 }
             
 
