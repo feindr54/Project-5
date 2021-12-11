@@ -102,7 +102,26 @@ public class CourseTeacher extends JComponent {
                 if (accessForums.getSelectedItem() == null) {
                     JOptionPane.showMessageDialog(null, "Error, no forums found", "Error",
                             JOptionPane.INFORMATION_MESSAGE);
-                }
+                } else {
+                    String selectedForum = (String) accessForums.getSelectedItem();
+                    System.out.println(selectedForum);
+                    Forum selectedForumObject = null;
+                    for (Forum f : forums) {
+                        System.out.println(f.getTopic());
+                        if (selectedForum.equals(f.getTopic())) {
+                            System.out.println(f.toString());
+                            selectedForumObject = f;
+                            break;
+                        }
+                    }
+                    ForumTeacher ft = new ForumTeacher(client);
+                    client.setForumTeacher(ft);
+                    client.addPanelToCardLayout(client.getForumTeacher().getContent(), "forumTeacher");
+                    ft.updateDisplay(selectedForumObject);
+                    //client.getCl().con(client.getCourseStudent());
+                    client.changePanel("forumTeacher");
+                    System.out.println("teacher switched to " + selectedForum + " forum.");
+                    }
                 //get selected forumName from list
                 //check if forumName equals an existing forum
                 //if true, forum.access()
@@ -132,8 +151,8 @@ public class CourseTeacher extends JComponent {
                 String topic = addCourse.getText();
                 addCourse.setText("");
 
-                Request request = new Request(1, 0, topic);
-                // send the updated course to the server
+                Request request = new Request(1, 1, new String[]{course.getCourseName(), topic}); // 1 = add, 1 = forum: add forum request
+                // send an add forum request to the server
                 client.sendToServer(request);
             }
 
@@ -279,12 +298,17 @@ public class CourseTeacher extends JComponent {
     synchronized public void updateDisplay(Course course) {
         // TODO - Update the display of the course with a Course object input
         this.course = course;
-        courseName = course.getCourseName();
-        forums = course.getForums();
+        courseName = this.course.getCourseName();
+        forums = this.course.getForums();
         studentsArr = course.getStudents();
+        accessForums.removeAllItems();
+        editForums.removeAllItems();
+        deleteForums.removeAllItems();
 
         for (Forum f: forums) {
             accessForums.addItem(f.getTopic());
+            editForums.addItem(f.getTopic());
+            deleteForums.addItem(f.getTopic());
 
         }
 
@@ -294,6 +318,48 @@ public class CourseTeacher extends JComponent {
 
         // refreshes the display
         content.revalidate();
+    }
+
+    synchronized public void updateDisplay(LMS lms) {
+        // TODO - Update the display of the course with a Course object input
+        int index = -1;
+        for (Course c : lms.getCourses()) {
+            System.out.println(c.getCourseName() + " " + this.course.getCourseName());
+            if (c.getCourseName().equals(this.course.getCourseName())){
+                index = c.getIndex();
+                System.out.println(index);
+                break;
+            }else {
+                System.out.println("they not the same?");
+            }
+        }
+        if (index != -1) {
+            this.course = lms.getCourses().get(index);
+            courseName = this.course.getCourseName();
+            forums = this.course.getForums();
+            studentsArr = course.getStudents();
+            accessForums.removeAllItems();
+            editForums.removeAllItems();
+            deleteForums.removeAllItems();
+    
+            for (Forum f: forums) {
+                accessForums.addItem(f.getTopic());
+                editForums.addItem(f.getTopic());
+                deleteForums.addItem(f.getTopic());
+    
+            }
+    
+            for (Student s: studentsArr) {
+                students.addItem(s.getIdentifier());
+            }
+    
+            // refreshes the display
+            content.revalidate();
+        } else {
+            JOptionPane.showMessageDialog(null, "Error, Course has been deleted!", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+            client.changeToPreviousPanel();
+        }
     }
 
     public CourseTeacher(ActualClient client, Course course, Teacher teacher) {
@@ -414,7 +480,7 @@ public class CourseTeacher extends JComponent {
         f.gridx = 0;
         f.gridy = 0;
         editPanel.add(editPrompt, f);
-        editForums = new JComboBox<>(Arrays.copyOf(forums.toArray(), forums.toArray().length, String[].class));
+        editForums = new JComboBox<>();
         editForums.setMaximumRowCount(3);
         f.gridx = 0;
         f.gridy = 1;
@@ -442,7 +508,7 @@ public class CourseTeacher extends JComponent {
         g.gridx = 0;
         g.gridy = 0;
         deletePanel.add(deletePrompt, g);
-        deleteForums = new JComboBox<>(Arrays.copyOf(forums.toArray(), forums.toArray().length, String[].class));
+        deleteForums = new JComboBox<>();
         deleteForums.setMaximumRowCount(3);
         g.gridx = 0;
         g.gridy = 1;
@@ -487,7 +553,7 @@ public class CourseTeacher extends JComponent {
         replyPanel.setLayout(new GridBagLayout());
         GridBagConstraints i = new GridBagConstraints();
         replyPrompt = new JLabel("Enter the student's grade:");
-        replies = new JComboBox<>(Arrays.copyOf(repliesArr.toArray(), repliesArr.toArray().length, String[].class));
+        replies = new JComboBox<>();
         replies.setMaximumRowCount(3);
         i.gridx = 0;
         i.gridy = 0;

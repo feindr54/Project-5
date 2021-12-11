@@ -118,7 +118,7 @@ public class ForumStudent extends JComponent {
 
                 String inputText = input.getText();
 
-                updateForumDisplay(forum);
+                updateDisplay(forum);
 
                 //checks if the input is empty or just whitespace
                 //if yes, throws an error menu
@@ -215,13 +215,17 @@ public class ForumStudent extends JComponent {
         client.getOOS().flush();
     }
 
-    synchronized public void updateForumDisplay(Forum newForum) {
+    // synchronized public void updateForumDisplay(Forum newForum) {
 
-        //adds the last new reply to the display
-        //could work if we add each new reply to the replyPanel list after processing them
-        forumDisplay.add(replies.get(replies.size() - 1));
+    //     //adds the last new reply to the display
+    //     //could work if we add each new reply to the replyPanel list after processing them
+    //     forumDisplay.add(replies.get(replies.size() - 1));
 
 
+    // }
+
+    synchronized public void updateDisplay(Forum selectedForumObject) {
+        //forumDisplay.add(replies.get(replies.size() - 1));
     }
 
     

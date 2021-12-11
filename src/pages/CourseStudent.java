@@ -27,7 +27,7 @@ public class CourseStudent extends JComponent {
     String courseName;
     Student student;
 
-    ArrayList<String> forumsArr;
+    JComboBox<String> accessForums;
     JPanel defaultPanel;
     JButton backButton;
     JLabel welcomeLabel;
@@ -36,7 +36,7 @@ public class CourseStudent extends JComponent {
     JLabel gradeSentence;
     JLabel gradeCourse;
     JLabel accessPrompt;
-    JComboBox<String> forums;
+    ArrayList<Forum> forums;
     JButton accessSubmitButton;
 
     /*public void clear() {
@@ -47,24 +47,39 @@ public class CourseStudent extends JComponent {
         public void actionPerformed(ActionEvent e) {
 
             if (e.getSource() == accessSubmitButton) {
-                if (forums.getSelectedItem() == null) {
+                if (accessForums.getSelectedItem() == null) {
                     JOptionPane.showMessageDialog(null, "Error, no forums found", "Error",
                             JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    String selectedForum = (String) accessForums.getSelectedItem();
+                    System.out.println(selectedForum);
+                    Forum selectedForumObject = null;
+                    for (Forum f : forums) {
+                        System.out.println(f.getTopic());
+                        if (selectedForum.equals(f.getTopic())) {
+                            System.out.println(f.toString());
+                            selectedForumObject = f;
+                            break;
+                        }
+                    }
+                    ForumStudent fs = new ForumStudent(client, selectedForumObject);
+                    client.setForumStudent(fs);
+                    client.addPanelToCardLayout(client.getForumStudent().getContent(), "forumStudent");
+                    fs.updateDisplay(selectedForumObject);
+                    //client.getCl().con(client.getCourseStudent());
+                    client.changePanel("forumStudent");
+                    System.out.println("Student switched to " + selectedForum + " forum.");
+                    
+
+
+
+
                 }
                 //get selected forumName from list
                 //check if forumName equals an existing forum
                 //if true, forum.access()
                 //else show error message
-                forums.setSelectedIndex(0);
-
-                Request request = new Request(0, course);
-                // send the updated course to the server
-                try {
-                    client.getOOS().writeObject(request);
-                    client.getOOS().flush();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+                
 
             }
             if (e.getSource() == settingsButton) {
@@ -83,7 +98,7 @@ public class CourseStudent extends JComponent {
         this.course = course;
         this.student = student;
         courseName = course.getCourseName();
-        forumsArr = course.forumsToString();
+        forums = course.getForums();
 
         content = new Container();
         content.setLayout(new BorderLayout());
@@ -122,13 +137,13 @@ public class CourseStudent extends JComponent {
         c.gridx = 0;
         c.gridy = 0;
         accessPanel.add(accessPrompt, c);
-        forumsArr = new ArrayList<>();
-        forums = new JComboBox<>(Arrays.copyOf(forumsArr.toArray(), forumsArr.toArray().length, String[].class));
-        forums.setMaximumRowCount(3);
+        forums = new ArrayList<>();
+        accessForums = new JComboBox<>();
+        accessForums.setMaximumRowCount(3);
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 1;
-        accessPanel.add(forums, c);
+        accessPanel.add(accessForums, c);
         accessSubmitButton = new JButton("Submit");
         accessSubmitButton.addActionListener(actionListener);
         c.weightx = 1;
@@ -139,13 +154,50 @@ public class CourseStudent extends JComponent {
         content.add(accessPanel, BorderLayout.CENTER);
     }
 
-    synchronized public void updateDisplay(Course course, Student student) {
+    synchronized public void updateDisplay(Course course) {
+        // TODO - Update the display of the course with a Course object input
         this.course = course;
-        this.student = student;
-        courseName = course.getCourseName();
-        forumsArr = course.forumsToString();
+        courseName = this.course.getCourseName();
+        forums = this.course.getForums();
+        accessForums.removeAllItems();
+
+        for (Forum f: forums) {
+            accessForums.addItem(f.getTopic());
+
+        }
+
         // refreshes the display
         content.revalidate();
+    }
+
+    synchronized public void updateDisplay(LMS lms) {
+        // TODO - Update the display of the course with a Course object input
+        int index = -1;
+        for (Course c : lms.getCourses()) {
+            if (c.getCourseName().equals(this.course.getCourseName())){
+                index = c.getIndex();
+                break;
+            } 
+        }
+        if (index != -1) {
+            this.course = lms.getCourses().get(index);
+            courseName = this.course.getCourseName();
+            forums = this.course.getForums();
+            accessForums.removeAllItems();
+    
+            for (Forum f: forums) {
+                accessForums.addItem(f.getTopic());
+    
+            }
+    
+    
+            // refreshes the display
+            content.revalidate();
+        } else {
+            JOptionPane.showMessageDialog(null, "Error, Course has been deleted!", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+            client.changeToPreviousPanel();
+        }
     }
 
     public Container getContent() {

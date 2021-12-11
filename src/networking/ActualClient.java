@@ -292,7 +292,7 @@ class ReaderThread extends Thread {
                 }
             } else if (object instanceof LMS) {
                 // check if user is at LMS page
-                System.out.println("Received success response to add course, now we gotta update display");
+                System.out.println("Received success response, now we gotta update display");
                 // make sure LMS is correct
 
                 switch (gui.getPageStack().peek()) {
@@ -306,11 +306,11 @@ class ReaderThread extends Thread {
                         gui.getLmsTeacher().updateDisplay((LMS) object);
                         break;
                     case "courseStudent":
-                        //gui.getCourseStudent().updateDisplay((LMS) object);
+                        gui.getCourseStudent().updateDisplay((LMS) object);
 
                         break;
                     case "courseTeacher":
-                        // gui.getCourseStudent().updateDisplay((LMS) object);
+                        gui.getCourseTeacher().updateDisplay((LMS) object);
                         break;
                     case "forumStudent":
                         break;

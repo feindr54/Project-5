@@ -234,5 +234,9 @@ public class ForumTeacher extends JComponent {
         }
     }
 
+    synchronized public void updateDisplay(Forum selectedForumObject) {
+        
+    }
+
 
 }

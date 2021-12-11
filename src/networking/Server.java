@@ -44,7 +44,7 @@ public class Server implements Serializable {
     public synchronized static void saveLMS(String filename) {
         try (ObjectOutputStream oo = new ObjectOutputStream(new FileOutputStream(filename))) {
             // write the users list
-            oo.writeObject(users);
+            oo.writeObject(lms);
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
         } catch (IOException e) {
@@ -84,7 +84,7 @@ public class Server implements Serializable {
             //e.printStackTrace();
         } catch (Exception e) {
             System.out.println("Error reading LMS!");
-            //e.printStackTrace();
+            e.printStackTrace();
         }
         return new LMS(); 
     }
@@ -368,7 +368,7 @@ public class Server implements Serializable {
         for (int i = 0; i < lms.getCourses().size(); i++) {
             for (int j = 0; j < lms.getCourses().get(i).getForums().size(); j++) {
                 if (forumToDelete.equals(lms.getCourses().get(i).getForums().get(j).getTopic())) {
-                    lms.getCourses().remove(i);
+                    lms.getCourses().get(i).getForums().remove(j);
                     saveLMS(LMSFILE);
                     return;
                 }
@@ -483,6 +483,7 @@ class ClientHandler extends Thread implements Serializable {
         else if (operation == 1) { // ADD OPERATION
             switch (operand) { 
                 case 0: // ADD COURSE REQUEST
+                    System.out.println("ADD COURSE REQUEST RECEIVED");
                     String courseName = (String) object;
                     if (Server.addCourse(courseName)) {
                         System.out.println("There are " + Server.getLMS().getCourses().size() + " courses.");
@@ -495,6 +496,7 @@ class ClientHandler extends Thread implements Serializable {
                         return null; 
                     }
                 case 1: // ADD FORUM REQUEST (object received is the course name and the new forum name)
+                    System.out.println("ADD FORUM REQUEST RECEIVED");
                     String[] names = (String[]) object;
                     String cName = names[0];
                     String forumName = names[1];
@@ -518,30 +520,34 @@ class ClientHandler extends Thread implements Serializable {
             String newName = oldNameNewName[1];
             switch (operand) {
                 case 0: // EDIT COURSE REQUEST
+                    System.out.println("EDIT COURSE REQUEST RECEIVED");
                     if (Server.editCourse(oldName, newName)) {
                         System.out.println("Edited course!");
                         response = new Response(0, Server.getLMS());
                         return response;
                     }
                 case 1: // EDIT FORUM REQUEST
+                    System.out.println("EDIT FORUM REQUEST RECEIVED");
                     Server.editForum(oldName, newName);
                     // TODO - remove the test below
                     System.out.println("Edited Forum!");
                     response = new Response(0, Server.getLMS());
                     return response;
-                case 2: // EDIT
+                case 2: // EDIT REPLY?
                 default:
                     break;
             } 
         } else if (operation == 3) { // DELETE OPERATION
             switch (operand) {
                 case 0: // DELETE COURSE REQUEST
+                    System.out.println("DELETE COURSE REQUEST RECEIVED");
                     String courseToDelete = (String) object;
                     Server.deleteCourse(courseToDelete);
                     System.out.println("Deleted " + courseToDelete + "!");
                     response = new Response(0, Server.getLMS());
                     return response;
                 case 1: // DELETE FORUM REQUEST
+                    System.out.println("DELETE FORUM REQUEST RECEIVED");
                     String forumToDelete = (String) object;
                     Server.deleteForum(forumToDelete);
                     // create response to send to all clients
