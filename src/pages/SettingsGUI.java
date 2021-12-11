@@ -143,7 +143,7 @@ public class SettingsGUI extends JComponent {
                      JOptionPane.ERROR_MESSAGE);
                 } else {
                     Request request = new Request(7,
-                            new String[]{client.getUser().getIdentifier(), newUsername});
+                            new Object[]{client.getUser(), newUsername});
                     client.sendToServer(request);
                 }
             }

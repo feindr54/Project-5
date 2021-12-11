@@ -295,6 +295,7 @@ class ReaderThread extends Thread {
                 System.out.println("Received success response, now we gotta update display");
                 // make sure LMS is correct
 
+                System.out.println("We are at " + gui.getPageStack().peek()); // TODO - delete test comment later 
                 switch (gui.getPageStack().peek()) {
                     case "lmsStudent":
                         // TODO - load student lms
@@ -313,29 +314,20 @@ class ReaderThread extends Thread {
                         gui.getCourseTeacher().updateDisplay((LMS) object);
                         break;
                     case "forumStudent":
+                        gui.getForumStudent().updateDisplay((LMS) object);
+                        System.out.println("updating forumStudent page");
                         break;
                     case "forumTeacher":
+                        gui.getForumTeacher().updateDisplay((LMS) object);
+                        System.out.println("updating forumTeacher page");
                         break;
                 }
             
 
 
 
-            } else if (object instanceof Course) {
-                if (gui.getPageStack().peek().equals("courseStudent")) {
-                    // TODO - load student course
-                } else if (gui.getPageStack().peek().equals("courseTeacher")){
-                    // TODO - load teacher course
-                }
-            } else if (object instanceof Forum) {
-                if (gui.getPageStack().peek().equals("forumStudent")) {
-                    // TODO - load student forum
-                } else if (gui.getPageStack().peek().equals("forumStudent")) {
-                    // TODO - load teacher forum
-                    ForumTeacher forumTeacher = new ForumTeacher(gui);
-
-                    // TODO - create a setPage(Forum forum) method in forumGUI method to change it
-                }
+            } else if (object instanceof User) {
+                gui.setUser((User) object);
             }
 
         } else {

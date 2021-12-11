@@ -99,7 +99,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
                 for (Course c : courses) {
                     System.out.println(c.getCourseName());
                     if (selectedCourse.equals(c.getCourseName())) {
-                        System.out.println(c.toString());
+                        System.out.println(c.toString()); // Delete test comment later
                         selectedCourseObject = c;
                         break;
                     }
@@ -108,9 +108,9 @@ public class LMSTeacher extends JComponent implements ActionListener {
                 client.setCourseTeacher(ct);
                 client.addPanelToCardLayout(client.getCourseTeacher().getContent(), "courseTeacher");
                 ct.updateDisplay(selectedCourseObject);
-                //client.getCl().con(client.getCourseStudent());
                 client.changePanel("courseTeacher");
-                System.out.println("teacher switched to " + selectedCourse + " course.");
+
+                System.out.println("teacher switched to " + selectedCourse + " course."); // TODO - delete test comment later
             
             }
 

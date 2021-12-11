@@ -9,7 +9,7 @@ import java.awt.event.*;
 import main.page.*;
 import networking.*;
 import users.*;
-
+// TODO - add javadoc 
 public class ForumTeacher extends JComponent {
 
     ActualClient client;
@@ -50,10 +50,12 @@ public class ForumTeacher extends JComponent {
         // bot.setBorder(BorderFactory.createLineBorder(Color.GREEN));
 
         // TOP PANEL
-        JButton Settings = new JButton("Settings");
-        // gbc.anchor = GridBagConstraints.WEST;
-        // gbc.gridx = 0;
-        top.add(Settings);
+
+        Back = new JButton("Back");
+        Back.addActionListener(actionListener);
+        top.add(Back);
+
+        
         top.add(Box.createHorizontalGlue());
 
         JLabel title = new JLabel("Welcome to the Forum Page");
@@ -62,8 +64,13 @@ public class ForumTeacher extends JComponent {
         top.add(title);
         top.add(Box.createHorizontalGlue());
 
-        Back = new JButton("Back");
-        top.add(Back);
+        Settings = new JButton("Settings");
+        // gbc.anchor = GridBagConstraints.WEST;
+        // gbc.gridx = 0;
+        Settings.addActionListener(actionListener);
+        top.add(Settings);
+
+        
 
         content.add(top, BorderLayout.NORTH);
 
@@ -76,7 +83,7 @@ public class ForumTeacher extends JComponent {
         forumDisplay = new JPanel();
         forumDisplay.setPreferredSize(new Dimension(500, 500));
         forumDisplay.setLayout(new BoxLayout(forumDisplay, BoxLayout.Y_AXIS));
-        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum Title"));
+        forumDisplay.setBorder(BorderFactory.createTitledBorder(""));
 
         forumDisplayScroll = new JScrollPane(forumDisplay);
 
@@ -179,6 +186,12 @@ public class ForumTeacher extends JComponent {
                 forumDisplay.revalidate();
                 input.setText("");
             }
+            if (e.getSource() == Back) {
+                client.changeToPreviousPanel();
+            }
+            if (e.getSource() == Settings) {
+                client.goToSettings();
+            }
         }
     };
 
@@ -214,6 +227,8 @@ public class ForumTeacher extends JComponent {
         if (name.isSelected()) {
             name.setSelected(false);
         }
+
+        // TODO - changes the order of the replies in the Forum 
     }
 
     public void upvoteCheck() {
@@ -236,6 +251,28 @@ public class ForumTeacher extends JComponent {
 
     synchronized public void updateDisplay(Forum selectedForumObject) {
         
+    }
+
+    synchronized public void updateDisplay(LMS lms) {
+        forumDisplay = new JPanel();
+        for (Course c : lms.getCourses()) {
+            for (Forum f : c.getForums()) {
+                if (f.getIndex() == forum.getIndex()) { // find the forum we are at
+                    forum = f;
+                    break;
+                }
+            }
+        }
+
+        for (Reply reply : forum.getReplies()) {
+            ReplyPanel replyPanel = new ReplyPanel(reply);
+            forumDisplay.add(replyPanel);
+        }
+
+    
+        forumDisplay.setBorder(BorderFactory.createTitledBorder(forum.getTopic()));
+        forumDisplay.revalidate();
+        content.revalidate();
     }
 
 

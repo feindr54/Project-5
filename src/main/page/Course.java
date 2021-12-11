@@ -29,6 +29,9 @@ public class Course implements Serializable {
     private ArrayList<Student> students;
     private ArrayList<String> forumsString;
     private ArrayList<String> studentsString;
+
+    private int numForumCreated; 
+
     private int index;
 
     // constructor
@@ -36,9 +39,19 @@ public class Course implements Serializable {
         this.courseName = courseName;
         this.forums = new ArrayList<Forum>();
         this.students = new ArrayList<Student>();
+        this.numForumCreated = 0;
+        this.index = 0; 
     }
 
     // setter getter
+    public void addNumForumCreated() {
+        this.numForumCreated++;
+    }
+
+    public int getNumForumCreated() {
+        return numForumCreated;
+    }
+    
     public void setIndex(int index) {
         this.index = index;
     }

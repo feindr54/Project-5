@@ -29,9 +29,14 @@ public class ReplyPanel extends JPanel {
     JLabel identifier;
     JPanel commentPanel; 
     ArrayList<JLabel> comments;
+    //Border blackline; 
+    boolean isSelected; 
     
     public ReplyPanel(Reply reply) {
         this.reply = reply; 
+
+        // initializes a border object to be added to the panel
+
         // finish off reply panel and comment panel so that we can finish the forum page component
         upperPanel = new JPanel(new FlowLayout());
 
@@ -59,11 +64,30 @@ public class ReplyPanel extends JPanel {
 
         // convert the individual comments into commentPanels
         // then adds the CPs to the reply panel
-        for (Comment c : reply.getComments()) {
-            CommentPanel cp = new CommentPanel(c);
+        if (reply.getComments().size() > 0) {
+            for (Comment c : reply.getComments()) {
+                CommentPanel cp = new CommentPanel(c);
 
-            // TODO - find a way to add the comment to the reply panels in a more proper fashion than this
-            this.add(cp);
+                // TODO - find a way to add the comment to the reply panels in a more proper fashion than this
+                this.add(cp);
+            }
         }
+        /*
+        addMouseListener(new MouseAdapter() {
+            @Override 
+            public void mouseClicked(MouseEvent e) {
+                if (isSelected) {
+                    // removes the borders 
+                    // forces users to comment only 
+                    isSelected = false;
+                } else {
+                    // adds border 
+                    isSelected = true; 
+                }
+            }
+        });
+        */
+        this.setBorder(BorderFactory.createLineBorder(Color.BLACK)); // TODO - test to see if the blackline works 
+        
     }
 }

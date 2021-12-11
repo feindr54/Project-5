@@ -49,6 +49,10 @@ public class Reply implements Serializable {
         this.currentTime = LocalDateTime.now();
     }
 
+    public Forum getForum() {
+        return forum; 
+    }
+
     public Student getOwner() {
         return owner;
     }

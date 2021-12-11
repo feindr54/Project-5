@@ -321,7 +321,27 @@ public class Server implements Serializable {
 
 
     synchronized public static void addReply(Reply reply) {
+        Forum currentForum = reply.getForum();
+        Course currentCourse = currentForum.getCourse();
+        
+        for (Course c : lms.getCourses()) {
+            if (c.getCourseName().equals(currentCourse.getCourseName())) { // find the correct course
+                for (Forum f : c.getForums()) {
+                    if (f.getTopic().equals(currentForum.getTopic())) {
+                        // add the reply into the arrayList
+                        f.addReply(reply);
+                        // save the LMS 
+                        saveLMS(LMSFILE);
+                        return; 
+                    }
+                }
+            }
+        }
+        
+        
         /*
+
+
         for (Course c : lms.getCourses()) {
             for (Forum f : c.getForums()) {
                 f.addReply(reply);
@@ -330,8 +350,8 @@ public class Server implements Serializable {
 
          */
 
-        ReplyPanel replyPanel = new ReplyPanel(reply);
-        replies.add(replyPanel);
+        // ReplyPanel replyPanel = new ReplyPanel(reply);
+        // replies.add(replyPanel);
 
         //TODO save reply and add it to the forum
 
@@ -510,7 +530,12 @@ class ClientHandler extends Thread implements Serializable {
                         return null;
                     }
                 case 2: // TODO - ADD REPLY REQUEST
-                    break; 
+                    System.out.println("ADD REPLY REQUEST RECEIVED"); // delete comment 
+                    Reply reply = (Reply) object; 
+                    Server.addReply(reply);
+                    response = new Response(0, Server.getLMS());
+                    return response; 
+
                 case 3: // TODO - ADD COMMENT REQUEST
                     break;
             }
@@ -563,7 +588,7 @@ class ClientHandler extends Thread implements Serializable {
             User user = (User) info[0];
             String newUsername = (String) info[1];
 
-            Server.editUsername(user.getIdentifier(), newUsername);
+            user = Server.editUsername(user.getIdentifier(), newUsername);
 
             response = new Response(0, user);
             // send the response to the client
@@ -743,7 +768,7 @@ class ClientHandler extends Thread implements Serializable {
                 
             } catch (Exception e) {
                 // TODO - REMOVE TEST WHEN DONE
-                System.out.println("uh oh stinky");
+                System.out.println("someone disconnected");
                 int index = -1;
                 for (int i = 0; i < Server.clients.size(); i ++) {
                     if (Server.clients.get(i).getID() == this.id) {
