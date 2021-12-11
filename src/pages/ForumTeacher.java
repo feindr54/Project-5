@@ -265,9 +265,10 @@ public class ForumTeacher extends JComponent {
         ArrayList<Reply> sortedByDate = (ArrayList<Reply>) forum.getReplies().clone();
 
         sortedByDate.sort(new SortByDate());
+        replyPanels = new ArrayList<>();
 
         // updates the replies panel 
-        forumDisplay = new JPanel(); 
+        forumDisplay.removeAll();
         for (Reply reply : sortedByDate) {
             for (Comment c : reply.getComments()) {
                 System.out.println(c.getContent());

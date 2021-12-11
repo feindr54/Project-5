@@ -84,6 +84,15 @@ public class Course implements Serializable {
         this.students = students;
     }
 
+    public void addStudent(Student student) {
+        for(Student s: this.students) {
+            if (s.equals(student)) {
+                return;
+            }
+        }
+        this.students.add(student);
+    }
+
     //add forum to arraylist
 
     public void addForum(Forum forum) {

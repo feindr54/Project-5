@@ -330,6 +330,7 @@ public class Server implements Serializable {
                     if (f.getTopic().equals(currentForum.getTopic())) {
                         // add the reply into the arrayList
                         f.addReply(reply);
+                        c.addStudent(reply.getOwner());
                         // save the LMS 
                         saveLMS(LMSFILE);
                         return; 

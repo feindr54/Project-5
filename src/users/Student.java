@@ -87,6 +87,6 @@ public class Student extends User implements Serializable {
         }
 
         Student u = (Student) o;
-        return ((Student) o).getIdentifier().equals(u.getIdentifier());
+        return ((Student) o).getEmail().equals(u.getEmail());
     }
 }
