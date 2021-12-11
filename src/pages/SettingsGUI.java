@@ -138,7 +138,7 @@ public class SettingsGUI extends JComponent {
                 // Get new username from textField
                 String newUsername = idText.getText();
                 if (newUsername == null || newUsername.isBlank()) { // check if the field is blank
-                    // TODO - JOptionPane error message (please fill in textfield)
+                    // JOptionPane error message (please fill in textfield)
                     JOptionPane.showMessageDialog(null, "Please fill in the textfield.", "Error",
                      JOptionPane.ERROR_MESSAGE);
                 } else {
@@ -151,7 +151,7 @@ public class SettingsGUI extends JComponent {
             if (e.getSource() == passwordSubmitButton) {
                 //TODO send new password to server, change it in the list of passwords
                 // Get new password from textField
-                String newPassword = idText.getText();
+                String newPassword = passwordText.getText();
                 if (newPassword == null || newPassword.isBlank()) { // check if the field is blank
                     // JOptionPane error message (please fill in textfield)
                     JOptionPane.showMessageDialog(null, "Please fill in the textfield.", "Error",
