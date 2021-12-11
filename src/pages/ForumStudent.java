@@ -277,9 +277,8 @@ public class ForumStudent extends JComponent {
         for (Course c : lms.getCourses()) {
             for (Forum f : c.getForums()) {
                 // TODO - change the getTopic to getIdentifier 
-                if (f.getTopic().equals(forum.getTopic())) { // find the forum we are at
+                if (f.getIndex() == forum.getIndex()) { // find the forum we are at
                     forum = f;
-
                     break;
                 }
             }
@@ -298,8 +297,8 @@ public class ForumStudent extends JComponent {
                 System.out.println(c.getContent());
             }
             ReplyPanel replyPanel = new ReplyPanel(reply);
-            replyPanels.add(replyPanel);
             replyPanel.addMouseListener(selectReplyListener);
+            replyPanels.add(replyPanel);
             System.out.println("adding a new reply");
         }
 

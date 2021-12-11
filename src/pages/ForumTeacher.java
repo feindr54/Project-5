@@ -268,10 +268,13 @@ public class ForumTeacher extends JComponent {
         replyPanels = new ArrayList<>();
 
         // updates the replies panel 
-        forumDisplay.removeAll();
+        forumDisplay.removeAll(); // TODO - does this remove every element in the forum display?
+
         for (Reply reply : sortedByDate) {
-            for (Comment c : reply.getComments()) {
-                System.out.println(c.getContent());
+            if (reply.getComments().size() > 0) {
+                for (Comment c : reply.getComments()) {
+                    System.out.println(c.getContent());
+                }
             }
             ReplyPanel replyPanel = new ReplyPanel(reply);
             replyPanels.add(replyPanel);
@@ -282,16 +285,11 @@ public class ForumTeacher extends JComponent {
         for (ReplyPanel replyPanel : replyPanels) {
             forumDisplay.add(replyPanel);
         }
-
-
-
         System.out.println("shouldve added all replies");
         
         // TODO - delete test stuff below later
         // ReplyPanel tempplsdeleteLater = new ReplyPanel(new Reply(forum, (Student) currentUser, "monkey"));
         // forumDisplay.add(tempplsdeleteLater);
-
-    
         forumDisplay.setBorder(BorderFactory.createTitledBorder(forum.getTopic()));
 
         forumDisplay.revalidate();
@@ -306,7 +304,42 @@ public class ForumTeacher extends JComponent {
         if (name.isSelected()) {
             name.setSelected(false);
         }
-        // TODO - change the order of replies in decreasing upvotes 
+        // TODO - change the order of replies in decreasing upvotes
+        // create a dummy Reply arraylsit
+        ArrayList<Reply> sortedByUpvote = (ArrayList<Reply>) forum.getReplies().clone();
+
+        sortedByUpvote.sort(new SortByUpvotes());
+        replyPanels = new ArrayList<>();
+
+        // updates the replies panel
+        forumDisplay.removeAll();
+        for (Reply reply : sortedByUpvote) {
+            if (reply.getComments().size() > 0) {
+                for (Comment c : reply.getComments()) {
+                    System.out.println(c.getContent());
+                }
+            }
+            ReplyPanel replyPanel = new ReplyPanel(reply);
+            replyPanels.add(replyPanel);
+            replyPanel.addMouseListener(selectReplyListener);
+            System.out.println("adding a new reply");
+        }
+
+        for (ReplyPanel replyPanel : replyPanels) {
+            forumDisplay.add(replyPanel);
+        }
+
+        System.out.println("shouldve added all replies");
+
+        // TODO - delete test stuff below later
+        // ReplyPanel tempplsdeleteLater = new ReplyPanel(new Reply(forum, (Student) currentUser, "monkey"));
+        // forumDisplay.add(tempplsdeleteLater);
+
+        forumDisplay.setBorder(BorderFactory.createTitledBorder(forum.getTopic()));
+
+        forumDisplay.revalidate();
+        forumDisplay.repaint();
+        forumDisplayScroll.revalidate();
     }
 
     public void nameCheck() {
@@ -316,7 +349,48 @@ public class ForumTeacher extends JComponent {
         if (date.isSelected()) {
             date.setSelected(false);
         }
-        // TODO - change the order of replies in alphabetical order of names 
+        // TODO - change the order of replies in alphabetical order of names
+        // create a dummy Reply arraylist
+        ArrayList<Reply> sortedByName = (ArrayList<Reply>) forum.getReplies().clone();
+
+        System.out.println(sortedByName); // TODO - delete test later
+
+        sortedByName.sort(new SortByName());
+
+        System.out.println(sortedByName);
+
+        replyPanels = new ArrayList<>();
+
+        // updates the replies panel
+        forumDisplay.removeAll();
+
+        for (Reply reply : sortedByName) {
+            if (reply.getComments().size() > 0) {
+                for (Comment c : reply.getComments()) {
+                    System.out.println(c.getContent());
+                }
+            }
+            ReplyPanel replyPanel = new ReplyPanel(reply);
+            replyPanels.add(replyPanel);
+            replyPanel.addMouseListener(selectReplyListener);
+            System.out.println("adding a new reply");
+        }
+
+        for (ReplyPanel replyPanel : replyPanels) {
+            forumDisplay.add(replyPanel);
+        }
+
+        System.out.println("shouldve added all replies");
+
+        // TODO - delete test stuff below later
+        // ReplyPanel tempplsdeleteLater = new ReplyPanel(new Reply(forum, (Student) currentUser, "monkey"));
+        // forumDisplay.add(tempplsdeleteLater);
+
+        forumDisplay.setBorder(BorderFactory.createTitledBorder(forum.getTopic()));
+
+        forumDisplay.revalidate();
+        forumDisplay.repaint();
+        forumDisplayScroll.revalidate();
     }
 
     synchronized public void updateDisplay(Forum selectedForumObject) {

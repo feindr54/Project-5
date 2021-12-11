@@ -114,14 +114,17 @@ public class CourseTeacher extends JComponent {
                             break;
                         }
                     }
-                    ForumTeacher ft = new ForumTeacher(client);
-                    client.setForumTeacher(ft);
-                    client.addPanelToCardLayout(client.getForumTeacher().getContent(), "forumTeacher");
-                    ft.updateDisplay(selectedForumObject);
+                    if (client.getForumTeacher() == null) {
+                        ForumTeacher ft = new ForumTeacher(client);
+                        client.setForumTeacher(ft);
+                        client.addPanelToCardLayout(client.getForumTeacher().getContent(), "forumTeacher");
+                        ft.updateDisplay(selectedForumObject);
+                    }
+
                     //client.getCl().con(client.getCourseStudent());
                     client.changePanel("forumTeacher");
                     System.out.println("teacher switched to " + selectedForum + " forum.");
-                    }
+                }
                 //get selected forumName from list
                 //check if forumName equals an existing forum
                 //if true, forum.access()
