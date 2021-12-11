@@ -40,6 +40,7 @@ public class ForumTeacher extends JComponent {
     public ForumTeacher(ActualClient client) {
         // ForumTeacher forumPage = new ForumTeacher(frame);
         this.client = client;
+        this.currentUser = client.getUser();
 
         content = new Container();
         content.setLayout(new BorderLayout());
@@ -211,8 +212,6 @@ public class ForumTeacher extends JComponent {
                     //add reply request to list of courses
                     
                     input.setText("");
-                    Submit.setText("Reply");
-                    prompt.setText("Enter Reply:\t");
                     
                 }
 
@@ -356,22 +355,10 @@ public class ForumTeacher extends JComponent {
         replies = new ArrayList<>();
         replyPanels = new ArrayList<>();
 
-        for (Course c : lms.getCourses()) {
-            for (Forum f : c.getForums()) {
-                // TODO - change the getTopic to getIdentifier 
-                if (f.getTopic().equals(forum.getTopic())) { // find the forum we are at
-                    forum = f;
-
-                    break;
-                }
-            }
-        }
-
         // update replies ArrayList with the forum replies
-        replies = forum.getReplies();
-
-
-
+        
+        
+        
         for (Course c : lms.getCourses()) {
             for (Forum f : c.getForums()) {
                 if (f.getIndex() == forum.getIndex()) { // find the forum we are at
@@ -380,9 +367,17 @@ public class ForumTeacher extends JComponent {
                 }
             }
         }
+        
+        replies = forum.getReplies();
 
-        for (Reply reply : forum.getReplies()) {
+
+        for (Reply reply : replies) {
             ReplyPanel replyPanel = new ReplyPanel(reply);
+            replyPanel.addMouseListener(selectReplyListener);
+            replyPanels.add(replyPanel);
+        }
+
+        for (ReplyPanel replyPanel : replyPanels) {
             forumDisplay.add(replyPanel);
         }
 
@@ -405,12 +400,8 @@ public class ForumTeacher extends JComponent {
                     }
                     replyPanel.unselect();
                 }
-                Submit.setText("Comment");
-                prompt.setText("Enter Comment:\t");
             } else {
                 selectedReplyPanel.unselect();
-                Submit.setText("Reply");
-                prompt.setText("Enter Reply:\t");
             }
             //e.getSource();
         }

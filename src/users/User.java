@@ -122,7 +122,7 @@ public class User implements Serializable {
         }
 
         User u = (User) o;
-        return ((User) o).getIdentifier().equals(((User) o).getIdentifier());
+        return ((User) o).getIdentifier().equals(((User) u).getIdentifier());
     }
 
     @Override
