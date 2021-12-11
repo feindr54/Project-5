@@ -30,6 +30,8 @@ public class ForumStudent extends JComponent {
     Forum forum; 
     User currentUser;
 
+    JButton upvoteButton;
+
     //tracks all replyPanels in a given forum
     ArrayList<Reply> replies = new ArrayList<>();
     ArrayList<ReplyPanel> replyPanels = new ArrayList<>();
@@ -97,6 +99,12 @@ public class ForumStudent extends JComponent {
         // middle.add(chatDisplay, middleConstraint);
         middle.add(forumDisplayScroll);
         middle.add(Box.createHorizontalGlue());
+
+
+        //adds upvote button on the side next to the forum display
+        upvoteButton = new JButton("Upvote");
+        upvoteButton.addActionListener(actionListener);
+        middle.add(upvoteButton);
 
         content.add(middle, BorderLayout.CENTER);
 
@@ -169,6 +177,23 @@ public class ForumStudent extends JComponent {
                     Submit.setText("Reply");
                     prompt.setText("Enter Reply:\t");
                     
+                }
+
+            }
+
+            if (e.getSource() == upvoteButton) {
+
+                Reply selectedReply = replyPanelSelected();
+
+                if (selectedReply == null) { // throw an error message if no reply is selected
+
+                    JOptionPane.showMessageDialog(null, "Please select a reply to upvote",
+                            " Error: no reply selected", JOptionPane.ERROR_MESSAGE);
+
+                } else { // a reply is selected so upvote
+
+                    //TODO how to upvote a reply
+
                 }
 
             }

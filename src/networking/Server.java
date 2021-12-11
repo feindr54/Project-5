@@ -292,7 +292,7 @@ public class Server implements Serializable {
     synchronized public static User editUsername(String oldUsername, String newUsername) {
         int index = -1;
         // TODO - change the whole for-loop, should loop through the users ArrayList
-        for (int i = 0; i < lms.getCourses().size(); i++) {
+        for (int i = 0; i < users.size(); i++) {
             if (oldUsername.equals(users.get(i).getIdentifier())) {
                 // replaces the course name with a new name
                 index = i;
