@@ -5,6 +5,7 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 import main.page.*;
 import networking.*;
@@ -31,6 +32,10 @@ public class ForumTeacher extends JComponent {
 
     Forum forum; 
     User currentUser; 
+
+    //tracks all replyPanels in a given forum
+    ArrayList<Reply> replies = new ArrayList<>();
+    ArrayList<ReplyPanel> replyPanels = new ArrayList<>();
 
     public ForumTeacher(ActualClient client) {
         // ForumTeacher forumPage = new ForumTeacher(frame);
@@ -181,10 +186,40 @@ public class ForumTeacher extends JComponent {
                 // and call an update forum method that updates the gui
                 // to display the new reply! --> updateForumDisplay() method
 
-                JLabel newChat = new JLabel(input.getText());
-                forumDisplay.add(newChat);
-                forumDisplay.revalidate();
-                input.setText("");
+                String inputText = input.getText();
+                
+                //checks if the input is empty or just whitespace
+                //if yes, throws an error menu
+                //else, continue making the reply
+                if (inputText == null || inputText.isBlank()) {
+                    JOptionPane.showMessageDialog(null, "Please enter a reply or comment",
+                            " Error: Empty input", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    // send request to server to add this reply
+                    Reply selectedReply = replyPanelSelected();
+
+                    if (selectedReply != null) { // no reply selected so we are making a new one
+                        Comment newComment = new Comment(selectedReply, currentUser, inputText);
+                        Request request = new Request(1, 3, newComment); // creates a add comment request 
+                        client.sendToServer(request);
+                        System.out.println("add comment request sent"); // TODO - delete test comment 
+                        
+                    }else {
+                        JOptionPane.showMessageDialog(null, "Please select a reply first to comment.",
+                            "Error: No reply selected", JOptionPane.ERROR_MESSAGE);
+                    }
+                    //add reply request to list of courses
+                    
+                    input.setText("");
+                    Submit.setText("Reply");
+                    prompt.setText("Enter Reply:\t");
+                    
+                }
+
+                // JLabel newChat = new JLabel(input.getText());
+                // forumDisplay.add(newChat);
+                // forumDisplay.revalidate();
+                // input.setText("");
             }
             if (e.getSource() == Back) {
                 client.changeToPreviousPanel();
@@ -194,8 +229,6 @@ public class ForumTeacher extends JComponent {
             }
         }
     };
-
-    
 
     MouseAdapter replyClick = new MouseAdapter() {
         @Override
@@ -229,6 +262,41 @@ public class ForumTeacher extends JComponent {
         }
 
         // TODO - changes the order of the replies in the Forum 
+        // create a dummy Reply arraylsit 
+        ArrayList<Reply> sortedByDate = (ArrayList<Reply>) forum.getReplies().clone();
+
+        sortedByDate.sort(new SortByDate());
+
+        // updates the replies panel 
+        forumDisplay = new JPanel(); 
+        for (Reply reply : sortedByDate) {
+            for (Comment c : reply.getComments()) {
+                System.out.println(c.getContent());
+            }
+            ReplyPanel replyPanel = new ReplyPanel(reply);
+            replyPanels.add(replyPanel);
+            replyPanel.addMouseListener(selectReplyListener);
+            System.out.println("adding a new reply");
+        }
+
+        for (ReplyPanel replyPanel : replyPanels) {
+            forumDisplay.add(replyPanel);
+        }
+
+
+
+        System.out.println("shouldve added all replies");
+        
+        // TODO - delete test stuff below later
+        // ReplyPanel tempplsdeleteLater = new ReplyPanel(new Reply(forum, (Student) currentUser, "monkey"));
+        // forumDisplay.add(tempplsdeleteLater);
+
+    
+        forumDisplay.setBorder(BorderFactory.createTitledBorder(forum.getTopic()));
+
+        forumDisplay.revalidate();
+        forumDisplay.repaint();
+        forumDisplayScroll.revalidate();
     }
 
     public void upvoteCheck() {
@@ -238,6 +306,7 @@ public class ForumTeacher extends JComponent {
         if (name.isSelected()) {
             name.setSelected(false);
         }
+        // TODO - change the order of replies in decreasing upvotes 
     }
 
     public void nameCheck() {
@@ -247,14 +316,62 @@ public class ForumTeacher extends JComponent {
         if (date.isSelected()) {
             date.setSelected(false);
         }
+        // TODO - change the order of replies in alphabetical order of names 
     }
 
     synchronized public void updateDisplay(Forum selectedForumObject) {
-        
+        // TODO - is this method necessary?
+        forum = selectedForumObject;
+        forumDisplay.removeAll();
+        forumDisplay.setBorder(BorderFactory.createTitledBorder(forum.getTopic()));
+        replies = selectedForumObject.getReplies();
+        replyPanels = new ArrayList<>();
+
+        for (Reply reply : replies) {
+            ReplyPanel replyPanel = new ReplyPanel(reply);
+            replyPanel.addMouseListener(selectReplyListener);
+            replyPanels.add(replyPanel);
+        }
+
+        for (ReplyPanel replyPanel : replyPanels) {
+            forumDisplay.add(replyPanel);
+        }
+        forumDisplay.revalidate();
+        forumDisplay.repaint();
+    }
+    
+    public Reply replyPanelSelected() {
+        for (ReplyPanel rp : replyPanels) {
+            if (rp.isSelected()) { // checks if a reply panel has been selected (creates a comment for that panel )
+                return rp.getReply();
+            }
+        }
+        return null; 
     }
 
     synchronized public void updateDisplay(LMS lms) {
-        forumDisplay = new JPanel();
+
+        forumDisplay.removeAll();
+
+        replies = new ArrayList<>();
+        replyPanels = new ArrayList<>();
+
+        for (Course c : lms.getCourses()) {
+            for (Forum f : c.getForums()) {
+                // TODO - change the getTopic to getIdentifier 
+                if (f.getTopic().equals(forum.getTopic())) { // find the forum we are at
+                    forum = f;
+
+                    break;
+                }
+            }
+        }
+
+        // update replies ArrayList with the forum replies
+        replies = forum.getReplies();
+
+
+
         for (Course c : lms.getCourses()) {
             for (Forum f : c.getForums()) {
                 if (f.getIndex() == forum.getIndex()) { // find the forum we are at
@@ -275,5 +392,27 @@ public class ForumTeacher extends JComponent {
         content.revalidate();
     }
 
-
+     MouseAdapter selectReplyListener = new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            ReplyPanel selectedReplyPanel = (ReplyPanel) e.getSource();
+            //System.out.println(selectedReplyPanel);
+            if (!selectedReplyPanel.isSelected()) {
+                selectedReplyPanel.select();
+                for (ReplyPanel replyPanel: replyPanels) {
+                    if (selectedReplyPanel.equals(replyPanel) || !replyPanel.isSelected()) {
+                        continue;
+                    }
+                    replyPanel.unselect();
+                }
+                Submit.setText("Comment");
+                prompt.setText("Enter Comment:\t");
+            } else {
+                selectedReplyPanel.unselect();
+                Submit.setText("Reply");
+                prompt.setText("Enter Reply:\t");
+            }
+            //e.getSource();
+        }
+    };
 }

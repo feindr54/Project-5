@@ -3,6 +3,11 @@ package main.page;
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+
+import pages.SortByDate;
+import pages.SortByName;
+import pages.SortByUpvotes;
+
 import java.time.*;
 
 import users.*;

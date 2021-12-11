@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import main.page.*;
 import networking.*;
 import users.*;
-
+// TODO - create a javadoc 
 public class ForumStudent extends JComponent {
     ActualClient client;
     Container content;
@@ -113,6 +113,8 @@ public class ForumStudent extends JComponent {
 
         content.add(bot, BorderLayout.SOUTH);
     }
+
+    // TODO - create a button to import a file to create comment 
 
     public Container getContent() {
         return content;

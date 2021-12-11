@@ -26,39 +26,44 @@ public class CommentPanel extends JPanel {
         this.comment = comment; 
 
         // TODO - finish the GUI for the comment
-        this.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
+        this.setLayout(new FlowLayout(FlowLayout.LEFT));
+        //GridBagConstraints gbc = new GridBagConstraints();
 
-        username = new JLabel(comment.getOwner());
+        date = new JLabel( "At:    " + comment.getCurrentTime() + "    ");
         // TODO - add the constraints and add to panel(this)
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-
-        // adds the component to the panel
-        this.add(username, gbc);
-
-        date = new JLabel(comment.getCurrentTime());
-        // TODO - add the constraints and add to panel(this)
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.anchor = GridBagConstraints.FIRST_LINE_END;
+        // gbc.gridx = 1;
+        // gbc.gridy = 0;
+        // gbc.fill = GridBagConstraints.HORIZONTAL;
+        // gbc.anchor = GridBagConstraints.FIRST_LINE_END;
 
         // adds the date to the panel
-        this.add(date, gbc);
+        
+        this.add(date);
+
+        username = new JLabel("User:    " + comment.getOwner() + "    commented with:    ");
+        // TODO - add the constraints and add to panel(this)
+        // gbc.gridx = 0;
+        // gbc.gridy = 0;
+        // gbc.fill = GridBagConstraints.HORIZONTAL;
+        // gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+
+        // adds the component to the panel
+        this.add(username);
 
         commentMessage = new JLabel(comment.getContent());
         // TODO - add the constraints and add to panel(this)
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.anchor = GridBagConstraints.LINE_END;
-        gbc.weighty = 1.0;
+        // gbc.gridx = 1;
+        // gbc.gridy = 1;
+        // gbc.anchor = GridBagConstraints.LINE_END;
+        // gbc.weighty = 1.0;
 
-        this.setBorder(BorderFactory.createLineBorder(Color.GREEN));
-
+        
         // adds the comment message to the panel
-        this.add(commentMessage, gbc);
+        this.add(commentMessage);
+
+        
+
+        
+        this.setBorder(BorderFactory.createLineBorder(Color.GREEN));
     }
 }
