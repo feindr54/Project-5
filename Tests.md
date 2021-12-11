@@ -139,7 +139,7 @@
 ### Test Status:
 
 
-## Test 11: Log out (From settings)
+## Test 12: Log out (From settings)
 
 1. User must be on the settings page
 2. User selects the log out button
@@ -150,9 +150,116 @@
 
 
 
-## Test 12: Access a forum (Teacher)
+## Test 13: Access a forum (Teacher)
 
 1. User must be logged in as a teacher on a Course page
+2. User selects the 'access' button
+3. Select the forum options dropdown
+4. User selects the submit button
+
+
+### Expected result: The user is brought to the selected forum's page
+
+### Test Status:
+
+
+## Test 14: Edit a forum (Teacher)
+
+1. User must be logged in as a teacher on a Course page
+2. User selects the 'edit' button
+3. Select the forum options dropdown
+4. User selects a forum from the options
+5. Select the textbox the dropdown
+6. User types the new forum name in the text box
+7. User selects the submit button
+
+
+### Expected result: The selected forum's topic is changed to the new entered name
+
+### Test Status:
+
+
+## Test 15: Delete a forum (Teacher)
+
+1. User must be logged in as a teacher on a Course page
+2. User selects the 'delete' button
+3. Select the forum options dropdown
+4. User selects a forum from the options
+5. User selects the submit button
+
+### Expected result: The chosen forum and its contents are deleted from the course.
+
+### Test Status:
+
+
+## Test 16: Add a new forum (Teacher)
+
+1. User must be logged in as a teacher on a Course page
+2. User selects the 'add' button
+3. Select the textbox beneath the label
+4. User enters the desired name for the forum
+5. User selects the submit button
+
+### Expected result: A new forum object is created within the course
+
+### Test Status:
+
+## Test 17: Add a forum from a file (Teacher)
+
+1. User must be logged in as a teacher on a Course page
+2. User selects the 'add' button
+3. Select the textbox beneath the label
+4. User enters the file name
+5. User selects the submit button
+
+### Expected result: A forum object is created with the contents given
+
+### Test Status:
+
+
+
+## Test 18: Access a forum (Student)
+
+1. User must be logged in as a student on a Course page
+2. User selects the forum dropdown
+3. User selects a forum option
+4. User clicks the submit button
+
+
+### Expected result: The user is brought to the desired forum's page
+
+### Test Status:
+
+
+## Test 19: Reply to a forum topic (Student)
+
+1. User must be logged in as a student on a forum page
+2. User selects the textbox next to "Enter reply:"
+3. User enters a reply
+4. User selects the reply button
+
+
+### Expected result: A reply is displayed with the timestamp and a formatted reply
+
+### Test Status:
+
+
+
+## Test 20: Comment to a reply on a forum (Student or teacher)
+
+1. User must be on a forum page
+2. User clicks on a reply which they would like to comment to
+3. User selects the textbox next to "Enter Comment:"
+4. User enters the desired comment
+5. User clicks the 'comment' button
+
+### Expected result: The comment is displayed directly underneath the reply, with the outline of the comment being green to differentiate
+
+### Test Status:
+
+
+## Test 21: Upvote a reply on a forum (Student)
+
 
 
 ### Expected result: 
@@ -160,88 +267,29 @@
 ### Test Status:
 
 
-## Test 13: Edit a forum (Teacher)
 
+## Test 22: Grade a student (Teacher)
 
+1. User must be a teacher on a course page
+2. User selects the grade button from the display menu
+3. User selects the dropdown beneath "Choose student to grade:"
+4. User selects a user from the given options of students
+5. User clicks the submit button
 
-### Expected result: 
-
-### Test Status:
-
-
-## Test 14: Delete a forum (Teacher)
-
-
-
-### Expected result: 
+### Expected result: The student's grade for that course will be updated in their display
 
 ### Test Status:
 
+## Test 23: Handling invalid input on the login screen
 
-## Test 15: Add a new forum (Teacher)
+If:
 
+1. The User selects confirm without entering anything
+2. The user signs up with an invalid email
+3. The user attempts to log in with incorrect information
+4. The user selects no role while signing up
 
-
-### Expected result: 
-
-### Test Status:
-
-
-
-## Test 16: Access a forum (Student)
-
-
-
-### Expected result: 
-
-### Test Status:
-
-
-## Test 17: Reply to a forum topic (Student)
-
-
-
-### Expected result: 
-
-### Test Status:
-
-
-
-## Test 18: Comment to a reply on a forum (Student)
-
-
-
-### Expected result: 
-
-### Test Status:
-
-
-
-## Test 19: Comment to a reply on a forum (Teacher)
-
-
-
-### Expected result: 
-
-### Test Status:
-
-
-
-## Test 20: Upvote a reply on a forum (Student)
-
-
-
-### Expected result: 
-
-### Test Status:
-
-
-
-## Test 21: Grade a student (Teacher)
-
-
-
-### Expected result: 
+### Expected result: The user will be given the respective error message and be prompted to try again
 
 ### Test Status:
 
