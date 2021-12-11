@@ -62,10 +62,13 @@ public class CourseStudent extends JComponent {
                             break;
                         }
                     }
-                    ForumStudent fs = new ForumStudent(client, selectedForumObject);
-                    client.setForumStudent(fs);
-                    client.addPanelToCardLayout(client.getForumStudent().getContent(), "forumStudent");
-                    fs.updateDisplay(selectedForumObject);
+                    if (client.getForumStudent() == null) {
+
+                        ForumStudent fs = new ForumStudent(client, selectedForumObject);
+                        client.setForumStudent(fs);
+                        client.addPanelToCardLayout(client.getForumStudent().getContent(), "forumStudent");
+                        fs.updateDisplay(selectedForumObject);
+                    }
                     //client.getCl().con(client.getCourseStudent());
                     client.changePanel("forumStudent");
                     System.out.println("Student switched to " + selectedForum + " forum.");
@@ -98,7 +101,7 @@ public class CourseStudent extends JComponent {
         this.course = course;
         this.student = student;
         courseName = course.getCourseName();
-        forums = course.getForums();
+        this.forums = course.getForums();
 
         content = new Container();
         content.setLayout(new BorderLayout());

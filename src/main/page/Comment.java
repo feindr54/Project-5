@@ -34,6 +34,10 @@ public class Comment implements Serializable {
         this.owner = owner;
     }
 
+    public Reply getReply() {
+        return reply; 
+    }
+
     // returns the message in the Comment
     public String getContent() {
         return content;

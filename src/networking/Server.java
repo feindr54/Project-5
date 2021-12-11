@@ -423,6 +423,29 @@ public class Server implements Serializable {
             }
         }
     }
+
+    public synchronized static void addComment(Comment comment) {
+        Reply reply = comment.getReply(); 
+        Forum forum = reply.getForum();
+        Course course = forum.getCourse();
+
+        for (Course c : lms.getCourses()) {
+            if (c.getCourseName().equals(course.getCourseName())) {
+                for (Forum f : c.getForums()) {
+                    if (f.getTopic().equals(forum.getTopic())) {
+                        for (Reply r : f.getReplies()) {
+                            if (r.getTime().equals(reply.getTime())) { // TODO - make sure the identifier is unique 
+                                r.addComment(comment);
+                                // save the LMS
+                                saveLMS(LMSFILE);
+                                return; 
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 /**
@@ -537,7 +560,11 @@ class ClientHandler extends Thread implements Serializable {
                     return response; 
 
                 case 3: // TODO - ADD COMMENT REQUEST
-                    break;
+                    System.out.println("ADD COMMENT REQUEST RECEIVED"); // delete comment 
+                    Comment comment = (Comment) object; 
+                    Server.addComment(comment);
+                    response = new Response(0, Server.getLMS());
+                    return response;
             }
         } else if (operation == 2) { // EDIT OPERATION
             String[] oldNameNewName = (String[]) object;

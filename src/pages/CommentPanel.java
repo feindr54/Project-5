@@ -56,6 +56,8 @@ public class CommentPanel extends JPanel {
         gbc.anchor = GridBagConstraints.LINE_END;
         gbc.weighty = 1.0;
 
+        this.setBorder(BorderFactory.createLineBorder(Color.GREEN));
+
         // adds the comment message to the panel
         this.add(commentMessage, gbc);
     }

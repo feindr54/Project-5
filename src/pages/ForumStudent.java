@@ -40,6 +40,7 @@ public class ForumStudent extends JComponent {
         this.client = client;
         this.forum = forum;
         this.currentUser = client.getUser();
+        replies = forum.getReplies();
 
         content = new Container();
         content.setLayout(new BorderLayout());
@@ -101,9 +102,9 @@ public class ForumStudent extends JComponent {
 
         // Bottom
 
-        prompt = new JLabel("Enter reply or comment: ");
+        prompt = new JLabel("Enter Reply:\t");
         input = new JTextField(50);
-        Submit = new JButton("Reply/Comment");
+        Submit = new JButton("Reply");
 
         bot.add(prompt);
         bot.add(input);
@@ -116,6 +117,17 @@ public class ForumStudent extends JComponent {
     public Container getContent() {
         return content;
     }
+
+    
+
+    // synchronized static public void selectPanel(ReplyPanel replyPanel) {
+    //     for (ReplyPanel rp : replyPanels) {
+    //         if (rp.equals(replyPanel)) {
+    //             continue;
+    //         }
+    //         // unselects all other reply panels 
+    //     }
+    // }
 
     ActionListener actionListener = new ActionListener() {
         @Override
@@ -132,75 +144,32 @@ public class ForumStudent extends JComponent {
                             " Error: Empty input", JOptionPane.ERROR_MESSAGE);
                 } else {
                     // send request to server to add this reply
-                    
+                    Reply selectedReply = replyPanelSelected();
+
+                    if (selectedReply == null) { // no reply selected so we are making a new one
+                        Reply newReply = new Reply(forum, (Student) currentUser, inputText);
+                        //newReply.setIndex(forum.getNumRepliesCreated());
+                        Request request = new Request(1, 2, newReply);
+                        
+                        client.sendToServer(request);
+                        System.out.println("add reply request sent"); // TODO - delete test comment  
+                        
+                    } else { // a reply is selected so we are commenting
+                        // send request to server to add comment
+                        Comment newComment = new Comment(selectedReply, currentUser, inputText);
+                        Request request = new Request(1, 3, newComment); // creates a add comment request 
+                        client.sendToServer(request);
+                        System.out.println("add comment request sent"); // TODO - delete test comment  
+                    }
                     //add reply request to list of courses
-                    Reply newReply = new Reply(forum, (Student) currentUser, inputText);
-                    //newReply.setIndex(forum.getNumRepliesCreated());
-                    Request request = new Request(1, 2, newReply);
-                    
-                    client.sendToServer(request);
-                    System.out.println("add reply request sent"); // TODO - delete test comment  
                     
                     input.setText("");
+                    Submit.setText("Reply");
+                    prompt.setText("Enter Reply:\t");
                     
                 }
 
-                  
-
-                //updateDisplay(forum);
-
-                
-
-               
-
-                    //TODO make isReply boolean to check if it is a reply or comment
-                    /*
-                    if (isReply) {
-
-                        Reply reply = createReply(inputText);
-                        //  TODO add new reply to the Student's replies AL
-                        // TODO - Send the reply object to server --> sendReplyToServer() method
-                        try {
-                            sendReplyToServer(reply);
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
-                        // TODO - server will update the forum with the new reply --> done in server
-
-                        // TODO - server will send the updated forum to every client --> done in server
-
-                        // TODO - each client will recieve the updated forum
-                        // and call an update forum method that updates the gui
-                        // to display the new reply! --> updateForumDisplay() method
-
-
-                    } else {
-
-                        //TODO createComment()
-                    }
-
-                     */
-
             }
-
-
-                //TODO To add replies:
-                /*
-                1. ArrayList<ReplyPanel> with all current replies
-                2. for loop to print all existing reply panels
-                3.when user hits submit with text:
-                    -makes the text a formatted reply panel:
-                        "Username: reply goes here."
-                    - adds this to the replyPanel arraylist
-                    - updates GUI and redisplays every replyPanel object
-
-                 */
-
-                // JLabel newChat = new JLabel(input.getText());
-                // forumDisplay.add(newChat);
-                // forumDisplay.revalidate();
-                // input.setText("");
-            
 
             if (e.getSource() == Back) {
                 client.changeToPreviousPanel();
@@ -211,6 +180,14 @@ public class ForumStudent extends JComponent {
         }
     };
 
+    public Reply replyPanelSelected() {
+        for (ReplyPanel rp : replyPanels) {
+            if (rp.isSelected()) { // checks if a reply panel has been selected (creates a comment for that panel )
+                return rp.getReply();
+            }
+        }
+        return null; 
+    }
     
 
     public Comment createComment(Reply reply, String commentMessage) {
@@ -224,11 +201,6 @@ public class ForumStudent extends JComponent {
         return newReply;
     }
 
-    public void sendReplyToServer(Reply reply) throws IOException {
-        // TODO - 1) send the reply to the server OR 2) add the reply to the course then send the course over
-        client.getOOS().writeObject(reply);
-        client.getOOS().flush();
-    }
 
     // synchronized public void updateForumDisplay(Forum newForum) {
 
@@ -239,15 +211,45 @@ public class ForumStudent extends JComponent {
 
     // }
 
+    MouseAdapter selectReplyListener = new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            ReplyPanel selectedReplyPanel = (ReplyPanel) e.getSource();
+            //System.out.println(selectedReplyPanel);
+            if (!selectedReplyPanel.isSelected()) {
+                selectedReplyPanel.select();
+                for (ReplyPanel replyPanel: replyPanels) {
+                    if (selectedReplyPanel.equals(replyPanel) || !replyPanel.isSelected()) {
+                        continue;
+                    }
+                    replyPanel.unselect();
+                }
+                Submit.setText("Comment");
+                prompt.setText("Enter Comment:\t");
+            } else {
+                selectedReplyPanel.unselect();
+                Submit.setText("Reply");
+                prompt.setText("Enter Reply:\t");
+            }
+            //e.getSource();
+        }
+    };
+
     synchronized public void updateDisplay(Forum selectedForumObject) {
         //forumDisplay.add(replies.get(replies.size() - 1));
         //forumDisplay = new JPanel();
         forumDisplay.removeAll();
         forumDisplay.setBorder(BorderFactory.createTitledBorder(forum.getTopic()));
+        replies = selectedForumObject.getReplies();
+        replyPanels = new ArrayList<>();
 
         for (Reply reply : replies) {
             ReplyPanel replyPanel = new ReplyPanel(reply);
-            //System.out.println("adding a new reply");
+            replyPanel.addMouseListener(selectReplyListener);
+            replyPanels.add(replyPanel);
+        }
+
+        for (ReplyPanel replyPanel : replyPanels) {
             forumDisplay.add(replyPanel);
         }
         forumDisplay.revalidate();
@@ -287,13 +289,15 @@ public class ForumStudent extends JComponent {
         System.out.println("Replies array " + forum.getReplies());
         
         // TODO - delete test block below later 
-        if (forum.getReplies().size() == 0) {
-            System.out.println("This forum has no replies");
-        }
+        
         
         for (Reply reply : replies) {
+            for (Comment c : reply.getComments()) {
+                System.out.println(c.getContent());
+            }
             ReplyPanel replyPanel = new ReplyPanel(reply);
             replyPanels.add(replyPanel);
+            replyPanel.addMouseListener(selectReplyListener);
             System.out.println("adding a new reply");
         }
 

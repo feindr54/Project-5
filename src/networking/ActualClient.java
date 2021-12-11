@@ -34,7 +34,7 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
     private Stack<String> pageStack = new Stack<>();
 
     public static Container mainPanel;
-
+    
     // creates the cardlayout object
     private CardLayout cl;
 
@@ -150,9 +150,12 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
         // create a page object for every page
         Login login = new Login(this, frame);
         SettingsGUI settingsGUI = new SettingsGUI(this, frame);
-        ForumTeacher forumTeacher = new ForumTeacher(this);
-        //TODO: update the forum objects with the specific forum when going from course to forum
-        ForumStudent forumStudent = new ForumStudent(this, null);
+
+        // TODO - uncomment the ones below later on
+
+        // ForumTeacher forumTeacher = new ForumTeacher(this);
+        // //TODO: update the forum objects with the specific forum when going from course to forum
+        // ForumStudent forumStudent = new ForumStudent(this, null);
 
         // Adds all the different pages to the main panel
         mainPanel.add(login.getContent(), "login");
@@ -161,8 +164,8 @@ public class ActualClient extends JFrame implements Runnable, ActionListener {
 
         // add the courses panels
         // add the forums panels
-        mainPanel.add(forumTeacher.getContent(), "forumTeacher");
-        mainPanel.add(forumStudent.getContent(), "forumStudent");
+        // mainPanel.add(forumTeacher.getContent(), "forumTeacher");
+        // mainPanel.add(forumStudent.getContent(), "forumStudent");
 
         // shows the login page by default
         cl.show(mainPanel, "login");
@@ -276,8 +279,8 @@ class ReaderThread extends Thread {
 
                     // add it to the main panel
                     //gui.getMainPanel().add(, );
-                    gui.addPanelToCardLayout(gui.getLmsStudent().getContent(), "lmsStudent");
                     gui.getLmsStudent().updateDisplay((LMS) loginDetails[1]);
+                    gui.addPanelToCardLayout(gui.getLmsStudent().getContent(), "lmsStudent");
                     //gui.getCl().show(gui.getMainPanel(), "lmsStudent");
                     gui.changePanel("lmsStudent");
 
@@ -285,8 +288,8 @@ class ReaderThread extends Thread {
                     gui.setUser((Teacher) loginDetails[0]);
                     // TODO - load teacher lms by creating teacher lms object
                     gui.setLmsTeacher(new LMSTeacher(gui));
-                    gui.addPanelToCardLayout(gui.getLmsTeacher().getContent(), "lmsTeacher");
                     gui.getLmsTeacher().updateDisplay((LMS) loginDetails[1]);
+                    gui.addPanelToCardLayout(gui.getLmsTeacher().getContent(), "lmsTeacher");
                     gui.changePanel("lmsTeacher");
 
                 }
