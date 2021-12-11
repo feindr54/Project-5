@@ -59,6 +59,8 @@ public class Server implements Serializable {
         synchronized (lockUser) {
             try (ObjectOutputStream oo = new ObjectOutputStream(new FileOutputStream(filename))) {
                 // write the users list
+                lms.setUsers(users);
+                saveLMS(LMSFILE); 
                 oo.writeObject(users);
                 for (User u: users) {
                     System.out.println(u.toString());
@@ -94,7 +96,8 @@ public class Server implements Serializable {
         try (ObjectInputStream oi = new ObjectInputStream(new FileInputStream(filename))) {
             // Read the userlist object and cast the object into a user arraylist type
             usersForReading = (ArrayList<User>) oi.readObject();
-
+            lms.setUsers(usersForReading);
+            saveLMS(LMSFILE); 
             return usersForReading;
 
         } catch (FileNotFoundException e) {
@@ -114,6 +117,8 @@ public class Server implements Serializable {
     public static void addUser(User user) {
         synchronized (lockUser) {
             users.add(user);
+            lms.setUsers(users);
+            saveLMS(LMSFILE); 
             saveUsers(USERSFILE);
         }
     }
@@ -127,7 +132,9 @@ public class Server implements Serializable {
             if (user.getUserIndex() == users.get(i).getUserIndex()) {
                 synchronized (lockUser) {
                     users.set(i, user); // replaces old user with new user
-                    saveUsers(USERSFILE); // save the user file
+                    lms.setUsers(users);
+                    saveLMS(LMSFILE); 
+                    saveUsers(USERSFILE);// save the user file
                 }
             }
         }
@@ -331,6 +338,7 @@ public class Server implements Serializable {
                         // add the reply into the arrayList
                         f.addReply(reply);
                         c.addStudent(reply.getOwner());
+                        reply.getOwner().attachReplyToStudent(reply);
                         // save the LMS 
                         saveLMS(LMSFILE);
                         return; 
@@ -732,6 +740,7 @@ class ClientHandler extends Thread implements Serializable {
 
                         response = new Response(0, new Object[]{user, Server.lms});
                         sendToClient(response);
+                        this.user = user;
                         return null;
                     }
                 }
@@ -751,6 +760,8 @@ class ClientHandler extends Thread implements Serializable {
             Course course = (Course) info[1];
             int score = (int) info[2];
             Server.gradeStudent(studentName, course , score);
+            response = new Response(0, Server.getLMS());
+            sendToClient(response);
         }
         return null;
     }

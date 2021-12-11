@@ -26,6 +26,8 @@ public class Student extends User implements Serializable {
     public Student(String email, String password) {
         super(email, password, true);
         this.identifier = this.email.substring(0, this.email.indexOf('@'));
+        this.studentReplies = new ArrayList<Reply>();
+        this.repliesToString = new ArrayList<String>();
 
         studentReplies = new ArrayList<Reply>();
         grades = new HashMap<>();
@@ -38,6 +40,10 @@ public class Student extends User implements Serializable {
         currentForum.addReply(newReply);
         this.studentReplies.add(newReply);
 
+    }
+
+    public void attachReplyToStudent (Reply reply) {
+        this.studentReplies.add(reply);
     }
 
     // this method takes in a reply and the contents of the comment, creates a new

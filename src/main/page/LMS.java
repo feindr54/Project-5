@@ -29,7 +29,7 @@ public class LMS implements Serializable {
             + "\n1. Access a course. \n2. pages.Settings. \n3. Exit.";
 
     public LMS() {
-        this.users = LoginSystemTest.users;
+        this.users = new ArrayList<User>();
         this.courses = new ArrayList<Course>();
     }
 
@@ -56,6 +56,10 @@ public class LMS implements Serializable {
             }
         }
         this.users.add(user1);
+    }
+
+    public void setUsers(ArrayList<User> users) {
+        this.users = users;
     }
 
     /**

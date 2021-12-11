@@ -357,6 +357,7 @@ class ReaderThread extends Thread {
                 processResponse(response);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Cannot connect to server");
         }
     }

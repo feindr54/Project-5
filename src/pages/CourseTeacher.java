@@ -257,9 +257,17 @@ public class CourseTeacher extends JComponent {
                 if (students.getSelectedItem() == null) {
                     JOptionPane.showMessageDialog(null, "Error, no students found", "Error",
                             JOptionPane.INFORMATION_MESSAGE);
+                }else {
+
+                    repliesArr = course.getStudents().get(students.getSelectedIndex()).getReplies();
+                    replies.removeAllItems();
+    
+                    for(String replyContent : repliesArr) {
+                        replies.addItem(replyContent);
+                    }
+    
+                    replyPanel.setVisible(true);
                 }
-                repliesArr = course.getStudents().get(students.getSelectedIndex()).getReplies();
-                replyPanel.setVisible(true);
             }
             if (e.getSource() == replySubmitButton) {
                 //checks if replyGrade.getText() is an integer and fits the range
