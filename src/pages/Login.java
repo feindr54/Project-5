@@ -195,9 +195,6 @@ public class Login extends JComponent {
             }
             if (e.getSource() == confirmButton) {
 
-                //client.getPageStack().push("forumStudent");
-                //client.getCl().show(client.getMainPanel(), "forumStudent");
-
                 //if login is successful, pull up the respective page
                 
                 try {

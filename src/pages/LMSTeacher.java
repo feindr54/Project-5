@@ -159,10 +159,10 @@ public class LMSTeacher extends JComponent implements ActionListener {
         //delete
         if (state == 3) {
             //delete specified course
-            if (editCourseDropdown.getSelectedItem() == null) {
+            if (deleteCourseDropdown.getSelectedItem() == null) {
                 JOptionPane.showMessageDialog(null, "No course selected. ", null, JOptionPane.ERROR_MESSAGE);
             } else {
-                String selectedCourse = (String) editCourseDropdown.getSelectedItem();
+                String selectedCourse = (String) deleteCourseDropdown.getSelectedItem();
                 Request request = new Request(3, 0, selectedCourse); // operation 3 is delete, operand 0 is course = delete course
                 client.sendToServer(request);
                 System.out.println("edit course request sent");
