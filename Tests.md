@@ -294,6 +294,98 @@ If:
 ### Test Status:
 
 
+## Test 24: Handling invalid input on the LMS screen (Teacher)
+
+If:
+
+1. The user selects submit on the access tab with no course selected
+2. The user selects submit on the add tab with no text entered
+3. The user selects submit on the edit tab with no course selected
+4. The user selects submit on the edit tab with no text entered
+5. The user selects submit on the delete tab with no course selected
+
+### Expected result: The user will be given the respective error message and will have to try again
+
+### Test Status:
+
+
+
+## Test 25: Handling invalid input on the LMS screen (Student)
+
+If:
+
+1. The user selects submit on the access tab with no course selected
+
+
+### Expected result: The user will be given an error message and will have to try again
+
+### Test Status:
+
+
+## Test 26: Handling invalid input on the Course screen (Teacher)
+
+If:
+
+1. The user selects submit on the access tab with no forum selected
+2. The user selects 'new topic on the' on the add tab with no text entered
+3. The user selects 'topic from file' on the add tab with no text entered
+4. The user selects submit on the edit tab with no forum selected
+5. The user selects submit on the edit tab with no text entered
+6. The user selects submit on the delete tab with no forum selected
+7. The user selects submit on the grade tab with no user selected
+
+
+### Expected result: The user will be given the respective error message and will have to try again
+
+### Test Status:
+
+
+
+## Test 27: Handling invalid input on the Course screen (Student)
+
+If:
+
+1. The user selects submit with no forum selected
+
+
+### Expected result: The user will be given the respective error message and will have to try again
+
+### Test Status:
+
+
+## Test 28: Handling invalid input on the Forum screen
+
+If a teacher:
+
+1. The user selects the comment button with no reply selected
+
+
+If a student:
+
+1. The user selects the upvote button with no reply selected
+
+
+### Expected result: The user will be given the respective error message and will have to try again
+
+### Test Status:
+
+
+
+## Test 29: 
+
+
+
+
+### Expected result: 
+
+### Test Status:
+
+
+
+
+
+
+
 
 
 
