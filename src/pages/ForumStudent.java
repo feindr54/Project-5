@@ -355,7 +355,7 @@ public class ForumStudent extends JComponent {
                 courseNotFound = false;
                 for (Forum f : c.getForums()) {
                     // TODO - change the getTopic to getIdentifier 
-                    if (f.getCurrentTime() == forum.getCurrentTime()) { // find the forum we are at
+                    if (f.getCurrentTime().equals(forum.getCurrentTime())) { // find the forum we are at
                         forumNotFound = false;
                         forum = f;
                         break;

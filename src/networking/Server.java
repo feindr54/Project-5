@@ -303,7 +303,6 @@ public class Server implements Serializable {
 
     /**
      * Returns a new user to be sent back to the client
-     * @param oldUsername
      * @param newUsername
      * @return
      */
@@ -602,13 +601,20 @@ public class Server implements Serializable {
             for (int j = 0; j < lms.getCourses().get(i).getForums().size(); j++) {
                 for (int k = 0; k < lms.getCourses().get(i).getForums().get(j).getReplies().size(); k++) {
                     Reply r = lms.getCourses().get(i).getForums().get(j).getReplies().get(k);
-                    if (r.getIdentifier() == reply.getIdentifier()) {
+                    if (r.getCurrentTime().equals(reply.getCurrentTime())) { // looks for the reply to upvote
                         for (Student s : r.getUpvotedStudents()) { //TODO - check if correct implementation 
-                            if (s.equals(student)) { // check if the student had already upvoted 
+                            if (s.equals(student)) { // check if the student had already upvoted for a specific reply
                                 return false; 
                             }
                         }
-                        // successfully upvotes reply 
+                        // successfully upvotes reply
+                        for (User user : users) {
+                            if (user instanceof Student) {
+                                if (user.getEmail().equals(student.getEmail())) {
+                                    student = (Student) user;
+                                }
+                            }
+                        }
                         r.upvote(student);
                         return true;
                     }
@@ -899,7 +905,7 @@ class ClientHandler extends Thread implements Serializable {
                 return response; 
             } else {
                 // sends error back to client
-                response = new Response(1, "You have already upvoted once.");
+                response = new Response(1, "You have already upvoted once on this reply.");
                 sendToClient(response);
                 return null; 
             }
