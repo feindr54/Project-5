@@ -316,7 +316,7 @@ public class CourseTeacher extends JComponent {
 
     synchronized public void updateDisplay(Course course) {
         // TODO - Update the display of the course with a Course object input
-        System.out.println("ACCESSING COURSETEACHER WITH COURSE " + course.getCourseName());
+        System.out.println("ACCESSING COURSETEACHER WITH COURSE " + course.getCourseName()); // TODO - delete test comment
         this.course = course;
         courseName = this.course.getCourseName();
         forums = this.course.getForums();
@@ -343,10 +343,11 @@ public class CourseTeacher extends JComponent {
     synchronized public void updateDisplay(LMS lms) {
         // TODO - Update the display of the course with a Course object input
         int index = -1;
-        System.out.println("The current course name is: " + this.course.getCourseName());
+        System.out.println("The current course name is: " + this.course.getCourseName()); // TODO - delete later 
         for (int i = 0; i < lms.getCourses().size(); i++) {
-            System.out.println("Comparing: " + lms.getCourses().get(i).getCourseName() + " -with- " + this.course.getCourseName());
-            if (lms.getCourses().get(i).getCourseName().equals(this.course.getCourseName())){
+            System.out.println("Comparing: " + lms.getCourses().get(i).getCourseName() + " -with- " + this.course.getCourseName()); // 
+            System.out.println("Comparing: " + lms.getCourses().get(i).getTime() + " -with- " + this.course.getTime()); // 
+            if (lms.getCourses().get(i).equals(this.course)){
                 index = i;
                 break;
             }
@@ -377,7 +378,8 @@ public class CourseTeacher extends JComponent {
         } else {
             JOptionPane.showMessageDialog(null, "Error, Course has been deleted!", "Error",
                             JOptionPane.ERROR_MESSAGE);
-            client.changeToPreviousPanel();
+            System.out.println("teacher was in course page, course deleted, should go back to lms page");
+            client.currentPanelDeleted("course");
         }
     }
 

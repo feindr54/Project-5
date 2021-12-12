@@ -207,13 +207,31 @@ public class ActualClient extends JFrame implements Runnable {
     }
 
     synchronized public void changePanel(String name) {
+        System.out.println("User was at " + pageStack.peek());
         pageStack.push(name);
+        System.out.println("User was at " + pageStack.peek());
         cl.show(mainPanel, name);
     }
     
     synchronized public void changeToPreviousPanel() {
+        System.out.println("User was at " + pageStack.peek());
         pageStack.pop();
+        System.out.println("User now at " + pageStack.peek());
         cl.show(mainPanel, pageStack.peek());
+    }
+
+    synchronized public void currentPanelDeleted(String page) {
+        System.out.println("currentPanelDeleted has been run!"); // TODO - delete test comment later 
+        System.out.println(page);
+        if (page.equals("course")) {
+            courseStudent = null; 
+            courseTeacher = null; 
+        } else if (page.equals("forum")) {
+            forumStudent = null; 
+            forumTeacher = null; 
+        }
+
+        changeToPreviousPanel();
     }
 
     synchronized public void goToSettings() {
@@ -263,53 +281,77 @@ class ReaderThread extends Thread {
 
         System.out.println("We are at " + gui.getPageStack().peek()); // TODO - delete test comment later
         
-        if (gui.getLmsStudent() != null) {
-            gui.getLmsStudent().updateDisplay(newLms);
-        }
-        if (gui.getLmsTeacher() != null) {
-            gui.getLmsTeacher().updateDisplay(newLms);
-        }
-        if (gui.getCourseStudent() != null) {
-            gui.getCourseStudent().updateDisplay(newLms);
-        }
-        if (gui.getCourseTeacher() != null) {
-            gui.getCourseTeacher().updateDisplay(newLms);
-        }
-        if (gui.getForumStudent() != null) {
-            gui.getForumStudent().updateDisplay(newLms);
-        }
-        if (gui.getForumTeacher() != null) {
-            gui.getForumTeacher().updateDisplay(newLms);
-        }
+        // if (gui.getLmsStudent() != null) {
+        //     gui.getLmsStudent().updateDisplay(newLms);
+        // }
+        // if (gui.getLmsTeacher() != null) {
+        //     gui.getLmsTeacher().updateDisplay(newLms);
+        // }
+        // if (gui.getCourseStudent() != null) {
+        //     gui.getCourseStudent().updateDisplay(newLms);
+        // }
+        // if (gui.getCourseTeacher() != null) {
+        //     gui.getCourseTeacher().updateDisplay(newLms);
+        // }
+        // if (gui.getForumStudent() != null) {
+        //     gui.getForumStudent().updateDisplay(newLms);
+        // }
+        // if (gui.getForumTeacher() != null) {
+        //     gui.getForumTeacher().updateDisplay(newLms);
+        // }
         
-        /*
+        
         switch (gui.getPageStack().peek()) {
+            
+            case "forumStudent":
+                gui.getForumStudent().updateDisplay(newLms);
+                System.out.println("updating forumStudent page"); // delete test comment later 
+                 
+                
+            case "courseStudent":
+                gui.getCourseStudent().updateDisplay(newLms);
+                
+            
+                
             case "lmsStudent":
                 // TODO - load student lms
                 // TODO - do we need to check if that specific component has changed?
                 gui.getLmsStudent().updateDisplay(newLms);
                 break;
+
+            case "forumTeacher":
+                gui.getForumTeacher().updateDisplay(newLms);
+                System.out.println("updating forumTeacher page"); // delete test comment later
+
+            case "courseTeacher":
+                gui.getCourseTeacher().updateDisplay(newLms);
+
             case "lmsTeacher":
                 // TODO - do we need to check if that specific component has changed?
                 gui.getLmsTeacher().updateDisplay(newLms);
-                break;
-            case "courseStudent":
-                gui.getCourseStudent().updateDisplay(newLms);
-                break;
-            case "courseTeacher":
-                gui.getCourseTeacher().updateDisplay(newLms);
-                break;
-            case "forumStudent":
-                gui.getForumStudent().updateDisplay(newLms);
-                System.out.println("updating forumStudent page"); // delete test comment later 
-                break;
-            case "forumTeacher":
-                gui.getForumTeacher().updateDisplay(newLms);
-                System.out.println("updating forumTeacher page"); // delete test comment later 
-                break;
-            case "SettingsGUI"
+                break; 
+            default:
+                if (gui.getLmsStudent() != null) {
+                    gui.getLmsStudent().updateDisplay(newLms);
+                }
+                if (gui.getLmsTeacher() != null) {
+                    gui.getLmsTeacher().updateDisplay(newLms);
+                }
+                if (gui.getCourseStudent() != null) {
+                    gui.getCourseStudent().updateDisplay(newLms);
+                }
+                if (gui.getCourseTeacher() != null) {
+                    gui.getCourseTeacher().updateDisplay(newLms);
+                }
+                if (gui.getForumStudent() != null) {
+                    gui.getForumStudent().updateDisplay(newLms);
+                }
+                if (gui.getForumTeacher() != null) {
+                    gui.getForumTeacher().updateDisplay(newLms);
+                }
+                
         }
-        */
+        
     }
 
     

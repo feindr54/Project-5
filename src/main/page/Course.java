@@ -12,6 +12,7 @@ import java.util.Scanner;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * main.page.Course
@@ -33,6 +34,7 @@ public class Course implements Serializable {
     private int numForumCreated; 
 
     private int index;
+    private LocalDateTime currentTime; 
 
     // constructor
     public Course(String courseName) {
@@ -41,9 +43,14 @@ public class Course implements Serializable {
         this.students = new ArrayList<Student>();
         this.numForumCreated = 0;
         this.index = 0; 
+        this.currentTime = LocalDateTime.now();
     }
 
     // setter getter
+    public LocalDateTime getTime() {
+        return currentTime;
+    }
+    
     public void addNumForumCreated() {
         this.numForumCreated++;
     }
@@ -124,5 +131,15 @@ public class Course implements Serializable {
             studentsString.add(students.get(i).getIdentifier());
         }
         return studentsString;
+    }
+
+    @Override 
+    public boolean equals(Object o) {
+        if (o instanceof Course) {
+            if (((Course) o).getTime().equals(this.currentTime)) {
+                return true; 
+            }
+        }
+        return false; 
     }
 }

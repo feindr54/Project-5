@@ -179,17 +179,17 @@ public class CourseStudent extends JComponent {
     }
 
     public Course getCourse() {
-        return this.getCourse(); 
+        return this.course; 
     }
 
     synchronized public void updateDisplay(LMS lms) {
         // TODO - Update the display of the course with a Course object input
         int index = -1;
         for (Course c : lms.getCourses()) {
-            if (c.getCourseName().equals(this.course.getCourseName())){
+            if (c.equals(this.course)){
                 index = c.getIndex();
                 break;
-            } 
+            }
         }
         if (index != -1) {
             this.course = lms.getCourses().get(index);
@@ -201,6 +201,8 @@ public class CourseStudent extends JComponent {
                 accessForums.addItem(f.getTopic());
     
             }
+
+            welcomeLabel.setText("Welcome to " + course.getCourseName() + "!");
     
     
             // refreshes the display
@@ -208,7 +210,8 @@ public class CourseStudent extends JComponent {
         } else {
             JOptionPane.showMessageDialog(null, "Error, Course has been deleted!", "Error",
                             JOptionPane.ERROR_MESSAGE);
-            client.changeToPreviousPanel();
+            System.out.println("Student was in course, course was deleted, should go back to lms page");
+            client.currentPanelDeleted("course");
         }
     }
 

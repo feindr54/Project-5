@@ -150,7 +150,7 @@ public class Server implements Serializable {
 
     public static void changeCourse(Course course) {
         for (int i = 0; i < Server.lms.getCourses().size(); i++) {
-            if (course.getIndex() == Server.lms.getCourses().get(i).getIndex()) {
+            if (course.equals(Server.lms.getCourses().get(i))) {
                 synchronized (lockCourse) {
                     Server.lms.getCourses().set(i, course);
                     // TODO - save the lms
@@ -238,7 +238,7 @@ public class Server implements Serializable {
         if (lms.getCourses().size() > 0) {
             for (Course course : lms.getCourses()) {
                 if (course.getCourseName().equals(courseName)) {
-                    return false; 
+                    return false;
                 }
             }
         }
@@ -273,7 +273,16 @@ public class Server implements Serializable {
     synchronized public static void deleteCourse(String courseName) {
         for (int i = 0; i < lms.getCourses().size(); i++) {
             if (courseName.equals(lms.getCourses().get(i).getCourseName())) {
-                lms.getCourses().remove(i);
+                
+                // TODO - remove the course from the student's grade Hashmap
+                for (User user : users) {
+                    if (user instanceof Student) {
+                        ((Student) user).removeGrades(lms.getCourses().get(i));
+                    }
+                }
+
+                lms.getCourses().remove(i); // remove the course from the LMS
+
                 saveLMS(LMSFILE);
                 return; 
             }
@@ -362,7 +371,7 @@ public class Server implements Serializable {
         Course currentCourse = currentForum.getCourse();
         
         for (Course c : lms.getCourses()) {
-            if (c.getCourseName().equals(currentCourse.getCourseName())) { // find the correct course
+            if (c.equals(currentCourse)) { // find the correct course TODO - if any bugs occur check this
                 for (Forum f : c.getForums()) {
                     if (f.getTopic().equals(currentForum.getTopic())) {
                         // add the reply into the arrayList
@@ -434,7 +443,17 @@ public class Server implements Serializable {
         for (int i = 0; i < lms.getCourses().size(); i++) {
             for (int j = 0; j < lms.getCourses().get(i).getForums().size(); j++) {
                 if (forumToDelete.equals(lms.getCourses().get(i).getForums().get(j).getTopic())) {
+                    
+                    for (User user : users) {
+                        if (user instanceof Student) {
+                            ((Student) user).deleteReplies(lms.getCourses().get(i).getForums().get(j));
+                        }
+                    }
+                    
                     lms.getCourses().get(i).getForums().remove(j);
+                    
+                    saveUsers(USERSFILE);
+                    lms.setUsers(users);
                     saveLMS(LMSFILE);
                     return;
                 }
@@ -478,7 +497,7 @@ public class Server implements Serializable {
         Course course = forum.getCourse();
 
         for (Course c : lms.getCourses()) {
-            if (c.getCourseName().equals(course.getCourseName())) {
+            if (c.equals(course)) {
                 for (Forum f : c.getForums()) {
                     if (f.getTopic().equals(forum.getTopic())) {
                         for (Reply r : f.getReplies()) {
@@ -674,14 +693,14 @@ class ClientHandler extends Thread implements Serializable {
         } else if (operation == 3) { // DELETE OPERATION
             switch (operand) {
                 case 0: // DELETE COURSE REQUEST
-                    System.out.println("DELETE COURSE REQUEST RECEIVED");
+                    System.out.println("DELETE COURSE REQUEST RECEIVED"); // TODO - delete test comment later
                     String courseToDelete = (String) object;
                     Server.deleteCourse(courseToDelete);
                     System.out.println("Deleted " + courseToDelete + "!");
                     response = new Response(0, Server.getLMS());
                     return response;
                 case 1: // DELETE FORUM REQUEST
-                    System.out.println("DELETE FORUM REQUEST RECEIVED");
+                    System.out.println("DELETE FORUM REQUEST RECEIVED"); // TODO - delete test comment later  
                     String forumToDelete = (String) object;
                     Server.deleteForum(forumToDelete);
                     // create response to send to all clients

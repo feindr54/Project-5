@@ -51,7 +51,7 @@ public class LMSStudent extends JComponent implements ActionListener {
                 }
                 
                 if (client.getCourseStudent() == null || 
-                !client.getCourseStudent().getCourse().getCourseName().equals(selectedCourse)) {
+                !client.getCourseStudent().getCourse().equals(selectedCourseObject)) {
                     CourseStudent cs = new CourseStudent(client, selectedCourseObject, (Student) client.getUser());
                     client.setCourseStudent(cs);
                     client.addPanelToCardLayout(client.getCourseStudent().getContent(), "courseStudent");
