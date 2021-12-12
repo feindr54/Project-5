@@ -212,7 +212,7 @@ public class ForumTeacher extends JComponent {
                         client.sendToServer(request);
                         System.out.println("add comment request sent"); // TODO - delete test comment 
                         
-                    }else {
+                    } else {
                         JOptionPane.showMessageDialog(null, "Please select a reply first to comment.",
                             "Error: No reply selected", JOptionPane.ERROR_MESSAGE);
                     }
