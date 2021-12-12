@@ -397,6 +397,19 @@ If there is a student and a teacher client:
 
 ### Test Status: Passed
 
+## Test 31: Add a reply from a file (Student)
+
+1. User must be logged in as a student on a Forum page
+2. User selects the Enter Reply textbox
+3. User enters the file name in the textbox
+4. User selects the Import reply button
+
+### Expected result: A reply object is created and a reply panel is added with the content in the file
+
+### Test Status:
+
+
+
 
 
 
