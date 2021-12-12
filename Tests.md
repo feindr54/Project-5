@@ -12,7 +12,7 @@
 
 ### Expected result: Application confirms the email is valid, generates an identifier for them, and shows the user their LMS screen.
 
-### Test Status:
+### Test Status: Passed
 
 
 ## Test 2: User Log in: 
@@ -27,7 +27,7 @@
 
 ### Expected result: Application confirms the validity of username and password and shows the pages.LMS screen.
 
-### Test Status:
+### Test Status: Passed
 
 ## Test 3: View a Course (Student)
 
@@ -38,7 +38,7 @@
 
 ### Expected result: Application reads their choice of course and brings up the chosen course's page with the options of a student.
 
-### Test Status:
+### Test Status: Passed
 
 
 ## Test 4: Access a Course (Teacher)
@@ -51,7 +51,7 @@
 
 ### Expected result: Application reads their choice of course and brings up the chosen course's page with the options of a teacher.
 
-### Test Status:
+### Test Status: Passed
 
 
 ## Test 5: Add a course (Teacher)
@@ -64,7 +64,7 @@
 
 ### Expected result: The course will be added to the list of available courses to add forums in, and for students to view.
 
-### Test Status:
+### Test Status: Passed
 
 
 ## Test 6: Edit a course (Teacher)
@@ -79,7 +79,7 @@
 
 ### Expected result: The name of the desired course will be changed in all aspects of the code.
 
-### Test Status:
+### Test Status: Passed
 
 
 ## Test 7: Delete a course (Teacher)
@@ -92,7 +92,7 @@
 
 ### Expected result: The course is deleted as an option for use. Any clients currently inside the course will receive an error message and be brought back to the courses screen.
 
-### Test Status:
+### Test Status: Passed
 
 
 ## Test 8: Navigate to Settings page
@@ -102,7 +102,7 @@
 
 ### Expected result: User is brought to the settings page
 
-### Test Status:
+### Test Status: Passed
 
 
 ## Test 9: Change username
@@ -114,7 +114,7 @@
 
 ### Expected result: The user's identifier changes to the new desired name
 
-### Test Status:
+### Test Status: Passed
 
 
 ## Test 10: Change password
@@ -126,7 +126,7 @@
 
 ### Expected result: The user's password is updated to this new value for any future login attempt
 
-### Test Status:
+### Test Status: Passed
 
 
 ## Test 11: Go back to previous screen (From settings)
@@ -136,7 +136,7 @@
 
 ### Expected result: The user is brought back to whatever screen they were on directly before going to settings
 
-### Test Status:
+### Test Status: Passed
 
 
 ## Test 12: Log out (From settings)
@@ -146,7 +146,7 @@
 
 ### Expected result: The user is brought back to the login page; their information appears in the textboxes.
 
-### Test Status:
+### Test Status: Passed
 
 
 
@@ -160,7 +160,7 @@
 
 ### Expected result: The user is brought to the selected forum's page
 
-### Test Status:
+### Test Status: Passed
 
 
 ## Test 14: Edit a forum (Teacher)
@@ -176,7 +176,7 @@
 
 ### Expected result: The selected forum's topic is changed to the new entered name
 
-### Test Status:
+### Test Status: Passed
 
 
 ## Test 15: Delete a forum (Teacher)
@@ -189,7 +189,7 @@
 
 ### Expected result: The chosen forum and its contents are deleted from the course.
 
-### Test Status:
+### Test Status: Passed
 
 
 ## Test 16: Add a new forum (Teacher)
@@ -202,7 +202,7 @@
 
 ### Expected result: A new forum object is created within the course
 
-### Test Status:
+### Test Status: Passed
 
 ## Test 17: Add a forum from a file (Teacher)
 
@@ -214,7 +214,7 @@
 
 ### Expected result: A forum object is created with the contents given
 
-### Test Status:
+### Test Status: Passed
 
 
 
@@ -228,7 +228,7 @@
 
 ### Expected result: The user is brought to the desired forum's page
 
-### Test Status:
+### Test Status: Passed
 
 
 ## Test 19: Reply to a forum topic (Student)
@@ -241,7 +241,7 @@
 
 ### Expected result: A reply is displayed with the timestamp and a formatted reply
 
-### Test Status:
+### Test Status: Passed
 
 
 
@@ -255,16 +255,18 @@
 
 ### Expected result: The comment is displayed directly underneath the reply, with the outline of the comment being green to differentiate
 
-### Test Status:
+### Test Status: Passed
 
 
 ## Test 21: Upvote a reply on a forum (Student)
 
+1. The user must be a student on a forum page
+2. The user selects a reply on a forum
+3. The user selects the upvote button
 
+### Expected result: The upvoted reply is updated with the incremented upvote
 
-### Expected result: 
-
-### Test Status:
+### Test Status: Passed
 
 
 
@@ -278,7 +280,7 @@
 
 ### Expected result: The student's grade for that course will be updated in their display
 
-### Test Status:
+### Test Status: Passed
 
 ## Test 23: Handling invalid input on the login screen
 
@@ -291,7 +293,7 @@ If:
 
 ### Expected result: The user will be given the respective error message and be prompted to try again
 
-### Test Status:
+### Test Status: Passed
 
 
 ## Test 24: Handling invalid input on the LMS screen (Teacher)
@@ -306,7 +308,7 @@ If:
 
 ### Expected result: The user will be given the respective error message and will have to try again
 
-### Test Status:
+### Test Status: Passed
 
 
 
@@ -319,7 +321,7 @@ If:
 
 ### Expected result: The user will be given an error message and will have to try again
 
-### Test Status:
+### Test Status: Passed
 
 
 ## Test 26: Handling invalid input on the Course screen (Teacher)
@@ -337,7 +339,7 @@ If:
 
 ### Expected result: The user will be given the respective error message and will have to try again
 
-### Test Status:
+### Test Status: Passed
 
 
 
@@ -350,7 +352,7 @@ If:
 
 ### Expected result: The user will be given the respective error message and will have to try again
 
-### Test Status:
+### Test Status: Passed
 
 
 ## Test 28: Handling invalid input on the Forum screen
@@ -367,18 +369,46 @@ If a student:
 
 ### Expected result: The user will be given the respective error message and will have to try again
 
+### Test Status: Passed
+
+
+
+## Test 29: User on a deleted page
+
+If there is a student and a teacher client:
+
+1. The student is inside a course or forum
+2. The teacher deletes the specified course or forum
+
+
+### Expected result: The user is displayed an error message and sent back to the previous existing level.
+
+### Test Status: Passed
+
+## Test 30: Student upvotes same reply twice
+
+1. User must be a student on a forum page
+2. User selects a reply
+3. User selects the upvote button to upvote
+4. User selects the same reply again
+5. User selects the upvote button again
+
+### Expected result: The user is given an error message and nothing is upvoted.
+
+### Test Status: Passed
+
+## Test 31: Add a reply from a file (Student)
+
+1. User must be logged in as a student on a Forum page
+2. User selects the Enter Reply textbox
+3. User enters the file name in the textbox
+4. User selects the Import reply button
+
+### Expected result: A reply object is created and a reply panel is added with the content in the file
+
 ### Test Status:
 
 
-
-## Test 29: 
-
-
-
-
-### Expected result: 
-
-### Test Status:
 
 
 
