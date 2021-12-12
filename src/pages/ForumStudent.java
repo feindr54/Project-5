@@ -308,14 +308,37 @@ public class ForumStudent extends JComponent {
         replies = new ArrayList<>();
         replyPanels = new ArrayList<>();
 
+        boolean courseNotFound = true;
+        boolean forumNotFound = true;
+
         for (Course c : lms.getCourses()) {
-            for (Forum f : c.getForums()) {
-                // TODO - change the getTopic to getIdentifier 
-                if (f.getIndex() == forum.getIndex()) { // find the forum we are at
-                    forum = f;
-                    break;
+            if (c.equals(forum.getCourse())) { // found the course this forum is at
+                courseNotFound = false;
+                for (Forum f : c.getForums()) {
+                    // TODO - change the getTopic to getIdentifier 
+                    if (f.getIndex() == forum.getIndex()) { // find the forum we are at
+                        forumNotFound = false;
+                        forum = f;
+                        break;
+                    }
                 }
             }
+        }
+
+        if (forumNotFound) {
+            client.currentPanelDeleted("forum");
+            JOptionPane.showMessageDialog(null, "Error, Forum has been deleted!", "Error",
+            JOptionPane.ERROR_MESSAGE);
+            System.out.println("Student was in forum page, forum deleted, should go back to course page");
+            return; 
+        }
+        if (courseNotFound) {
+            client.currentPanelDeleted("course");
+            JOptionPane.showMessageDialog(null, "Error: Course has been deleted.", 
+            "Error", JOptionPane.ERROR_MESSAGE);
+            
+            System.out.println("Student was in forum page, course deleted, should go back to lms page");
+            return; 
         }
 
         // update replies ArrayList with the forum replies

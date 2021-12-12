@@ -42,6 +42,18 @@ public class Student extends User implements Serializable {
 
     }
 
+    public void deleteReplies(Forum forum) {
+        for (Reply r : studentReplies) {
+            if (r.getForum().getTopic().equals(forum)) {
+                studentReplies.remove(r);
+            }
+        }
+    }
+
+    public void removeGrades(Course course) {
+        grades.remove(course);
+    }
+
     public void attachReplyToStudent (Reply reply) {
         this.studentReplies.add(reply);
     }
