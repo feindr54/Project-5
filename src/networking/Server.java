@@ -392,10 +392,13 @@ public class Server implements Serializable {
                 }
                 // update all comments made by this student
                 if (users.get(i) instanceof Student) {
-                    for (int j = 0; j < ((Student) users.get(i)).getComments().size(); j++ ) { 
+                    for (int j = 0; j < ((Student) users.get(i)).getReplyObjects().size(); j++) { 
                         // change any instance of the name of teacher who commented 
-                        if (((Student) users.get(i)).getComments().get(i).getOwnerObject().equals(user)) {
-                            ((Student) users.get(i)).getComments().get(i).setOwner((Student) user);
+                        Reply r = ((Student) users.get(i)).getReplyObjects().get(j);
+                        for (int k = 0; k < r.getComments().size(); k++) {
+                            if (r.getComments().get(k).getOwnerObject().equals(user)) { // checks if the owner of the comment is the teacher
+                                r.getComments().get(k).setOwner((Student) user);
+                            }
                         }
                     }
                 }
