@@ -406,7 +406,7 @@ If there is a student and a teacher client:
 
 ### Expected result: A reply object is created and a reply panel is added with the content in the file
 
-### Test Status:
+### Test Status: Passed
 
 
 
