@@ -114,7 +114,8 @@ public class CourseTeacher extends JComponent {
                             break;
                         }
                     }
-                    if (client.getForumTeacher() == null) {
+                    System.out.println("The forum we want to load is " + selectedForum);
+                    if (client.getForumTeacher() == null || !client.getForumTeacher().getForum().getTopic().equals(selectedForum)) {
                         ForumTeacher ft = new ForumTeacher(client);
                         client.setForumTeacher(ft);
                         client.addPanelToCardLayout(client.getForumTeacher().getContent(), "forumTeacher");
@@ -231,18 +232,20 @@ public class CourseTeacher extends JComponent {
                 if (deleteForums.getSelectedItem() == null) {
                     JOptionPane.showMessageDialog(null, "Error, no forums found", "Error",
                             JOptionPane.INFORMATION_MESSAGE);
-                }
-                //get selected forumName from list
-                //check if forumName equals an existing forum
-                //if true, remove that forum from the forum AL
-                //else show error message
-                //course.getForums().remove(deleteForums.getSelectedIndex());
-                String deletedForum = (String) deleteForums.getSelectedItem();
-                Request request = new Request(3, 1, deletedForum);
-                // send the updated course to the server
-                client.sendToServer(request);
+                } else {
+                    //get selected forumName from list
+                    //check if forumName equals an existing forum
+                    //if true, remove that forum from the forum AL
+                    //else show error message
+                    //course.getForums().remove(deleteForums.getSelectedIndex());
+                    String deletedForum = (String) deleteForums.getSelectedItem();
+                    Request request = new Request(3, 1, deletedForum);
+                    // send the updated course to the server
+                    client.sendToServer(request);
 
-                deleteForums.setSelectedIndex(0); // resets the selection
+                    deleteForums.setSelectedIndex(0); // resets the selection
+                }
+                
 
             }
 
@@ -307,8 +310,13 @@ public class CourseTeacher extends JComponent {
         }
     };
 
+    public Course getCourse() {
+        return this.course; 
+    }
+
     synchronized public void updateDisplay(Course course) {
         // TODO - Update the display of the course with a Course object input
+        System.out.println("ACCESSING COURSETEACHER WITH COURSE " + course.getCourseName());
         this.course = course;
         courseName = this.course.getCourseName();
         forums = this.course.getForums();
@@ -335,19 +343,18 @@ public class CourseTeacher extends JComponent {
     synchronized public void updateDisplay(LMS lms) {
         // TODO - Update the display of the course with a Course object input
         int index = -1;
-        for (Course c : lms.getCourses()) {
-            System.out.println(c.getCourseName() + " " + this.course.getCourseName());
-            if (c.getCourseName().equals(this.course.getCourseName())){
-                index = c.getIndex();
-                System.out.println(index);
+        System.out.println("The current course name is: " + this.course.getCourseName());
+        for (int i = 0; i < lms.getCourses().size(); i++) {
+            System.out.println("Comparing: " + lms.getCourses().get(i).getCourseName() + " -with- " + this.course.getCourseName());
+            if (lms.getCourses().get(i).getCourseName().equals(this.course.getCourseName())){
+                index = i;
                 break;
-            }else {
-                System.out.println("they not the same?");
             }
         }
         if (index != -1) {
             this.course = lms.getCourses().get(index);
             courseName = this.course.getCourseName();
+            welcomeLabel.setText("Welcome to " + courseName + "!");
             forums = this.course.getForums();
             studentsArr = course.getStudents();
             accessForums.removeAllItems();

@@ -104,10 +104,14 @@ public class LMSTeacher extends JComponent implements ActionListener {
                         break;
                     }
                 }
-                CourseTeacher ct = new CourseTeacher(client, selectedCourseObject, (Teacher) client.getUser());
-                client.setCourseTeacher(ct);
-                client.addPanelToCardLayout(client.getCourseTeacher().getContent(), "courseTeacher");
-                ct.updateDisplay(selectedCourseObject);
+                if (client.getCourseTeacher() == null || 
+                !client.getCourseTeacher().getCourse().getCourseName().equals(selectedCourse)) {
+                    CourseTeacher ct = new CourseTeacher(client, selectedCourseObject, (Teacher) client.getUser());
+                    client.setCourseTeacher(ct);
+                    client.addPanelToCardLayout(client.getCourseTeacher().getContent(), "courseTeacher");
+                    ct.updateDisplay(selectedCourseObject);
+                }
+                
                 client.changePanel("courseTeacher");
 
                 System.out.println("teacher switched to " + selectedCourse + " course."); // TODO - delete test comment later

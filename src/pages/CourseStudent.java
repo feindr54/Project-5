@@ -55,6 +55,7 @@ public class CourseStudent extends JComponent {
                     System.out.println(selectedForum);
                     Forum selectedForumObject = null;
                     for (Forum f : forums) {
+                        System.out.println("Forums are: ");
                         System.out.println(f.getTopic());
                         if (selectedForum.equals(f.getTopic())) {
                             System.out.println(f.toString());
@@ -62,7 +63,11 @@ public class CourseStudent extends JComponent {
                             break;
                         }
                     }
-                    if (client.getForumStudent() == null) {
+                    // first we chose java, forumStudent was null so it initialized with java forum
+                    // if we choose a different one, getForumStudent is not null so it will not update with new forum
+                    System.out.println("The forum we want to load is " + selectedForum);
+                    if (client.getForumStudent() == null || 
+                    !client.getForumStudent().getForum().getTopic().equals(selectedForum)) {
 
                         ForumStudent fs = new ForumStudent(client, selectedForumObject);
                         client.setForumStudent(fs);
@@ -171,6 +176,10 @@ public class CourseStudent extends JComponent {
 
         // refreshes the display
         content.revalidate();
+    }
+
+    public Course getCourse() {
+        return this.getCourse(); 
     }
 
     synchronized public void updateDisplay(LMS lms) {

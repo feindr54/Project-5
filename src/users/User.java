@@ -122,7 +122,7 @@ public class User implements Serializable {
         }
 
         User u = (User) o;
-        return ((User) o).getIdentifier().equals(((User) u).getIdentifier());
+        return ((User) o).getEmail().equals(((User) u).getEmail());
     }
 
     @Override
