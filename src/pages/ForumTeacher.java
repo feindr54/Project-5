@@ -458,15 +458,11 @@ public class ForumTeacher extends JComponent {
 
         if (forumNotFound) {
             client.currentPanelDeleted("forum");
-            JOptionPane.showMessageDialog(null, "Error, Forum has been deleted!", "Error",
-            JOptionPane.ERROR_MESSAGE);
             System.out.println("teacher was in forum page, should go back to course page");
             return; 
         }
         if (courseNotFound) {
             client.currentPanelDeleted("course");
-            JOptionPane.showMessageDialog(null, "Error: Course has been deleted.", 
-            "Error", JOptionPane.ERROR_MESSAGE);
             System.out.println("teacher was in forum page, should go back to lms page");
             return; 
         }

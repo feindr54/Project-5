@@ -213,30 +213,34 @@ public class ActualClient extends JFrame implements Runnable {
         System.out.println("currentPanelDeleted has been run!"); // TODO - delete test comment later 
         String currentPage = pageStack.peek();
         if (currentPage.equals("lmsTeacher") || currentPage.equals("lmsStudent")) {
-            if (page.equals("course")) {
-                courseStudent = null;
-                courseTeacher = null; 
-                return;
-            } else if (page.equals("forum")) {
+            if (page.equals("forum")) {
                 forumStudent = null; 
                 forumTeacher = null;
                 return;  
-            }
+            } else if (page.equals("course")) {
+                courseStudent = null;
+                courseTeacher = null; 
+                return;
+            } 
         } else if (currentPage.equals("courseTeacher") || currentPage.equals("courseStudent")) {
             if (page.equals("forum")) {
                 forumStudent = null; 
                 forumTeacher = null;
                 return; 
             } 
+            
         }
-        JOptionPane.showMessageDialog(null, "Error, Course has been deleted!", "Error",
-                            JOptionPane.ERROR_MESSAGE);
+        
         
         System.out.println(page);
         if (page.equals("course")) {
+            JOptionPane.showMessageDialog(null, "Error, Course has been deleted!", "Error",
+                            JOptionPane.ERROR_MESSAGE);
             courseStudent = null; 
             courseTeacher = null; 
         } else if (page.equals("forum")) {
+            JOptionPane.showMessageDialog(null, "Error, Forum has been deleted!", "Error",
+            JOptionPane.ERROR_MESSAGE);
             forumStudent = null; 
             forumTeacher = null; 
         }
@@ -310,7 +314,19 @@ class ReaderThread extends Thread {
         //     gui.getForumTeacher().updateDisplay(newLms);
         // }
         
-        
+        if (gui.getForumStudent() != null) {
+            gui.getForumStudent().updateDisplay(newLms);
+        }
+        if (gui.getForumTeacher() != null) {
+            gui.getForumTeacher().updateDisplay(newLms);
+        }
+
+        if (gui.getCourseStudent() != null) {
+            gui.getCourseStudent().updateDisplay(newLms);
+        }
+        if (gui.getCourseTeacher() != null) {
+            gui.getCourseTeacher().updateDisplay(newLms);
+        }
         
         if (gui.getLmsStudent() != null) {
             gui.getLmsStudent().updateDisplay(newLms);
@@ -318,21 +334,6 @@ class ReaderThread extends Thread {
         if (gui.getLmsTeacher() != null) {
             gui.getLmsTeacher().updateDisplay(newLms);
         }
-        if (gui.getCourseStudent() != null) {
-            gui.getCourseStudent().updateDisplay(newLms);
-        }
-        if (gui.getCourseTeacher() != null) {
-            gui.getCourseTeacher().updateDisplay(newLms);
-        }
-        if (gui.getForumStudent() != null) {
-            gui.getForumStudent().updateDisplay(newLms);
-        }
-        if (gui.getForumTeacher() != null) {
-            gui.getForumTeacher().updateDisplay(newLms);
-        }
-                
-        
-        
     }
 
     

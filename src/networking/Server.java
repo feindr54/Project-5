@@ -536,11 +536,10 @@ public class Server implements Serializable {
     public synchronized static void gradeStudent(String studentName, Course course, int score) {
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getIdentifier().equals(studentName)) {
-                Student student = (Student) users.get(i);
                 for (Course c : lms.getCourses()) {
                     if (c.equals(course)) {
-                        student.setGrade(c, String.valueOf(score));
-                        System.out.println(student.getIdentifier() + "'s grade has been set to " + String.valueOf(score));
+                        ((Student) users.get(i)).setGrade(c, String.valueOf(score));
+                        //System.out.println(student.getIdentifier() + "'s grade has been set to " + String.valueOf(score));
                         break; 
                     }
                 }

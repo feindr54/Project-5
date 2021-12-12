@@ -233,8 +233,6 @@ public class CourseStudent extends JComponent {
             // refreshes the display
             content.revalidate();
         } else {
-            JOptionPane.showMessageDialog(null, "Error, Course has been deleted!", "Error",
-                            JOptionPane.ERROR_MESSAGE);
             System.out.println("Student was in course, course was deleted, should go back to lms page");
             client.currentPanelDeleted("course");
         }
