@@ -21,11 +21,13 @@ Someone - Submitted Presentation on Brightspace
 
 ### ActualClient:
 
-### Client:
-
 ### Request:
 
+The request class is a message sent by the client to the server to perform a specified change or computation. To create a request object, the client specifies an operation, an object, and an operand if necessary.
+
 ### Response:
+
+The response class is the counterpart to the request class. This class represents a message sent by the server back to the client.
 
 ### Server:
 
