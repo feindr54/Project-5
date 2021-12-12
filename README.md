@@ -33,11 +33,19 @@ Someone - Submitted Presentation on Brightspace
 
 ### LMSStudent:
 
+The LMSStudent class creates an LMSStudent object which opens the LMS page for a Student when it is called. The LMSStudent page is automatically opened when a Student logs in or signs up from the Login page. The LMSStudent page gives the user the option to select a Course page to open from a list of all Courses. This page also allows the user to access the Settings page using the Settings button. The client sends a different request to the server based on what the user wants to do. 
+
 ### LMSTeacher:
+
+The LMSTeacher class creates an LMSTeacher object which opens the LMS page for a Teacher when it is called. The LMSTeacher page is automatically opened when a Teacher logs in or signs up from the Login page. The LMSTeacher page gives the user the option to select a Course page to open from a list of all Courses, create a new Course, edit a Course name, or delete a Course. This page also allows the user to access the Settings page using the Settings button. The client sends a different request to the server based on what the user wants to do. 
 
 ### CourseStudent:
 
+The CourseStudent class creates an CourseStudent object which opens the Course page for a Student when it is called. The CourseStudent page is opened when a Student selects that Course in the LMSStudent page. The CourseStudent page gives the user the option to select a Forum page to open from a list of all Forums in that Course and view the grade assigned to them for that Course. This page also allows the user to go back to the LMSStudent page using the Back button or access the Settings page using the Settings button. The client sends a different request to the server based on what the user wants to do. 
+
 ### CourseTeacher:
+
+The CourseTeacher class creates an CourseTeacher object which opens the Course page for a Teacher when it is called. The CourseTeacher page is opened when a Teacher selects that Course in the LMSTeacher page. The CourseTeacher page gives the user the option to select a Forum page to open from a list of all Forums in that Course, create a new Forum, edit a Forum topic, delete a Forum, or assign a Student in that Course a grade for that Course. This page also allows the user to go back to the LMSTeacher page using the Back button or access the Settings page using the Settings button. The client sends a different request to the server based on what the user wants to do. 
 
 ### ForumStudent:
 
@@ -141,4 +149,4 @@ because teachers have the option to change things within each level.
 
 ### SettingsGUI:
 
-The SettingsGUI class creates a SettingsGUI object which opens the Settings page when it is called. The Settings page gives the user the option to change their identifier, change their password, or log out. The client sends a different request to the server based on what the user wants to do. There is a settings button that takes the user to the Settings page on other page except the login page.
+The SettingsGUI class creates a SettingsGUI object which opens the Settings page when it is called. The Settings page gives the user the option to change their identifier, change their password, or log out. The client sends a different request to the server based on what the user wants to do. There is a settings button that takes the user to the Settings page on every other page except the Login page.
