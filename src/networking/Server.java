@@ -289,35 +289,56 @@ public class Server implements Serializable {
      * @param newUsername
      * @return
      */
-    synchronized public static User editUsername(String oldUsername, String newUsername) {
-        int index = -1;
+    synchronized public static User editUsername(String email, String newUsername) {
+        //int index = -1;
         // TODO - change the whole for-loop, should loop through the users ArrayList
         for (int i = 0; i < users.size(); i++) {
-            if (oldUsername.equals(users.get(i).getIdentifier())) {
+            if (email.equals(users.get(i).getEmail())) {
                 // replaces the course name with a new name
-                index = i;
-                break;
-            }
-        }
-        if (index != -1) {
+                if (users.get(i).getIdentifier().equals(newUsername)) {
+                    return null; 
+                } 
+                users.get(i).setIdentifier(newUsername);
+                if (users.get(i) instanceof Student) {
+                    System.out.println("student is changing username");
+                    for (Reply r : ((Student) users.get(i)).getReplyObjects()) {
+                        r.setOwner((Student) users.get(i));
+                        System.out.println("Changing reply owner id to " + r.getOwner().getIdentifier());// it doesnt do this!!!
+                    }
+                }else{
+                    System.out.println("Teacher is changing username");
+                }
+                
+                // for (int i = 0; i < lms.getCourses().size(); i++) {
+                    
+                //     for (int j = 0; j < lms.getCourses().get(i).getForums().size(); j++) {
 
-            users.get(index).setIdentifier(newUsername);
-            saveUsers(USERSFILE);
-            return users.get(index);
+                //     }
+                // }
+
+                saveUsers(USERSFILE);
+                lms.setUsers(users);
+                saveLMS(LMSFILE); 
+                
+                return users.get(i); 
+            }
         }
         return null;
     }
 
-    public synchronized static User editPassword(String username, String oldPassword, String newPassword) {
+    public synchronized static User editPassword(String email, String oldPassword, String newPassword) {
         // check if there is any difference in password
-        // if () {
-
-        // }
+        if (oldPassword.equals(newPassword)) {
+            return null; 
+        }
+        
         for (User user : users) {
-            if (username.equals(user.getIdentifier())) {
+            if (email.equals(user.getEmail())) {
                 user.setPassword(newPassword);
                 // saves the user to file
                 saveUsers(USERSFILE);
+                lms.setUsers(users);
+                saveLMS(LMSFILE); 
                 return user;
             }
         }
@@ -378,6 +399,7 @@ public class Server implements Serializable {
                     }
                     // add a new Forum in the current course
                     Forum forum = new Forum(c, forumName);
+                    forum.setIndex(c.getNumForumCreated());
                     c.addForum(forum);
                     //save the LMS
                 } else {
@@ -420,13 +442,15 @@ public class Server implements Serializable {
         }
     }
 
-    public synchronized static void gradeStudent(String studentName, Course course,  int score) {
+    public synchronized static void gradeStudent(String studentName, Course course, int score) {
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getIdentifier().equals(studentName)) {
                 Student student = (Student) users.get(i);
                 student.setGrade(course, String.valueOf(score));
 
                 // save users to file
+                lms.setUsers(users);
+                saveLMS(LMSFILE); 
                 saveUsers(USERSFILE);
                 return;
             }
@@ -455,6 +479,27 @@ public class Server implements Serializable {
             }
         }
     }
+
+    public synchronized static boolean upvote(Reply reply, Student student) {
+        for (int i = 0; i < lms.getCourses().size(); i++) {
+            for (int j = 0; j < lms.getCourses().get(i).getForums().size(); j++) {
+                for (int k = 0; k < lms.getCourses().get(i).getForums().get(j).getReplies().size(); k++) {
+                    Reply r = lms.getCourses().get(i).getForums().get(j).getReplies().get(k);
+                    if (r.getIdentifier() == reply.getIdentifier()) {
+                        for (Student s : r.getUpvotedStudents()) { //TODO - check if correct implementation 
+                            if (s.equals(student)) { // check if the student had already upvoted 
+                                return false; 
+                            }
+                        }
+                        // successfully upvotes reply 
+                        r.upvote(student);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false; 
+    } 
 }
 
 /**
@@ -617,35 +662,6 @@ class ClientHandler extends Thread implements Serializable {
                 default:
                     break;
             } 
-        }
-
-        else if (operation == 7) { // if user is changing username
-            Object[] info = (Object[]) object;
-            User user = (User) info[0];
-            String newUsername = (String) info[1];
-
-            user = Server.editUsername(user.getIdentifier(), newUsername);
-
-            response = new Response(0, user);
-            // send the response to the client
-            sendToClient(response);
-
-        } else if (operation == 8) { // if user is changing password
-
-        } else if (object instanceof LMS) {
-            // user added, edited or deleted a course
-            Server.changeLMS((LMS) object);
-
-            // TODO - create Response object to send back to the client
-        } else if (object instanceof Course) {
-            // user added, edited or deleted a forum
-            Server.changeCourse((Course) object);
-
-            // TODO - create Response object to send back to the client
-        } else if (object instanceof Forum) {
-            // user added a reply, comment, upvoted, or asked to sort the replies
-
-
         } else if (object instanceof String[]) { // if the user is logging in or signing up
             // user is trying to log in or create a new account
             // first var is the username, 2nd var is the password
@@ -751,17 +767,75 @@ class ClientHandler extends Thread implements Serializable {
             }
             // TODO - saves the user list in Server
             return null;
+        } else if (operation == 6) { // student upvote reply 
+            Object[] info = (Object[]) object;
+            Reply reply = (Reply) info[0];
+            Student upvotedStudent = (Student) info[1];
+            // TODO - upvote the student's response
+            if (Server.upvote(reply, upvotedStudent)) {
+                // sends LMS back to all 
+                response = new Response(0, Server.getLMS());
+                return response; 
+            } else {
+                // sends error back to client 
+                response = new Response(1, "You have already upvoted once.");
+                return null; 
+            }
+            // TODO - return the LMS 
+        } else if (operation == 7) { // if user is changing username
+            Object[] info = (Object[]) object;
+            User user = (User) info[0];
+            String newUsername = (String) info[1];
+
+            user = Server.editUsername(user.getEmail(), newUsername);
+
+            if (user == null) {
+                response = new Response(1, "New username must be different from old username.");
+                sendToClient(response);
+                return null;
+            }
+
+            response = new Response(0, new Object[]{Server.getLMS(), user});
+            // send the response to the client
+            sendToClient(response);
+            return null; 
+            // TODO - change response object to just LMS so others can update their respective LMS 
+            // response = new Response(0, Server.getLMS());
+            // return response;
+
+        } else if (operation == 8) { // if user is changing password
+            Object[] info = (Object[]) object;
+            User user = (User) info[0];
+            String newPassword = (String) info[1];
+
+            user = Server.editPassword(user.getEmail(), user.getPassword(), newPassword);
+            if (user == null) {
+                response = new Response(1, "New password must be different from the old password");
+                sendToClient(response);
+                return null; 
+            } else {
+                response = new Response(0, new Object[]{Server.getLMS(), user});
+                // send the response to the client
+                sendToClient(response);
+                return null; 
+            }
+            
+
         } else if (operation == 9) { // user is logging out
             this.user = null;
+            response = new Response(2, null);// sends response clear all panels to null
+            sendToClient(response);
             return null;
         } else if (operation == 10) { // teacher grading student
             Object[] info = (Object[]) object;
             String studentName = (String) info[0];
             Course course = (Course) info[1];
             int score = (int) info[2];
-            Server.gradeStudent(studentName, course , score);
+            Server.gradeStudent(studentName, course, score);
             response = new Response(0, Server.getLMS());
             sendToClient(response);
+            System.out.println("Sending ok response to add grade");
+            return null;
         }
         return null;
     }

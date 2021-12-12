@@ -41,7 +41,7 @@ public class ForumStudent extends JComponent {
         // ForumTeacher forumPage = new ForumTeacher(frame);
         this.client = client;
         this.forum = forum;
-        this.currentUser = client.getUser();
+        this.currentUser = this.client.getUser();
         replies = forum.getReplies();
 
         content = new Container();
@@ -128,6 +128,10 @@ public class ForumStudent extends JComponent {
         return content;
     }
 
+    public void setUser(User newUser) {
+        this.currentUser = newUser;
+    }
+
     
 
     // synchronized static public void selectPanel(ReplyPanel replyPanel) {
@@ -192,8 +196,9 @@ public class ForumStudent extends JComponent {
 
                 } else { // a reply is selected so upvote
 
-                    //TODO how to upvote a reply
-
+                    //how to upvote a reply
+                    Request request = new Request(6, new Object[]{selectedReply, currentUser});
+                    client.sendToServer(request);
                 }
 
             }
@@ -293,7 +298,7 @@ public class ForumStudent extends JComponent {
         // revalidate 
 
         // get the forum we are at
-
+        System.out.println("UPDATING FORUM STUDENT WITH NEW LMS");
         forumDisplay.removeAll();
 
         replies = new ArrayList<>();
@@ -318,13 +323,13 @@ public class ForumStudent extends JComponent {
         
         
         for (Reply reply : replies) {
+            System.out.println(reply.getOwner().getIdentifier());
             for (Comment c : reply.getComments()) {
                 System.out.println(c.getContent());
             }
             ReplyPanel replyPanel = new ReplyPanel(reply);
             replyPanel.addMouseListener(selectReplyListener);
             replyPanels.add(replyPanel);
-            System.out.println("adding a new reply");
         }
 
         for (ReplyPanel replyPanel : replyPanels) {

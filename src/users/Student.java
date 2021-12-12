@@ -73,6 +73,10 @@ public class Student extends User implements Serializable {
         return grades.get(course);
     }
 
+    public ArrayList<Reply> getReplyObjects() {
+        return this.studentReplies;
+    }
+
     public ArrayList<String> getReplies() {
         for (int i = 0; i < this.studentReplies.size(); i++) {
             repliesToString.add(studentReplies.get(i).getContent());

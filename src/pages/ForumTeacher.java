@@ -157,7 +157,10 @@ public class ForumTeacher extends JComponent {
     public Container getContent() {
         return content;
     }
-
+    public void setUser(User newUser) {
+        this.currentUser = newUser;
+    }
+    
     ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {

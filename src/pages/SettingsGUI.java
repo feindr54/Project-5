@@ -146,6 +146,7 @@ public class SettingsGUI extends JComponent {
                             new Object[]{client.getUser(), newUsername});
                     client.sendToServer(request);
                 }
+                idText.setText("");
             }
 
             if (e.getSource() == passwordSubmitButton) {
@@ -160,6 +161,7 @@ public class SettingsGUI extends JComponent {
                     Request request = new Request(8, new Object[]{client.getUser(), newPassword});
                     client.sendToServer(request);
                 }
+                passwordText.setText("");
             }
 
             if (e.getSource() == logoutButton) {

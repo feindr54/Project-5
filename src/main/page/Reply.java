@@ -57,6 +57,10 @@ public class Reply implements Serializable {
         return owner;
     }
 
+    public void setOwner(Student student) {
+        this.owner = student; 
+    }
+
     public ArrayList<Comment> getComments() {
         return comments;
     }
@@ -76,6 +80,10 @@ public class Reply implements Serializable {
 
     public ArrayList<Student> getUpvotedStudents() {
         return upvotedStudents;
+    }
+
+    public int getUpvotes() {
+        return upvotes;
     }
 
     public LocalDateTime getTime() {

@@ -283,8 +283,9 @@ public class CourseTeacher extends JComponent {
                         // TODO - delete above comments
                         String studentName = (String) students.getSelectedItem();
                         // TODO - sends the updated scores and a particular student to the server
-                        Request request = new Request(10, new Object[]{studentName, choice});
+                        Request request = new Request(10, new Object[]{studentName, course, choice});
                         client.sendToServer(request);
+                        System.out.println("sent add grade request");
 
                         replyGrade.setText("");
                         replies.setSelectedIndex(0);
