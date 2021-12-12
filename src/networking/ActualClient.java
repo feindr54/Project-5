@@ -7,20 +7,20 @@ import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 import java.util.Stack;
+
 import pages.*;
 import users.*;
 import main.page.*;
 
 /**
-* Project 5 - ActualClient
-*
-* Description - This class operates the client and its functions. It is responsible for connecting to the server and
+ * Project 5 - ActualClient
+ * <p>
+ * Description - This class operates the client and its functions. It is responsible for connecting to the server and
  * simultaneously displaying its content on the user interface.
-*
-* @author Changxiang Gao, Ahmed Qarooni
-*
-* @version 12/11/2021
-*/
+ *
+ * @author Changxiang Gao, Ahmed Qarooni
+ * @version 12/11/2021
+ */
 
 // THIS CLASS RECEIVES INPUT FROM THE SERVER
 public class ActualClient extends JFrame implements Runnable {
@@ -31,10 +31,10 @@ public class ActualClient extends JFrame implements Runnable {
     private ObjectOutputStream C_OTS; // c = client, o = out, t = to, s = server;
 
     // creates the stack
-    private Stack<String> pageStack = new Stack<>();
+    private final Stack<String> pageStack = new Stack<>();
 
     public static Container mainPanel;
-    
+
     // creates the cardlayout object
     private CardLayout cl;
 
@@ -49,7 +49,6 @@ public class ActualClient extends JFrame implements Runnable {
         mainPanel.revalidate();
     }
 
-    
 
     public LMSStudent getLmsStudent() {
         return lmsStudent;
@@ -115,7 +114,7 @@ public class ActualClient extends JFrame implements Runnable {
             forumStudent.setUser(user);
         } else if (forumTeacher != null) {
             forumTeacher.setUser(user);
-        } 
+        }
     }
 
     public User getUser() {
@@ -125,6 +124,7 @@ public class ActualClient extends JFrame implements Runnable {
     public ObjectOutputStream getOOS() {
         return C_OTS;
     }
+
     public CardLayout getCl() {
         return cl;
     }
@@ -132,7 +132,7 @@ public class ActualClient extends JFrame implements Runnable {
     public Container getMainPanel() {
         return mainPanel;
     }
-    
+
     public Stack<String> getPageStack() {
         return pageStack;
     }
@@ -201,7 +201,7 @@ public class ActualClient extends JFrame implements Runnable {
         System.out.println("User was at " + pageStack.peek());
         cl.show(mainPanel, name);
     }
-    
+
     synchronized public void changeToPreviousPanel() {
         System.out.println("User was at " + pageStack.peek());
         pageStack.pop();
@@ -214,35 +214,35 @@ public class ActualClient extends JFrame implements Runnable {
         String currentPage = pageStack.peek();
         if (currentPage.equals("lmsTeacher") || currentPage.equals("lmsStudent")) {
             if (page.equals("forum")) {
-                forumStudent = null; 
+                forumStudent = null;
                 forumTeacher = null;
-                return;  
+                return;
             } else if (page.equals("course")) {
                 courseStudent = null;
-                courseTeacher = null; 
+                courseTeacher = null;
                 return;
-            } 
+            }
         } else if (currentPage.equals("courseTeacher") || currentPage.equals("courseStudent")) {
             if (page.equals("forum")) {
-                forumStudent = null; 
+                forumStudent = null;
                 forumTeacher = null;
-                return; 
-            } 
-            
+                return;
+            }
+
         }
-        
-        
+
+
         System.out.println(page);
         if (page.equals("course")) {
             JOptionPane.showMessageDialog(null, "Error, Course has been deleted!", "Error",
-                            JOptionPane.ERROR_MESSAGE);
-            courseStudent = null; 
-            courseTeacher = null; 
+                    JOptionPane.ERROR_MESSAGE);
+            courseStudent = null;
+            courseTeacher = null;
         } else if (page.equals("forum")) {
             JOptionPane.showMessageDialog(null, "Error, Forum has been deleted!", "Error",
-            JOptionPane.ERROR_MESSAGE);
-            forumStudent = null; 
-            forumTeacher = null; 
+                    JOptionPane.ERROR_MESSAGE);
+            forumStudent = null;
+            forumTeacher = null;
         }
 
         changeToPreviousPanel();
@@ -271,14 +271,13 @@ public class ActualClient extends JFrame implements Runnable {
 }
 
 /**
-* Project 5 - ReaderThread
-*
-* Description - TODO
-*
-* @author Ahmed Qarooni
-*
-* @version 12/7/2021
-*/
+ * Project 5 - ReaderThread
+ * <p>
+ * Description - TODO
+ *
+ * @author Ahmed Qarooni
+ * @version 12/7/2021
+ */
 
 class ReaderThread extends Thread {
 
@@ -294,7 +293,7 @@ class ReaderThread extends Thread {
         // make sure LMS is correct
 
         System.out.println("We are at " + gui.getPageStack().peek()); // TODO - delete test comment later
-        
+
         // if (gui.getLmsStudent() != null) {
         //     gui.getLmsStudent().updateDisplay(newLms);
         // }
@@ -313,7 +312,7 @@ class ReaderThread extends Thread {
         // if (gui.getForumTeacher() != null) {
         //     gui.getForumTeacher().updateDisplay(newLms);
         // }
-        
+
         if (gui.getForumStudent() != null) {
             gui.getForumStudent().updateDisplay(newLms);
         }
@@ -327,7 +326,7 @@ class ReaderThread extends Thread {
         if (gui.getCourseTeacher() != null) {
             gui.getCourseTeacher().updateDisplay(newLms);
         }
-        
+
         if (gui.getLmsStudent() != null) {
             gui.getLmsStudent().updateDisplay(newLms);
         }
@@ -336,7 +335,6 @@ class ReaderThread extends Thread {
         }
     }
 
-    
 
     public void processResponse(Response response) {
         int type = response.getType();
@@ -354,7 +352,7 @@ class ReaderThread extends Thread {
                     gui.setUser((Student) loginDetails[0]);
                     // TODO - load student lms (this should be done in the EDT though)
                     // push the student lms to top of page stack
-                   // gui.getPageStack().push("lmsStudent");
+                    // gui.getPageStack().push("lmsStudent");
 
                     // create student lms object
                     gui.setLmsStudent(new LMSStudent(gui));
@@ -373,18 +371,18 @@ class ReaderThread extends Thread {
                     gui.getLmsTeacher().updateDisplay((LMS) loginDetails[1]);
                     gui.addPanelToCardLayout(gui.getLmsTeacher().getContent(), "lmsTeacher");
                     gui.changePanel("lmsTeacher");
-                    
+
                 } else { // when the user changes his/her username or password 
                     LMS newLMS = (LMS) loginDetails[0]; // updated LMS
                     User newUser = (User) loginDetails[1]; // updated user
-                    
+
                     if (gui.getUser().getIdentifier().equals(newUser.getIdentifier())) { // denotes a change in password
-                        JOptionPane.showMessageDialog(null, "Password successfully changed.", "Password Changed", 
-                        JOptionPane.INFORMATION_MESSAGE);// prints success message for change in password
+                        JOptionPane.showMessageDialog(null, "Password successfully changed.", "Password Changed",
+                                JOptionPane.INFORMATION_MESSAGE);// prints success message for change in password
                     } else {
-                        JOptionPane.showMessageDialog(null, "Username successfully changed to " +  newUser.getIdentifier()
-                        + ".", "Username Changed", 
-                        JOptionPane.INFORMATION_MESSAGE);// prints success message for change in password
+                        JOptionPane.showMessageDialog(null, "Username successfully changed to " + newUser.getIdentifier()
+                                        + ".", "Username Changed",
+                                JOptionPane.INFORMATION_MESSAGE);// prints success message for change in password
                     }
                     gui.setUser(newUser);
                     updateGUIWithNewLMS(newLMS);
@@ -407,10 +405,11 @@ class ReaderThread extends Thread {
         }
 
     }
+
     @Override
     public void run() {
         try {
-            
+
             Socket socket = gui.getSocket();
             System.out.println("Connected"); // TODO - dk if needa delete this
 

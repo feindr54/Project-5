@@ -1,4 +1,5 @@
 package pages;
+
 import networking.Request;
 import users.*;
 import main.page.*;
@@ -9,15 +10,14 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.*;
+
 /**
  * CourseStudent
- *
+ * <p>
  * This class is the GUI for Courses used by Students
  *
  * @author Qasim Ali, CS180
- *
  * @version December 7, 2021
- *
  */
 public class CourseStudent extends JComponent {
 
@@ -58,7 +58,7 @@ public class CourseStudent extends JComponent {
                         System.out.println("Forums are: ");
                         System.out.println(f.getTopic());
                         if (selectedForum.equals(f.getTopic())) {
-                            System.out.println(f.toString());
+                            System.out.println(f);
                             selectedForumObject = f;
                             break;
                         }
@@ -66,8 +66,8 @@ public class CourseStudent extends JComponent {
                     // first we chose java, forumStudent was null so it initialized with java forum
                     // if we choose a different one, getForumStudent is not null so it will not update with new forum
                     System.out.println("The forum we want to load is " + selectedForum);
-                    if (client.getForumStudent() == null || 
-                    !client.getForumStudent().getForum().getTopic().equals(selectedForum)) {
+                    if (client.getForumStudent() == null ||
+                            !client.getForumStudent().getForum().getTopic().equals(selectedForum)) {
 
                         ForumStudent fs = new ForumStudent(client, selectedForumObject);
                         client.setForumStudent(fs);
@@ -77,9 +77,6 @@ public class CourseStudent extends JComponent {
                     //client.getCl().con(client.getCourseStudent());
                     client.changePanel("forumStudent");
                     System.out.println("Student switched to " + selectedForum + " forum.");
-                    
-
-
 
 
                 }
@@ -87,7 +84,7 @@ public class CourseStudent extends JComponent {
                 //check if forumName equals an existing forum
                 //if true, forum.access()
                 //else show error message
-                
+
 
             }
             if (e.getSource() == settingsButton) {
@@ -170,7 +167,7 @@ public class CourseStudent extends JComponent {
         forums = this.course.getForums();
         accessForums.removeAllItems();
 
-        for (Forum f: forums) {
+        for (Forum f : forums) {
             accessForums.addItem(f.getTopic());
 
         }
@@ -180,57 +177,57 @@ public class CourseStudent extends JComponent {
     }
 
     public Course getCourse() {
-        return this.course; 
+        return this.course;
     }
 
     synchronized public void updateDisplay(LMS lms) {
         // TODO - Update the display of the course with a Course object input
         int index = -1;
         for (Course c : lms.getCourses()) {
-            if (c.equals(this.course)){
+            if (c.equals(this.course)) {
                 index = c.getIndex();
                 this.course = c;
                 break;
             }
         }
         if (index != -1) {
-            
+
             // this.course = lms.getCourses().get(index);
             courseName = this.course.getCourseName();
             forums = this.course.getForums();
             accessForums.removeAllItems();
-            
+
             for (int i = 0; i < lms.getUsers().size(); i++) {
                 if (student.equals(lms.getUsers().get(i))) {
                     student = (Student) lms.getUsers().get(i);
                     System.out.println(student.toString());
                     // TODO - delete these test comments later
                     System.out.println("Old address of course is " + course); // check value of 
-                    
-                    
+
+
                     for (Map.Entry mapElement : student.getGradesHashMap().entrySet()) {
                         Course key = (Course) mapElement.getKey();
                         if (key.equals(course)) {
-                            course = key; 
-                            break; 
+                            course = key;
+                            break;
                         }
                     }
                     // TODO - delete test comment later 
                     System.out.println("New address of course is " + course); // check the value of new address
-                    
+
                     System.out.println(student.getGrade(course));
                 }
             }
             //
-            for (Forum f: forums) {
+            for (Forum f : forums) {
                 accessForums.addItem(f.getTopic());
-    
+
             }
 
             welcomeLabel.setText("Welcome to " + course.getCourseName() + "!");
             gradeSentence.setText("Your grade is: " + student.getGrade(course));
-    
-    
+
+
             // refreshes the display
             content.revalidate();
         } else {

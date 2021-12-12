@@ -9,14 +9,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
-* Project 5 - SettingsGUI
-*
-* Description - TODO
-*
-* @author Alex Younkers
-*
-* @version 12/7/2021
-*/
+ * Project 5 - SettingsGUI
+ * <p>
+ * Description - TODO
+ *
+ * @author Alex Younkers
+ * @version 12/7/2021
+ */
 
 public class SettingsGUI extends JComponent {
     ActualClient client;
@@ -140,7 +139,7 @@ public class SettingsGUI extends JComponent {
                 if (newUsername == null || newUsername.isBlank()) { // check if the field is blank
                     // JOptionPane error message (please fill in textfield)
                     JOptionPane.showMessageDialog(null, "Please fill in the textfield.", "Error",
-                     JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.ERROR_MESSAGE);
                 } else {
                     Request request = new Request(7,
                             new Object[]{client.getUser(), newUsername});
@@ -156,7 +155,7 @@ public class SettingsGUI extends JComponent {
                 if (newPassword == null || newPassword.isBlank()) { // check if the field is blank
                     // JOptionPane error message (please fill in textfield)
                     JOptionPane.showMessageDialog(null, "Please fill in the textfield.", "Error",
-                     JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.ERROR_MESSAGE);
                 } else {
                     Request request = new Request(8, new Object[]{client.getUser(), newPassword});
                     client.sendToServer(request);
@@ -167,12 +166,11 @@ public class SettingsGUI extends JComponent {
             if (e.getSource() == logoutButton) {
                 //TODO logout implementation
                 // step 1: go back to login page
-                client.logout(); 
+                client.logout();
                 // step 2: send a "logout" request to ClientHandler, which removes the user reference 
                 Request request = new Request(9, null);
                 client.sendToServer(request);
             }
-
 
 
         }

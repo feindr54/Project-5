@@ -1,9 +1,11 @@
 package pages;
+
 import com.sun.jdi.request.DuplicateRequestException;
 import main.page.*;
 import networking.Request;
 import users.*;
 import networking.ActualClient;
+
 import java.io.*;
 
 import javax.swing.*;
@@ -11,15 +13,14 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.*;
+
 /**
  * CourseTeacher
- *
- *This class is the GUI for the Courses used by Teachers
+ * <p>
+ * This class is the GUI for the Courses used by Teachers
  *
  * @author Qasim Ali, CS180
- *
  * @version December 7, 2021
- *
  */
 public class CourseTeacher extends JComponent {
     ActualClient client;
@@ -109,7 +110,7 @@ public class CourseTeacher extends JComponent {
                     for (Forum f : forums) {
                         System.out.println(f.getTopic());
                         if (selectedForum.equals(f.getTopic())) {
-                            System.out.println(f.toString());
+                            System.out.println(f);
                             selectedForumObject = f;
                             break;
                         }
@@ -130,7 +131,7 @@ public class CourseTeacher extends JComponent {
                 //check if forumName equals an existing forum
                 //if true, forum.access()
                 //else show error message
-                
+
                 // send the updated course to the server
                 // try {
                 //     client.getOOS().writeObject(request);
@@ -166,7 +167,7 @@ public class CourseTeacher extends JComponent {
                     JOptionPane.showMessageDialog(null, "Error, unexpected input", "Error",
                             JOptionPane.INFORMATION_MESSAGE); // shows error message
                 }
-                try (BufferedReader br = new BufferedReader(new FileReader(addCourse.getText()))){
+                try (BufferedReader br = new BufferedReader(new FileReader(addCourse.getText()))) {
                     String string;
                     String topic = "";
                     while ((string = br.readLine()) != null) {
@@ -247,10 +248,7 @@ public class CourseTeacher extends JComponent {
 
                     deleteForums.setSelectedIndex(0); // resets the selection
                 }
-                
-
             }
-
             if (e.getSource() == gradeButton) {
                 accessPanel.setVisible(false);
                 addPanel.setVisible(false);
@@ -266,14 +264,13 @@ public class CourseTeacher extends JComponent {
                     JOptionPane.showMessageDialog(null, "Error, no students found", "Error",
                             JOptionPane.INFORMATION_MESSAGE);
                 } else {
-
                     repliesArr = course.getStudents().get(students.getSelectedIndex()).getReplies();
                     replies.removeAllItems();
-    
-                    for(String replyContent : repliesArr) {
+
+                    for (String replyContent : repliesArr) {
                         replies.addItem(replyContent);
                     }
-    
+
                     replyPanel.setVisible(true);
                 }
             }
@@ -313,7 +310,7 @@ public class CourseTeacher extends JComponent {
     };
 
     public Course getCourse() {
-        return this.course; 
+        return this.course;
     }
 
     synchronized public void updateDisplay(Course course) {
@@ -327,14 +324,14 @@ public class CourseTeacher extends JComponent {
         editForums.removeAllItems();
         deleteForums.removeAllItems();
 
-        for (Forum f: forums) {
+        for (Forum f : forums) {
             accessForums.addItem(f.getTopic());
             editForums.addItem(f.getTopic());
             deleteForums.addItem(f.getTopic());
 
         }
 
-        for (Student s: studentsArr) {
+        for (Student s : studentsArr) {
             students.addItem(s.getIdentifier());
         }
 
@@ -349,7 +346,7 @@ public class CourseTeacher extends JComponent {
         for (int i = 0; i < lms.getCourses().size(); i++) {
             System.out.println("Comparing: " + lms.getCourses().get(i).getCourseName() + " -with- " + this.course.getCourseName()); // 
             System.out.println("Comparing: " + lms.getCourses().get(i).getTime() + " -with- " + this.course.getTime()); // 
-            if (lms.getCourses().get(i).equals(this.course)){
+            if (lms.getCourses().get(i).equals(this.course)) {
                 index = i;
                 break;
             }
@@ -367,21 +364,21 @@ public class CourseTeacher extends JComponent {
             //repliesArr = this.course.getStudents().get(students.getSelectedIndex()).getReplies();
             replies.removeAllItems();
 
-            for(String replyContent : repliesArr) {
+            for (String replyContent : repliesArr) {
                 replies.addItem(replyContent);
             }
-    
-            for (Forum f: forums) {
+
+            for (Forum f : forums) {
                 accessForums.addItem(f.getTopic());
                 editForums.addItem(f.getTopic());
                 deleteForums.addItem(f.getTopic());
-    
+
             }
-    
-            for (Student s: studentsArr) {
+
+            for (Student s : studentsArr) {
                 students.addItem(s.getIdentifier());
             }
-    
+
             // refreshes the display
             content.revalidate();
         } else {
@@ -605,6 +602,7 @@ public class CourseTeacher extends JComponent {
 
         content.add(centerPanel, BorderLayout.CENTER);
     }
+
     public Container getContent() {
         return content;
     }

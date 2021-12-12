@@ -19,11 +19,11 @@ import main.page.*;
 public class Student extends User implements Serializable {
 
     private ArrayList<Reply> studentReplies;
-    private ArrayList<Comment> studentComments; 
+    private ArrayList<Comment> studentComments;
     private ArrayList<String> repliesToString;
 
     // index represents the index of the student reply
-    public HashMap<Course, String> grades;
+    private HashMap<Course, String> grades;
 
     public Student(String email, String password) {
         super(email, password, true);
@@ -59,9 +59,10 @@ public class Student extends User implements Serializable {
 
     public HashMap<Course, String> getGradesHashMap() {
         return this.grades;
-    }   
+    }
+
     public ArrayList<Comment> getComments() {
-        return this.studentComments; 
+        return this.studentComments;
     }
 
     public void removeGrades(Course course) {

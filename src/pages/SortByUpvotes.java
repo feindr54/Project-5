@@ -1,17 +1,17 @@
 package pages;
 
 import java.util.Comparator;
+
 import main.page.Reply;
 
 /**
-* Project 4 - SortByUpvotes
-*
-* Description - Sorts replies in a forum by upvotes in descending order
-*
-* @author Changxiang Gao
-*
-* @version 11/15/2021
-*/
+ * Project 4 - SortByUpvotes
+ * <p>
+ * Description - Sorts replies in a forum by upvotes in descending order
+ *
+ * @author Changxiang Gao
+ * @version 11/15/2021
+ */
 
 public class SortByUpvotes implements Comparator<Reply> {
     // Used for sorting in ascending order of

@@ -3,14 +3,13 @@ package networking;
 import java.io.Serializable;
 
 /**
-* Project 5 - Response
-*
-* Description - This class is a representation of the information sent by the server to the client.
-*
-* @author Changxiang Gao
-*
-* @version 12/7/2021
-*/
+ * Project 5 - Response
+ * <p>
+ * Description - This class is a representation of the information sent by the server to the client.
+ *
+ * @author Changxiang Gao
+ * @version 12/7/2021
+ */
 
 public class Response implements Serializable {
     // TODO - settle how many types of responses there can be
