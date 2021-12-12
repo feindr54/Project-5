@@ -877,7 +877,8 @@ class ClientHandler extends Thread implements Serializable {
                 for (User user : Server.getUsers()) {
                     if (username.equals(user.getIdentifier()) && password.equals(user.getPassword())) {
                         //  check if user is already logged in
-                        for (ClientHandler client : Server.clients) {
+                        for (ClientHandler client : Server.clients){
+                            System.out.println("checking " + client.getUser().getEmail() + " vs " + client.getUser().getEmail());
                             if (user.equals(client.getUser())) {
                                 // generates an error message (user already logged in)
                                 response = new Response(1, "Error: User already logged in.");

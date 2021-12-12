@@ -198,7 +198,7 @@ public class ActualClient extends JFrame implements Runnable {
     synchronized public void changePanel(String name) {
         System.out.println("User was at " + pageStack.peek());
         pageStack.push(name);
-        System.out.println("User was at " + pageStack.peek());
+        System.out.println("User is now at " + pageStack.peek());
         cl.show(mainPanel, name);
     }
     

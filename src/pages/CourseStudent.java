@@ -186,16 +186,17 @@ public class CourseStudent extends JComponent {
     synchronized public void updateDisplay(LMS lms) {
         // TODO - Update the display of the course with a Course object input
         int index = -1;
-        for (Course c : lms.getCourses()) {
-            if (c.equals(this.course)){
-                index = c.getIndex();
-                this.course = c;
+
+
+        for (int i = 0; i < lms.getCourses().size(); i ++) {
+            if (lms.getCourses().get(i).equals(this.course)){
+                index = i;
                 break;
             }
         }
         if (index != -1) {
             
-            // this.course = lms.getCourses().get(index);
+            this.course = lms.getCourses().get(index);
             courseName = this.course.getCourseName();
             forums = this.course.getForums();
             accessForums.removeAllItems();
