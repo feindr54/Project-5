@@ -55,25 +55,25 @@ public class Server implements Serializable {
         }
     }
 
-    public static void saveUsers(String filename) {
-        synchronized (lockUser) {
-            try (ObjectOutputStream oo = new ObjectOutputStream(new FileOutputStream(filename))) {
-                // write the users list
-                lms.setUsers(users);
-                saveLMS(LMSFILE); 
-                oo.writeObject(users);
-                for (User u: users) {
-                    System.out.println(u.toString());
-                }
-            } catch (FileNotFoundException e) {
-                System.out.println("File not found");
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("Error initializing stream");
-            } catch (Exception e) {
-                //e.printStackTrace();
+    public synchronized static void saveUsers(String filename) {
+
+        try (ObjectOutputStream oo = new ObjectOutputStream(new FileOutputStream(filename))) {
+            // write the users list
+            lms.setUsers(users);
+            saveLMS(LMSFILE);
+            oo.writeObject(users);
+            for (User u: users) {
+                System.out.println(u.toString());
             }
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error initializing stream");
+        } catch (Exception e) {
+            //e.printStackTrace();
         }
+
     }
 
     public static synchronized LMS readLMS(String filename) {
@@ -91,7 +91,7 @@ public class Server implements Serializable {
         return new LMS(); 
     }
 
-    public static ArrayList<User> readUsers(String filename) throws IOException {
+    public synchronized static ArrayList<User> readUsers(String filename) throws IOException {
         ArrayList<User> usersForReading = new ArrayList<User>();
         try (ObjectInputStream oi = new ObjectInputStream(new FileInputStream(filename))) {
             // Read the userlist object and cast the object into a user arraylist type
@@ -114,17 +114,20 @@ public class Server implements Serializable {
         return new ArrayList<User>();
     }
 
-    public static void addUser(User user) {
-        synchronized (lockUser) {
-            users.add(user);
-            lms.setUsers(users);
-            saveLMS(LMSFILE); 
-            saveUsers(USERSFILE);
-        }
+    public synchronized static void addUser(User user) {
+        users.add(user);
+        lms.setUsers(users);
+        saveLMS(LMSFILE);
+        saveUsers(USERSFILE);
     }
-    public static ArrayList<User> getUsers() {
+    public synchronized static ArrayList<User> getUsers() {
         return users;
     }
+
+    public synchronized static ArrayList<ClientHandler> getClients() {
+        return clients;
+    }
+
 
     public static void changeUserDetail(User user) {
         for (int i = 0; i < Server.users.size(); i++) {
@@ -234,7 +237,7 @@ public class Server implements Serializable {
         return lms;
     }
 
-    synchronized public static boolean addCourse(String courseName) {
+    public synchronized static boolean addCourse(String courseName) {
         if (lms.getCourses().size() > 0) {
             for (Course course : lms.getCourses()) {
                 if (course.getCourseName().equals(courseName)) {
@@ -319,7 +322,6 @@ public class Server implements Serializable {
                 
                 users.get(i).setIdentifier(newUsername); //changing the identifier
 
-                
                 if (users.get(i) instanceof Student) {
                     System.out.println("student is changing username");
                     // for (Reply r : ((Student) users.get(i)).getReplyObjects()) {
@@ -331,17 +333,6 @@ public class Server implements Serializable {
                 }else{
                     System.out.println("Teacher is changing username");
                 }
-
-                // for () {
-                    
-                // }
-                
-                // for (int i = 0; i < lms.getCourses().size(); i++) {
-                    
-                //     for (int j = 0; j < lms.getCourses().get(i).getForums().size(); j++) {
-
-                //     }
-                // }
 
                 saveUsers(USERSFILE);
                 lms.setUsers(users);
@@ -866,7 +857,7 @@ class ClientHandler extends Thread implements Serializable {
                 return null;
             } else if (operation == 5) {
                 // logging in
-                if (Server.getUsers().isEmpty()) {
+                if (Server.getUsers().isEmpty()) { // checks if there are no users registered
                     response = new Response(1, "No users signed up yet!");
 
                     sendToClient(response);
@@ -877,9 +868,11 @@ class ClientHandler extends Thread implements Serializable {
                 for (User user : Server.getUsers()) {
                     if (username.equals(user.getIdentifier()) && password.equals(user.getPassword())) {
                         //  check if user is already logged in
-                        for (ClientHandler client : Server.clients){
-                            System.out.println("checking " + client.getUser().getEmail() + " vs " + client.getUser().getEmail());
+                        System.out.println(Server.getClients()); // TODO delete test method later
+                        for (ClientHandler client : Server.getClients()) {
                             if (user.equals(client.getUser())) {
+                                System.out.println(client.getUser()); // TODO delete test method later
+
                                 // generates an error message (user already logged in)
                                 response = new Response(1, "Error: User already logged in.");
                                 sendToClient(response);

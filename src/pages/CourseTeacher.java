@@ -148,16 +148,17 @@ public class CourseTeacher extends JComponent {
                 replyPanel.setVisible(false);
             }
             if (e.getSource() == newTopic) {
-                if (addCourse.getText().equals("")) {
+                if (addCourse.getText().isBlank() || addCourse.getText() == null) {
                     JOptionPane.showMessageDialog(null, "Error, unexpected input", "Error",
-                            JOptionPane.INFORMATION_MESSAGE);
-                }
-                String topic = addCourse.getText();
-                addCourse.setText("");
+                            JOptionPane.ERROR_MESSAGE);
+                } else {
+                    String topic = addCourse.getText();
+                    addCourse.setText("");
 
-                Request request = new Request(1, 1, new String[]{course.getCourseName(), topic}); // 1 = add, 1 = forum: add forum request
-                // send an add forum request to the server
-                client.sendToServer(request);
+                    Request request = new Request(1, 1, new String[]{course.getCourseName(), topic}); // 1 = add, 1 = forum: add forum request
+                    // send an add forum request to the server
+                    client.sendToServer(request);
+                }
             }
 
             if (e.getSource() == topicFromFile) {
@@ -199,24 +200,24 @@ public class CourseTeacher extends JComponent {
                 if (editCourse.getText().isBlank()) {
                     JOptionPane.showMessageDialog(null, "Error, unexpected input", "Error",
                             JOptionPane.INFORMATION_MESSAGE);
-                }
-                if (editForums.getSelectedItem() == null) {
+                } else if (editForums.getSelectedItem() == null) {
                     JOptionPane.showMessageDialog(null, "Error, no forums found", "Error",
                             JOptionPane.INFORMATION_MESSAGE);
-                }
-                //get selected forumName from list
-                //check if forumName equals an existing forum
-                //if true, forum.setForumName(editCourse.getText())
-                //else show error message
-                //course.getForums().get(editForums.getSelectedIndex()).setTopic(editCourse.getText());
-                // TODO - delete comments above
-                String oldTopic = (String) editForums.getSelectedItem();
-                String newTopic = editCourse.getText();
-                editCourse.setText("");
-                editForums.setSelectedIndex(0);
+                } else {
+                    //get selected forumName from list
+                    //check if forumName equals an existing forum
+                    //if true, forum.setForumName(editCourse.getText())
+                    //else show error message
+                    //course.getForums().get(editForums.getSelectedIndex()).setTopic(editCourse.getText());
+                    // TODO - delete comments above
+                    String oldTopic = (String) editForums.getSelectedItem();
+                    String newTopic = editCourse.getText();
+                    editCourse.setText("");
+                    editForums.setSelectedIndex(0);
 
-                Request request = new Request(2, 1, new String[]{oldTopic, newTopic});
-                client.sendToServer(request);
+                    Request request = new Request(2, 1, new String[]{oldTopic, newTopic});
+                    client.sendToServer(request);
+                }
             }
 
 
