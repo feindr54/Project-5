@@ -120,9 +120,7 @@ public class User implements Serializable {
         if (o == null || !(o instanceof User)) {
             return false;
         }
-
-        User u = (User) o;
-        return ((User) o).getEmail().equals(((User) u).getEmail());
+        return ((User) o).getEmail().equals(this.getEmail());
     }
 
     @Override
