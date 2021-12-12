@@ -245,6 +245,14 @@ public class Server implements Serializable {
         Course course = new Course(courseName); 
         lms.getCourses().add(course);
 
+        // add the course into the student grades HashMap
+        // this will only happen when a student signs up before the course is created
+        // for (User user : users) {
+        //     if (user instanceof Student) {
+        //         ((Student) user).setGrade(course, "-/100");
+        //     }
+        // }
+
         // save the LMS file 
         saveLMS(LMSFILE);
 
@@ -432,6 +440,8 @@ public class Server implements Serializable {
                         }
                         
                         // save the LMS 
+                        saveUsers(USERSFILE);
+                        lms.setUsers(users);
                         saveLMS(LMSFILE);
                         return; 
                     }
@@ -529,7 +539,8 @@ public class Server implements Serializable {
                 Student student = (Student) users.get(i);
                 for (Course c : lms.getCourses()) {
                     if (c.equals(course)) {
-                        student.setGrade(course, String.valueOf(score));
+                        student.setGrade(c, String.valueOf(score));
+                        System.out.println(student.getIdentifier() + "'s grade has been set to " + String.valueOf(score));
                         break; 
                     }
                 }
@@ -621,6 +632,7 @@ public class Server implements Serializable {
 */
 // THIS CLASS RECEIVES DATA FROM A SINGLE CLIENT
 // HAS METHOD TO BROADCAST DATA TO ALL CLIENTS
+
 class ClientHandler extends Thread implements Serializable {
     private Socket socket;
     private ObjectInputStream s_IFC; // s = server, I = input, F = from, C = client| server input from client
@@ -795,7 +807,7 @@ class ClientHandler extends Thread implements Serializable {
                     }
                     this.user = newUser;
                     // add the newUser to the users array list
-                    newUser.setUserIndex(Server.users.size()); // sets the index of the user
+                    newUser.setUserIndex(Server.getUsers().size()); // sets the index of the user
                     Server.addUser(newUser);
                     System.out.println("User successfully added");
                     //  and send the respective LMS object and user back to PARTICULAR USER
@@ -823,10 +835,15 @@ class ClientHandler extends Thread implements Serializable {
                     newUser = new Teacher(username, password);
                 } else {
                     newUser = new Student(username, password);
+
+                    // add all the courses to the student's grades variable
+                    // for (Course c : Server.getLMS().getCourses()) {
+                    //     ((Student) newUser).setGrade(c, "-/100");
+                    // }
                 }
                 this.user = newUser;
                 // add the newUser to the users array list
-                newUser.setUserIndex(Server.users.size()); // sets the index of the user
+                newUser.setUserIndex(Server.getUsers().size()); // sets the index of the user
 
                 Server.addUser(newUser);
 

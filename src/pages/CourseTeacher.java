@@ -363,6 +363,12 @@ public class CourseTeacher extends JComponent {
             editForums.removeAllItems();
             deleteForums.removeAllItems();
             students.removeAllItems();
+            //repliesArr = this.course.getStudents().get(students.getSelectedIndex()).getReplies();
+            replies.removeAllItems();
+
+            for(String replyContent : repliesArr) {
+                replies.addItem(replyContent);
+            }
     
             for (Forum f: forums) {
                 accessForums.addItem(f.getTopic());
@@ -378,8 +384,6 @@ public class CourseTeacher extends JComponent {
             // refreshes the display
             content.revalidate();
         } else {
-            JOptionPane.showMessageDialog(null, "Error, Course has been deleted!", "Error",
-                            JOptionPane.ERROR_MESSAGE);
             System.out.println("teacher was in course page, course deleted, should go back to lms page");
             client.currentPanelDeleted("course");
         }

@@ -202,6 +202,21 @@ public class CourseStudent extends JComponent {
             for (int i = 0; i < lms.getUsers().size(); i++) {
                 if (student.equals(lms.getUsers().get(i))) {
                     student = (Student) lms.getUsers().get(i);
+                    System.out.println(student.toString());
+                    // TODO - delete these test comments later
+                    System.out.println("Old address of course is " + course); // check value of 
+                    
+                    
+                    for (Map.Entry mapElement : student.getGradesHashMap().entrySet()) {
+                        Course key = (Course) mapElement.getKey();
+                        if (key.equals(course)) {
+                            course = key; 
+                            break; 
+                        }
+                    }
+                    // TODO - delete test comment later 
+                    System.out.println("New address of course is " + course); // check the value of new address
+                    
                     System.out.println(student.getGrade(course));
                 }
             }

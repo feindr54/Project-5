@@ -187,17 +187,6 @@ public class ActualClient extends JFrame implements Runnable {
         frame.setVisible(true);
     }
 
-    // TODO - delete this
-    // so whenever we go into a panel ex course, we would add it to the stack, thats wat i thought
-    // so whenever we leave we just pop it from the stack, the stack would be like the history of visited tabs yknow?
-    // u can talk i can hear u but i cant talk lol
-    // yea for example i was in login --> lms --> settings if wanna go back to lms i pop settings, now lms is at the top so
-    // so it will navigate to lms but im not sure how its implemented lol
-    // yeaa ok i guess we need a reference of the stack i think we could use getPageStac lmaoo yea we could do that
-    // we gota be careful tho by referencing the entire client maybe there are some sync issues? we could do the same as the card layout
-    // like a getPanelStack() method
-    
-
     public Socket getSocket() {
         return socket;
     }
@@ -222,6 +211,27 @@ public class ActualClient extends JFrame implements Runnable {
 
     synchronized public void currentPanelDeleted(String page) {
         System.out.println("currentPanelDeleted has been run!"); // TODO - delete test comment later 
+        String currentPage = pageStack.peek();
+        if (currentPage.equals("lmsTeacher") || currentPage.equals("lmsStudent")) {
+            if (page.equals("course")) {
+                courseStudent = null;
+                courseTeacher = null; 
+                return;
+            } else if (page.equals("forum")) {
+                forumStudent = null; 
+                forumTeacher = null;
+                return;  
+            }
+        } else if (currentPage.equals("courseTeacher") || currentPage.equals("courseStudent")) {
+            if (page.equals("forum")) {
+                forumStudent = null; 
+                forumTeacher = null;
+                return; 
+            } 
+        }
+        JOptionPane.showMessageDialog(null, "Error, Course has been deleted!", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+        
         System.out.println(page);
         if (page.equals("course")) {
             courseStudent = null; 
@@ -301,57 +311,27 @@ class ReaderThread extends Thread {
         // }
         
         
-        switch (gui.getPageStack().peek()) { // TODO - fix bug: pages at lower hierarchy are not being updated
-        // TODO - however, if all pages are updated at once, the bug of "deleting a page" will appear 
-            
-            case "forumStudent":
-                gui.getForumStudent().updateDisplay(newLms);
-                System.out.println("updating forumStudent page"); // delete test comment later 
-                 
-                
-            case "courseStudent":
-                gui.getCourseStudent().updateDisplay(newLms);
-                
-            
-                
-            case "lmsStudent":
-                // TODO - load student lms
-                // TODO - do we need to check if that specific component has changed?
-                gui.getLmsStudent().updateDisplay(newLms);
-                break;
-
-            case "forumTeacher":
-                gui.getForumTeacher().updateDisplay(newLms);
-                System.out.println("updating forumTeacher page"); // delete test comment later
-
-            case "courseTeacher":
-                gui.getCourseTeacher().updateDisplay(newLms);
-
-            case "lmsTeacher":
-                // TODO - do we need to check if that specific component has changed?
-                gui.getLmsTeacher().updateDisplay(newLms);
-                break; 
-            default:
-                if (gui.getLmsStudent() != null) {
-                    gui.getLmsStudent().updateDisplay(newLms);
-                }
-                if (gui.getLmsTeacher() != null) {
-                    gui.getLmsTeacher().updateDisplay(newLms);
-                }
-                if (gui.getCourseStudent() != null) {
-                    gui.getCourseStudent().updateDisplay(newLms);
-                }
-                if (gui.getCourseTeacher() != null) {
-                    gui.getCourseTeacher().updateDisplay(newLms);
-                }
-                if (gui.getForumStudent() != null) {
-                    gui.getForumStudent().updateDisplay(newLms);
-                }
-                if (gui.getForumTeacher() != null) {
-                    gui.getForumTeacher().updateDisplay(newLms);
-                }
-                
+        
+        if (gui.getLmsStudent() != null) {
+            gui.getLmsStudent().updateDisplay(newLms);
         }
+        if (gui.getLmsTeacher() != null) {
+            gui.getLmsTeacher().updateDisplay(newLms);
+        }
+        if (gui.getCourseStudent() != null) {
+            gui.getCourseStudent().updateDisplay(newLms);
+        }
+        if (gui.getCourseTeacher() != null) {
+            gui.getCourseTeacher().updateDisplay(newLms);
+        }
+        if (gui.getForumStudent() != null) {
+            gui.getForumStudent().updateDisplay(newLms);
+        }
+        if (gui.getForumTeacher() != null) {
+            gui.getForumTeacher().updateDisplay(newLms);
+        }
+                
+        
         
     }
 

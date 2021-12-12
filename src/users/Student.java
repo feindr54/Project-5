@@ -1,6 +1,7 @@
 package users;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import main.page.*;
@@ -45,7 +46,7 @@ public class Student extends User implements Serializable {
 
     public void deleteReplies(Forum forum) {
         for (Reply r : studentReplies) {
-            if (r.getForum().getTopic().equals(forum)) {
+            if (r.getForum().getTopic().equals(forum.getTopic())) {
                 studentReplies.remove(r);
             }
         }
@@ -53,8 +54,12 @@ public class Student extends User implements Serializable {
 
     public void deleteComments(Forum forum) {
 
-    }
+    } // TODO - delete later if us
 
+
+    public HashMap<Course, String> getGradesHashMap() {
+        return this.grades;
+    }   
     public ArrayList<Comment> getComments() {
         return this.studentComments; 
     }
@@ -87,8 +92,8 @@ public class Student extends User implements Serializable {
             }
         }
         currentReply.upvote(this);
-
     }
+
 
     public void setGrade(Course course, String grade) {
         grades.put(course, grade);
