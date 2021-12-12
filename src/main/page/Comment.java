@@ -53,6 +53,14 @@ public class Comment implements Serializable {
         return owner.getIdentifier();
     }
 
+    public User getOwnerObject() {
+        return this.owner;
+    }
+
+    public void setOwner(User newOwner) {
+        this.owner = newOwner;
+    }
+
     /**
      * A method that displays the comment
      * <p>

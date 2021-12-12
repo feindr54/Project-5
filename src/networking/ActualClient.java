@@ -301,7 +301,8 @@ class ReaderThread extends Thread {
         // }
         
         
-        switch (gui.getPageStack().peek()) {
+        switch (gui.getPageStack().peek()) { // TODO - fix bug: pages at lower hierarchy are not being updated
+        // TODO - however, if all pages are updated at once, the bug of "deleting a page" will appear 
             
             case "forumStudent":
                 gui.getForumStudent().updateDisplay(newLms);

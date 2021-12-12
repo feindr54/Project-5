@@ -107,6 +107,7 @@ public class ForumTeacher extends JComponent {
         JLabel byUpvote = new JLabel("UPVOTE: ");
         JLabel byName = new JLabel("NAME: ");
         date = new JCheckBox();
+        date.setSelected(true);
         date.addActionListener(actionListener);
         upvote = new JCheckBox();
         upvote.addActionListener(actionListener);
@@ -296,7 +297,7 @@ public class ForumTeacher extends JComponent {
         // TODO - delete test stuff below later
         // ReplyPanel tempplsdeleteLater = new ReplyPanel(new Reply(forum, (Student) currentUser, "monkey"));
         // forumDisplay.add(tempplsdeleteLater);
-        forumDisplay.setBorder(BorderFactory.createTitledBorder(forum.getTopic()));
+        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum topic: " + forum.getTopic()));
 
         forumDisplay.revalidate();
         forumDisplay.repaint();
@@ -341,7 +342,7 @@ public class ForumTeacher extends JComponent {
         // ReplyPanel tempplsdeleteLater = new ReplyPanel(new Reply(forum, (Student) currentUser, "monkey"));
         // forumDisplay.add(tempplsdeleteLater);
 
-        forumDisplay.setBorder(BorderFactory.createTitledBorder(forum.getTopic()));
+        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum title: " + forum.getTopic()));
 
         forumDisplay.revalidate();
         forumDisplay.repaint();
@@ -392,7 +393,7 @@ public class ForumTeacher extends JComponent {
         // ReplyPanel tempplsdeleteLater = new ReplyPanel(new Reply(forum, (Student) currentUser, "monkey"));
         // forumDisplay.add(tempplsdeleteLater);
 
-        forumDisplay.setBorder(BorderFactory.createTitledBorder(forum.getTopic()));
+        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum topic: " + forum.getTopic()));
 
         forumDisplay.revalidate();
         forumDisplay.repaint();
@@ -484,7 +485,7 @@ public class ForumTeacher extends JComponent {
         }
 
     
-        forumDisplay.setBorder(BorderFactory.createTitledBorder(forum.getTopic()));
+        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum topic: " + forum.getTopic()));
         forumDisplay.revalidate();
         content.revalidate();
     }

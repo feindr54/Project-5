@@ -29,7 +29,7 @@ public class CommentPanel extends JPanel {
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
         //GridBagConstraints gbc = new GridBagConstraints();
 
-        date = new JLabel( "At:    " + comment.getCurrentTime() + "    ");
+        //date = new JLabel( "At:    " + comment.getCurrentTime() + "    ");
         // TODO - add the constraints and add to panel(this)
         // gbc.gridx = 1;
         // gbc.gridy = 0;
@@ -38,9 +38,9 @@ public class CommentPanel extends JPanel {
 
         // adds the date to the panel
         
-        this.add(date);
+        //this.add(date);
 
-        username = new JLabel("User:    " + comment.getOwner() + "    commented with:    ");
+        //username = new JLabel("User:    " + comment.getOwner() + "    commented with:    ");
         // TODO - add the constraints and add to panel(this)
         // gbc.gridx = 0;
         // gbc.gridy = 0;
@@ -48,7 +48,7 @@ public class CommentPanel extends JPanel {
         // gbc.anchor = GridBagConstraints.FIRST_LINE_START;
 
         // adds the component to the panel
-        this.add(username);
+        //this.add(username);
 
         commentMessage = new JLabel(comment.getContent());
         // TODO - add the constraints and add to panel(this)
@@ -64,6 +64,6 @@ public class CommentPanel extends JPanel {
         
 
         
-        this.setBorder(BorderFactory.createLineBorder(Color.GREEN));
+        this.setBorder(BorderFactory.createTitledBorder("Comment created by: " + comment.getOwner() + ", at: " + comment.getCurrentTime()));
     }
 }

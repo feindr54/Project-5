@@ -61,9 +61,6 @@ public class Reply implements Serializable {
         this.owner = student; 
     }
 
-    public ArrayList<Comment> getComments() {
-        return comments;
-    }
 
     // adds comment to the reply with only the content
 
@@ -111,6 +108,9 @@ public class Reply implements Serializable {
         }
     }
 
+    public ArrayList<Comment> getComments() {
+        return this.comments; 
+    }
 
     /**
      * A method that displays the comment
