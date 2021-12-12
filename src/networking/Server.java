@@ -898,7 +898,7 @@ class ClientHandler extends Thread implements Serializable {
                 response = new Response(0, Server.getLMS());
                 return response; 
             } else {
-                // sends error back to client 
+                // sends error back to client
                 response = new Response(1, "You have already upvoted once.");
                 sendToClient(response);
                 return null; 

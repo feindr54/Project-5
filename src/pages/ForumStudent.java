@@ -322,6 +322,7 @@ public class ForumStudent extends JComponent {
             replyPanels.add(replyPanel);
         }
 
+
         for (ReplyPanel replyPanel : replyPanels) {
             forumDisplay.add(replyPanel);
         }

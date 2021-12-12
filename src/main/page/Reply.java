@@ -112,45 +112,7 @@ public class Reply implements Serializable {
         return this.comments; 
     }
 
-    /**
-     * A method that displays the comment
-     * <p>
-     * My envisioned template:
-     * <p>
-     * Name TimeStamp
-     * Reply content
-     */
-    public void printContent() {
-        int currentChar = 0;
-        String line = "";
-        // prints the identifier number
-        System.out.println("#" + this.identifier);
-        // prints the name and the date/time
-        System.out.printf("|%1$-30s %2$s|\n", owner.getIdentifier(), getCurrentTime());
 
-        while (currentChar + 56 < content.length()) {
-
-            // add cases for spaces before and after the words
-            if (content.charAt(currentChar + 55) != ' ' && content.charAt(currentChar + 56) != ' ') {
-                line = content.substring(currentChar, currentChar + 55) + '-';
-                currentChar += 55;
-
-            } else {
-                line = content.substring(currentChar, currentChar + 56);
-                currentChar += 56;
-            }
-
-            System.out.printf("|%s|\n", line);
-        }
-        // prints the last line
-        System.out.printf("|%-55s |\n", content.substring(currentChar));
-
-        // prints the upvote count
-        System.out.println("Upvotes: " + upvotes);
-
-        // print the comments as well
-        this.printComments();
-    }
 
     // Method to print a divider between replies, and between comments
     public void printDivider() {
