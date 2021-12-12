@@ -12,11 +12,12 @@ import java.util.ArrayList;
 import main.page.*;
 import networking.*;
 import users.*;
-// TODO - create a javadoc 
+
+// TODO - create a javadoc
 public class ForumStudent extends JComponent {
     ActualClient client;
     Container content;
-    
+
     JPanel top;
     JButton Settings, Back;
 
@@ -30,7 +31,7 @@ public class ForumStudent extends JComponent {
     JButton importSubmit; // button to import a file containing the reply 
     JButton Submit;
 
-    Forum forum; 
+    Forum forum;
     User currentUser;
 
     JButton upvoteButton;
@@ -65,7 +66,7 @@ public class ForumStudent extends JComponent {
         Back = new JButton("Back");
         Back.addActionListener(actionListener);
         top.add(Back);
-        
+
         top.add(Box.createHorizontalGlue());
 
         JLabel title = new JLabel("Welcome to the Forum Page");
@@ -74,7 +75,6 @@ public class ForumStudent extends JComponent {
         top.add(title);
         top.add(Box.createHorizontalGlue());
 
-        
 
         Settings = new JButton("Settings");
         // gbc.anchor = GridBagConstraints.WEST;
@@ -139,7 +139,7 @@ public class ForumStudent extends JComponent {
     }
 
     public Forum getForum() {
-        return this.forum; 
+        return this.forum;
     }
 
     // synchronized static public void selectPanel(ReplyPanel replyPanel) {
@@ -154,10 +154,10 @@ public class ForumStudent extends JComponent {
     ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            
+
             if (e.getSource() == Submit) {
                 String inputText = input.getText();
-                
+
                 //checks if the input is empty or just whitespace
                 //if yes, throws an error menu
                 //else, continue making the reply
@@ -172,10 +172,10 @@ public class ForumStudent extends JComponent {
                         Reply newReply = new Reply(forum, (Student) currentUser, inputText);
                         //newReply.setIndex(forum.getNumRepliesCreated());
                         Request request = new Request(1, 2, newReply);
-                        
+
                         client.sendToServer(request);
                         System.out.println("add reply request sent"); // TODO - delete test comment  
-                        
+
                     } else { // a reply is selected so we are commenting
                         // send request to server to add comment
                         Comment newComment = new Comment(selectedReply, currentUser, inputText);
@@ -184,11 +184,11 @@ public class ForumStudent extends JComponent {
                         System.out.println("add comment request sent"); // TODO - delete test comment  
                     }
                     //add reply request to list of courses
-                    
+
                     input.setText("");
                     Submit.setText("Reply");
                     prompt.setText("Enter Reply:\t");
-                    
+
                 }
 
             }
@@ -198,7 +198,7 @@ public class ForumStudent extends JComponent {
                     JOptionPane.showMessageDialog(null, "Error, enter a file name.", "Error",
                             JOptionPane.ERROR_MESSAGE); // shows error message
                 }
-                try (BufferedReader br = new BufferedReader(new FileReader(input.getText()))){
+                try (BufferedReader br = new BufferedReader(new FileReader(input.getText()))) {
                     String string;
                     String topic = "";
                     while ((string = br.readLine()) != null) {
@@ -217,8 +217,8 @@ public class ForumStudent extends JComponent {
 
                 } catch (IOException ioException) {
                     // TODO - if file is not read(invalid filename eg), throw JOptionPane at user
-                    JOptionPane.showMessageDialog(null, "Error, unable to read file", "Error", 
-                    JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Error, unable to read file", "Error",
+                            JOptionPane.ERROR_MESSAGE);
                 }
                 input.setText("");
             }
@@ -256,13 +256,13 @@ public class ForumStudent extends JComponent {
                 return rp.getReply();
             }
         }
-        return null; 
+        return null;
     }
-    
+
 
     public Comment createComment(Reply reply, String commentMessage) {
         Comment newComment = new Comment(reply, client.getUser(), commentMessage);
-        return newComment; 
+        return newComment;
     }
 
     public Reply createReply(String replyMessage) {
@@ -288,13 +288,13 @@ public class ForumStudent extends JComponent {
             //System.out.println(selectedReplyPanel);
             if (!selectedReplyPanel.isSelected()) { // checks if the current reply is unselected
                 selectedReplyPanel.select();
-                for (ReplyPanel replyPanel: replyPanels) { // unselects all other replies
+                for (ReplyPanel replyPanel : replyPanels) { // unselects all other replies
                     if (selectedReplyPanel.equals(replyPanel) || !replyPanel.isSelected()) {
                         continue;
                     }
                     replyPanel.unselect();
                 }
-                Submit.setText("Comment"); // changes the text of the submit button and the prompt 
+                Submit.setText("Comment"); // changes the text of the submit button and the prompt
                 prompt.setText("Enter Comment:\t");
                 importSubmit.setVisible(false);
             } else {
@@ -332,7 +332,7 @@ public class ForumStudent extends JComponent {
 
     synchronized public void updateDisplay(LMS lms) {
         // gets updated lms
-        
+
         // get the replies of this forum
         // add every reply to the replies list
         // create replyPanel for each reply
@@ -367,22 +367,22 @@ public class ForumStudent extends JComponent {
         if (forumNotFound) {
             client.currentPanelDeleted("forum");
             System.out.println("Student was in forum page, forum deleted, should go back to course page");
-            return; 
+            return;
         }
         if (courseNotFound) {
             client.currentPanelDeleted("course");
             System.out.println("Student was in forum page, course deleted, should go back to lms page");
-            return; 
+            return;
         }
 
         // update replies ArrayList with the forum replies
         replies = forum.getReplies();
 
         System.out.println("Replies array " + forum.getReplies());
-        
+
         // TODO - delete test comment above later 
-        
-        
+
+
         for (Reply reply : replies) {
             // TODO - delete test comment below
             System.out.println(reply.getOwner().getIdentifier()); // show name of replier
@@ -399,10 +399,8 @@ public class ForumStudent extends JComponent {
             forumDisplay.add(replyPanel);
         }
 
-
-
         System.out.println("shouldve added all replies");
-        
+
         // TODO - delete test stuff below later
         // ReplyPanel tempplsdeleteLater = new ReplyPanel(new Reply(forum, (Student) currentUser, "monkey"));
         // forumDisplay.add(tempplsdeleteLater);
@@ -414,6 +412,4 @@ public class ForumStudent extends JComponent {
         forumDisplay.repaint();
         forumDisplayScroll.revalidate();
     }
-
-    
 }

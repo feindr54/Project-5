@@ -1,19 +1,18 @@
-package networking; 
+package networking;
 
 // client sends request to server
 
 import java.io.Serializable;
 
 /**
-* Project 5 - Request
-*
-* Description - This class is a representation of the message send by the client to the server to request for
+ * Project 5 - Request
+ * <p>
+ * Description - This class is a representation of the message send by the client to the server to request for
  * information to be received and loaded by the client to present to the user
-*
-* @author Changxiang Gao
-*
-* @version 12/7/2021
-*/
+ *
+ * @author Changxiang Gao
+ * @version 12/7/2021
+ */
 public class Request implements Serializable {
     private final int OPERATION; // 0 - access, 1 - add, 2 - edit, 3 - delete, 4 - create account, 5 - login, 6 - ask
     // upvote replies, 7 - change username, 8 - change password, 9 - logout, 10 - grade student
@@ -47,6 +46,7 @@ public class Request implements Serializable {
     public Object getOBJ() {
         return OBJ;
     }
+
     public int getOPERAND() {
         return OPERAND;
     }

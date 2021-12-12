@@ -10,12 +10,13 @@ import java.util.ArrayList;
 import main.page.*;
 import networking.*;
 import users.*;
-// TODO - add javadoc 
+
+// TODO - add javadoc
 public class ForumTeacher extends JComponent {
 
     ActualClient client;
     Container content;
-    
+
     JPanel top;
     JButton Settings, Back;
 
@@ -30,8 +31,8 @@ public class ForumTeacher extends JComponent {
 
     JCheckBox date, upvote, name;
 
-    Forum forum; 
-    User currentUser; 
+    Forum forum;
+    User currentUser;
 
     //tracks all replyPanels in a given forum
     ArrayList<Reply> replies = new ArrayList<>();
@@ -61,7 +62,7 @@ public class ForumTeacher extends JComponent {
         Back.addActionListener(actionListener);
         top.add(Back);
 
-        
+
         top.add(Box.createHorizontalGlue());
 
         JLabel title = new JLabel("Welcome to the Forum Page");
@@ -76,7 +77,6 @@ public class ForumTeacher extends JComponent {
         Settings.addActionListener(actionListener);
         top.add(Settings);
 
-        
 
         content.add(top, BorderLayout.NORTH);
 
@@ -158,13 +158,15 @@ public class ForumTeacher extends JComponent {
     public Container getContent() {
         return content;
     }
+
     public void setUser(User newUser) {
         this.currentUser = newUser;
     }
+
     public Forum getForum() {
-        return this.forum; 
+        return this.forum;
     }
-    
+
     ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -187,7 +189,7 @@ public class ForumTeacher extends JComponent {
                 // TODO - Send the reply object to server --> sendReplyToServer() method
 
                 // TODO - server will update the forum with the new reply --> done in server
-                
+
                 // TODO - server will send the updated forum to every client --> done in server
 
                 // TODO - each client will recieve the updated forum
@@ -195,7 +197,7 @@ public class ForumTeacher extends JComponent {
                 // to display the new reply! --> updateForumDisplay() method
 
                 String inputText = input.getText();
-                
+
                 //checks if the input is empty or just whitespace
                 //if yes, throws an error menu
                 //else, continue making the reply
@@ -211,21 +213,16 @@ public class ForumTeacher extends JComponent {
                         Request request = new Request(1, 3, newComment); // creates a add comment request 
                         client.sendToServer(request);
                         System.out.println("add comment request sent"); // TODO - delete test comment 
-                        
+
                     } else {
                         JOptionPane.showMessageDialog(null, "Please select a reply first to comment.",
-                            "Error: No reply selected", JOptionPane.ERROR_MESSAGE);
+                                "Error: No reply selected", JOptionPane.ERROR_MESSAGE);
                     }
                     //add reply request to list of courses
-                    
-                    input.setText("");
-                    
-                }
 
-                // JLabel newChat = new JLabel(input.getText());
-                // forumDisplay.add(newChat);
-                // forumDisplay.revalidate();
-                // input.setText("");
+                    input.setText("");
+
+                }
             }
             if (e.getSource() == Back) {
                 client.changeToPreviousPanel();
@@ -248,15 +245,7 @@ public class ForumTeacher extends JComponent {
 
     public Comment createComment(Reply reply, String commentMessage) {
         Comment newComment = new Comment(reply, currentUser, commentMessage);
-        return newComment; 
-    }
-
-    public void sendReplyToServer() {
-        
-    }
-
-    synchronized public void updateForumDisplay() {
-        
+        return newComment;
     }
 
     public void dateCheck() {
@@ -293,7 +282,7 @@ public class ForumTeacher extends JComponent {
             forumDisplay.add(replyPanel);
         }
         System.out.println("shouldve added all replies");
-        
+
         // TODO - delete test stuff below later
         // ReplyPanel tempplsdeleteLater = new ReplyPanel(new Reply(forum, (Student) currentUser, "monkey"));
         // forumDisplay.add(tempplsdeleteLater);
@@ -420,14 +409,14 @@ public class ForumTeacher extends JComponent {
         forumDisplay.revalidate();
         forumDisplay.repaint();
     }
-    
+
     public Reply replyPanelSelected() {
         for (ReplyPanel rp : replyPanels) {
             if (rp.isSelected()) { // checks if a reply panel has been selected (creates a comment for that panel )
                 return rp.getReply();
             }
         }
-        return null; 
+        return null;
     }
 
     synchronized public void updateDisplay(LMS lms) {
@@ -438,8 +427,8 @@ public class ForumTeacher extends JComponent {
         replyPanels = new ArrayList<>();
 
         // update replies ArrayList with the forum replies
-        
-        
+
+
         boolean courseNotFound = true;
         boolean forumNotFound = true;
         for (Course c : lms.getCourses()) {
@@ -459,14 +448,14 @@ public class ForumTeacher extends JComponent {
         if (forumNotFound) {
             client.currentPanelDeleted("forum");
             System.out.println("teacher was in forum page, should go back to course page");
-            return; 
+            return;
         }
         if (courseNotFound) {
             client.currentPanelDeleted("course");
             System.out.println("teacher was in forum page, should go back to lms page");
-            return; 
+            return;
         }
-        
+
         replies = forum.getReplies();
 
 
@@ -486,14 +475,14 @@ public class ForumTeacher extends JComponent {
         content.revalidate();
     }
 
-     MouseAdapter selectReplyListener = new MouseAdapter() {
+    MouseAdapter selectReplyListener = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
             ReplyPanel selectedReplyPanel = (ReplyPanel) e.getSource();
             //System.out.println(selectedReplyPanel);
             if (!selectedReplyPanel.isSelected()) {
                 selectedReplyPanel.select();
-                for (ReplyPanel replyPanel: replyPanels) {
+                for (ReplyPanel replyPanel : replyPanels) {
                     if (selectedReplyPanel.equals(replyPanel) || !replyPanel.isSelected()) {
                         continue;
                     }

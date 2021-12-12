@@ -12,13 +12,11 @@ import java.util.Arrays;
 
 /**
  * pages.LMSStudent
- *
+ * <p>
  * The Student's class of LMS
  *
  * @author Chloe Click, CS180
- *
  * @version November 30, 2021
- *
  */
 
 
@@ -49,9 +47,9 @@ public class LMSStudent extends JComponent implements ActionListener {
                         break;
                     }
                 }
-                
-                if (client.getCourseStudent() == null || 
-                !client.getCourseStudent().getCourse().equals(selectedCourseObject)) {
+
+                if (client.getCourseStudent() == null ||
+                        !client.getCourseStudent().getCourse().equals(selectedCourseObject)) {
                     CourseStudent cs = new CourseStudent(client, selectedCourseObject, (Student) client.getUser());
                     client.setCourseStudent(cs);
                     client.addPanelToCardLayout(client.getCourseStudent().getContent(), "courseStudent");
@@ -61,12 +59,11 @@ public class LMSStudent extends JComponent implements ActionListener {
                 //i took out the if statement for this block b/c it didn't let
                 //students change from one course to another
 
-                
 
                 //client.getCl().con(client.getCourseStudent());
                 client.changePanel("courseStudent");
                 System.out.println("student switched to " + selectedCourse + " course.");
-            
+
             }
         }
         if (e.getSource() == settingsButton) {

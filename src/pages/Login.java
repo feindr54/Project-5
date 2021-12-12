@@ -9,14 +9,13 @@ import java.awt.event.*;
 import java.io.IOException;
 
 /**
-* Project 5 - Login
-*
-* Description - TODO
-*
-* @author Alex Younkers
-*
-* @version 12/7/2021
-*/
+ * Project 5 - Login
+ * <p>
+ * Description - TODO
+ *
+ * @author Alex Younkers
+ * @version 12/7/2021
+ */
 
 public class Login extends JComponent {
     ActualClient client;
@@ -129,7 +128,7 @@ public class Login extends JComponent {
         c.weightx = 0;
         c.weighty = 0;
         //c.ipady = 50;
-        c.insets = new Insets(50,0,0,0);
+        c.insets = new Insets(50, 0, 0, 0);
         c.gridx = 0;
         c.gridy = 2;
 
@@ -145,7 +144,7 @@ public class Login extends JComponent {
 
         c.weightx = 0;
         c.weighty = 0;
-        c.insets = new Insets(0,0,0,0);
+        c.insets = new Insets(0, 0, 0, 0);
         c.gridx = 0;
         c.gridy = 3;
 
@@ -161,7 +160,6 @@ public class Login extends JComponent {
 
 
         content.add(textPanel, BorderLayout.CENTER);
-
 
 
         southPanel = new JPanel();
