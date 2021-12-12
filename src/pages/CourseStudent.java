@@ -189,12 +189,13 @@ public class CourseStudent extends JComponent {
         for (Course c : lms.getCourses()) {
             if (c.equals(this.course)){
                 index = c.getIndex();
+                this.course = c;
                 break;
             }
         }
         if (index != -1) {
             
-            this.course = lms.getCourses().get(index);
+            // this.course = lms.getCourses().get(index);
             courseName = this.course.getCourseName();
             forums = this.course.getForums();
             accessForums.removeAllItems();

@@ -606,7 +606,11 @@ public class Server implements Serializable {
                             if (s.equals(student)) { // check if the student had already upvoted for a specific reply
                                 return false; 
                             }
+                            System.out.println(s); // TODO - delete test comment later
+                            System.out.println(s.getEmail());
                         }
+
+
                         // successfully upvotes reply
                         for (User user : users) {
                             if (user instanceof Student) {
@@ -615,6 +619,8 @@ public class Server implements Serializable {
                                 }
                             }
                         }
+                        System.out.println(student.getIdentifier() + " has successfully upvoted this reply. "); // TODO delete test comment later
+                        System.out.println(student);
                         r.upvote(student);
                         return true;
                     }

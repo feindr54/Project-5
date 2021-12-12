@@ -286,15 +286,15 @@ public class ForumStudent extends JComponent {
         public void mouseClicked(MouseEvent e) {
             ReplyPanel selectedReplyPanel = (ReplyPanel) e.getSource();
             //System.out.println(selectedReplyPanel);
-            if (!selectedReplyPanel.isSelected()) {
+            if (!selectedReplyPanel.isSelected()) { // checks if the current reply is unselected
                 selectedReplyPanel.select();
-                for (ReplyPanel replyPanel: replyPanels) {
+                for (ReplyPanel replyPanel: replyPanels) { // unselects all other replies
                     if (selectedReplyPanel.equals(replyPanel) || !replyPanel.isSelected()) {
                         continue;
                     }
                     replyPanel.unselect();
                 }
-                Submit.setText("Comment");
+                Submit.setText("Comment"); // changes the text of the submit button and the prompt 
                 prompt.setText("Enter Comment:\t");
                 importSubmit.setVisible(false);
             } else {
