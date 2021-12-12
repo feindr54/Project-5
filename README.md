@@ -21,6 +21,20 @@ Someone - Submitted Presentation on Brightspace
 
 ### ActualClient:
 
+The ActualClient class represents the client that the user interacts with. The client connects to the server with a socket. This class is responsible for displaying the GUI for all the other classes to the user.
+
+### ReaderThread
+
+The ReaderThread class is responsible for updating the GUI based on how the user interacts with it and including switching between different pages and displaying error messages when appropriate.
+
+### Server:
+
+The server class is responsible for making changes to the data and saving it. The server contains methods to execute any changes to the data including creating new courses, forums, or replies, deleting courses or forums, editing course names or forum topics, and upvoting. This class handles saving the data by implementing the Serializable interface and using an object output and input stream to write the users and LMS data to different and reading it back, respectively.
+
+### ClientHandler:
+
+The ClientHandler class is the bridge between the client and the server. A ClientHandler object is created for every client that exists and it handles any requests from the client by using the methods from the server class. Then, it sends a response back to the client and broadcasts the changes to all the other clients so the changes are applied universally.
+
 ### Request:
 
 The request class is a message sent by the client to the server to perform a specified change or computation. To create a request object, the client specifies an operation, an object, and an operand if necessary.
@@ -28,8 +42,6 @@ The request class is a message sent by the client to the server to perform a spe
 ### Response:
 
 The response class is the counterpart to the request class. This class represents a message sent by the server back to the client.
-
-### Server:
 
 ### User:
 
@@ -114,7 +126,7 @@ The ForumStudent class has a similar display to the ForumTeacher page. This page
 
 ### Reply:
 
-The Reply class uses the forum class to allow for replies underneath each forum possible. Reply must have an owner 
+The reply class uses the forum class to allow for replies underneath each forum possible. Reply must have an owner 
 for the reply (the user who posted it), the forum it belongs to, reply content, the current time of the reply, and 
 comments which will go underneath the reply. Getter methods are used for the fields. Upvote methods also are used to 
 increment and get the amount of upvotes which a reply has. The last methods are Comparator classes to sort the list of replies. With the 
