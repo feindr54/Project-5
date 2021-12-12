@@ -3,7 +3,7 @@ package main.page;
 import java.io.Serializable;
 import java.util.*;
 
-import login.page.LoginSystemTest;
+
 import users.*;
 
 /**
@@ -68,7 +68,7 @@ public class LMS implements Serializable {
      * on User type (Teacher or Student)
      */
 
-    public void access(User currentUser, Scanner scanner) throws LogOutException {
+    public void access(User currentUser, Scanner scanner)  {
 
         int choice;
         int courseChoice;
@@ -107,7 +107,7 @@ public class LMS implements Serializable {
                         if (courseChoice == -1) {
                             break;
                         } else if (courseChoice == -2) {
-                            Settings.access(currentUser, scanner);
+
                             break; //
                         }
 
@@ -129,14 +129,14 @@ public class LMS implements Serializable {
                         if (response == -1) {
                             break;
                         } else if (response == -2) {
-                            Settings.access(currentUser, scanner);
+
                         } else {
                             ((Teacher) currentUser).deleteCourse(this.courses, this.courses.get(response - 1));
                         }
                         break;
 
                     case 4: // accesses settings
-                        Settings.access(currentUser, scanner);
+
                         break;
                     case 5: // goes back to the previous menu
                         break;
@@ -169,7 +169,7 @@ public class LMS implements Serializable {
                             if (courseChoice == -1) {
                                 break;
                             } else if (courseChoice == -2) {
-                                Settings.access(currentUser, scanner);
+
                                 break;
                             }
 
@@ -179,7 +179,7 @@ public class LMS implements Serializable {
                         }
                         break;
                     case 2: // enter settings menu
-                        Settings.access(currentUser, scanner);
+
                         break;
                     case 3: // go to previous menu
                         break;

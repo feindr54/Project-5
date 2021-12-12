@@ -111,7 +111,7 @@ public class Forum implements Serializable {
             System.out.printf("|%1$-20s %2$s|%n", r.getIdentifier(), r.getCurrentTime());
 
              */
-            r.printContent();
+
         }
     }
 
