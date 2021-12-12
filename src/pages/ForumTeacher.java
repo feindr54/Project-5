@@ -297,7 +297,7 @@ public class ForumTeacher extends JComponent {
         // TODO - delete test stuff below later
         // ReplyPanel tempplsdeleteLater = new ReplyPanel(new Reply(forum, (Student) currentUser, "monkey"));
         // forumDisplay.add(tempplsdeleteLater);
-        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum topic: " + forum.getTopic()));
+        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum topic: " + forum.getTopic() + " created at " + forum.getCurrentTime()));
 
         forumDisplay.revalidate();
         forumDisplay.repaint();
@@ -342,7 +342,7 @@ public class ForumTeacher extends JComponent {
         // ReplyPanel tempplsdeleteLater = new ReplyPanel(new Reply(forum, (Student) currentUser, "monkey"));
         // forumDisplay.add(tempplsdeleteLater);
 
-        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum title: " + forum.getTopic()));
+        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum topic: " + forum.getTopic() + " created at " + forum.getCurrentTime()));
 
         forumDisplay.revalidate();
         forumDisplay.repaint();
@@ -393,7 +393,7 @@ public class ForumTeacher extends JComponent {
         // ReplyPanel tempplsdeleteLater = new ReplyPanel(new Reply(forum, (Student) currentUser, "monkey"));
         // forumDisplay.add(tempplsdeleteLater);
 
-        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum topic: " + forum.getTopic()));
+        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum topic: " + forum.getTopic() + " created at " + forum.getCurrentTime()));
 
         forumDisplay.revalidate();
         forumDisplay.repaint();
@@ -404,7 +404,7 @@ public class ForumTeacher extends JComponent {
         // TODO - is this method necessary?
         forum = selectedForumObject;
         forumDisplay.removeAll();
-        forumDisplay.setBorder(BorderFactory.createTitledBorder(forum.getTopic()));
+        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum topic: " + forum.getTopic() + " created at " + forum.getCurrentTime()));
         replies = selectedForumObject.getReplies();
         replyPanels = new ArrayList<>();
 
@@ -481,7 +481,7 @@ public class ForumTeacher extends JComponent {
         }
 
     
-        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum topic: " + forum.getTopic()));
+        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum topic: " + forum.getTopic() + " created at " + forum.getCurrentTime()));
         forumDisplay.revalidate();
         content.revalidate();
     }

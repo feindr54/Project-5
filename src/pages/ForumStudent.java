@@ -312,7 +312,7 @@ public class ForumStudent extends JComponent {
         //forumDisplay = new JPanel();
         forumDisplay.removeAll();
         System.out.println(forum.getTopic());
-        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum topic: " + forum.getTopic()));
+        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum topic: " + forum.getTopic() + " created at " + forum.getCurrentTime()));
         replies = selectedForumObject.getReplies();
         replyPanels = new ArrayList<>();
 
@@ -408,7 +408,7 @@ public class ForumStudent extends JComponent {
         // forumDisplay.add(tempplsdeleteLater);
 
     
-        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum topic: " + forum.getTopic()));
+        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum topic: " + forum.getTopic() + " created at " + forum.getCurrentTime()));
 
         forumDisplay.revalidate();
         forumDisplay.repaint();
