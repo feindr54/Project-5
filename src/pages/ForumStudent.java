@@ -4,6 +4,8 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -25,6 +27,7 @@ public class ForumStudent extends JComponent {
     JPanel bot;
     JLabel prompt;
     JTextField input;
+    JButton importSubmit; // button to import a file containing the reply 
     JButton Submit;
 
     Forum forum; 
@@ -112,11 +115,14 @@ public class ForumStudent extends JComponent {
 
         prompt = new JLabel("Enter Reply:\t");
         input = new JTextField(50);
+        importSubmit = new JButton("Import reply");
         Submit = new JButton("Reply");
 
         bot.add(prompt);
         bot.add(input);
+        bot.add(importSubmit);
         bot.add(Submit);
+        importSubmit.addActionListener(actionListener);
         Submit.addActionListener(actionListener);
 
         content.add(bot, BorderLayout.SOUTH);
@@ -185,6 +191,36 @@ public class ForumStudent extends JComponent {
                     
                 }
 
+            }
+
+            if (e.getSource() == importSubmit) {
+                if (input.getText().isBlank() || input.getText() == null) {
+                    JOptionPane.showMessageDialog(null, "Error, enter a file name.", "Error",
+                            JOptionPane.ERROR_MESSAGE); // shows error message
+                }
+                try (BufferedReader br = new BufferedReader(new FileReader(input.getText()))){
+                    String string;
+                    String topic = "";
+                    while ((string = br.readLine()) != null) {
+                        topic += string;
+                    }
+
+                    /*
+                    Forum newForum = new Forum(course, topic);
+                    course.getForums().add(newForum);
+                     */
+                    Reply newReply = new Reply(forum, (Student) currentUser, topic);
+
+                    Request request = new Request(1, 2, newReply);
+                    client.sendToServer(request);
+                    System.out.println("Imported reply sent to server!"); // remove test comment later 
+
+                } catch (IOException ioException) {
+                    // TODO - if file is not read(invalid filename eg), throw JOptionPane at user
+                    JOptionPane.showMessageDialog(null, "Error, unable to read file", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+                }
+                input.setText("");
             }
 
             if (e.getSource() == upvoteButton) {
@@ -260,10 +296,12 @@ public class ForumStudent extends JComponent {
                 }
                 Submit.setText("Comment");
                 prompt.setText("Enter Comment:\t");
+                importSubmit.setVisible(false);
             } else {
                 selectedReplyPanel.unselect();
                 Submit.setText("Reply");
                 prompt.setText("Enter Reply:\t");
+                importSubmit.setVisible(true);
             }
             //e.getSource();
         }
@@ -274,7 +312,7 @@ public class ForumStudent extends JComponent {
         //forumDisplay = new JPanel();
         forumDisplay.removeAll();
         System.out.println(forum.getTopic());
-        forumDisplay.setBorder(BorderFactory.createTitledBorder(forum.getTopic()));
+        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum topic: " + forum.getTopic()));
         replies = selectedForumObject.getReplies();
         replyPanels = new ArrayList<>();
 
@@ -374,7 +412,7 @@ public class ForumStudent extends JComponent {
         // forumDisplay.add(tempplsdeleteLater);
 
     
-        forumDisplay.setBorder(BorderFactory.createTitledBorder(forum.getTopic()));
+        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum topic: " + forum.getTopic()));
 
         forumDisplay.revalidate();
         forumDisplay.repaint();

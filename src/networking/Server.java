@@ -282,7 +282,8 @@ public class Server implements Serializable {
                 }
 
                 lms.getCourses().remove(i); // remove the course from the LMS
-
+                saveUsers(USERSFILE);
+                lms.setUsers(users);
                 saveLMS(LMSFILE);
                 return; 
             }
@@ -298,6 +299,7 @@ public class Server implements Serializable {
      * @param newUsername
      * @return
      */
+
     synchronized public static User editUsername(String email, String newUsername) {
         //int index = -1;
         // TODO - change the whole for-loop, should loop through the users ArrayList
@@ -306,19 +308,19 @@ public class Server implements Serializable {
                 // if old username is same as new return null
                 if (users.get(i).getIdentifier().equals(newUsername)) {
                     return null; 
-                } 
-                for (Reply r : ((Student) users.get(i)).getReplyObjects()) {
-                    System.out.println(r.getContent());
                 }
+                
                 users.get(i).setIdentifier(newUsername); //changing the identifier
 
                 
                 if (users.get(i) instanceof Student) {
                     System.out.println("student is changing username");
-                    for (Reply r : ((Student) users.get(i)).getReplyObjects()) {
-                        r.setOwner((Student) users.get(i));
-                        System.out.println("Changing reply owner id to " + r.getOwner().getIdentifier());// it doesnt do this!!!
-                    }
+                    // for (Reply r : ((Student) users.get(i)).getReplyObjects()) {
+                    //     r.setOwner((Student) users.get(i));
+                        
+                    //     System.out.println("Changing reply owner id to " + r.getOwner().getIdentifier());// it doesnt do this!!!
+                    // }
+                    
                 }else{
                     System.out.println("Teacher is changing username");
                 }
@@ -363,6 +365,48 @@ public class Server implements Serializable {
         return null;
     }
 
+    synchronized public static void updateRepliesAndComments(User user) {
+        if (user instanceof Teacher) {
+            //update all comments made by this teacher
+            for (int i = 0; i < users.size(); i++) {
+                if (users.get(i) instanceof Student) {
+                    for (int j = 0; j < ((Student) users.get(i)).getReplyObjects().size(); j++ ) { 
+                        // change any instance of the name of teacher who commented 
+                        Reply r = ((Student) users.get(i)).getReplyObjects().get(j);
+                        for (int k = 0; k < r.getComments().size(); k++) {
+                            if (r.getComments().get(k).getOwnerObject().equals(user)) { // checks if the owner of the comment is the teacher
+                                r.getComments().get(k).setOwner((Teacher) user);
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            // update all replies for this student
+            for (int i = 0; i < users.size(); i++) {
+                if (user.equals(users.get(i))) {
+                    for (Reply r : ((Student) users.get(i)).getReplyObjects()) {
+                        r.setOwner((Student) users.get(i));
+                        System.out.println("Changing reply owner id to " + r.getOwner().getIdentifier());// it doesnt do this!!!
+                    }
+                }
+                // update all comments made by this student
+                if (users.get(i) instanceof Student) {
+                    for (int j = 0; j < ((Student) users.get(i)).getComments().size(); j++ ) { 
+                        // change any instance of the name of teacher who commented 
+                        if (((Student) users.get(i)).getComments().get(i).getOwnerObject().equals(user)) {
+                            ((Student) users.get(i)).getComments().get(i).setOwner((Student) user);
+                        }
+                    }
+                }
+            }
+        }
+        saveUsers(USERSFILE);
+        lms.setUsers(users);
+        saveLMS(LMSFILE); 
+        
+        
+    }
 
 
 
@@ -480,8 +524,12 @@ public class Server implements Serializable {
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getIdentifier().equals(studentName)) {
                 Student student = (Student) users.get(i);
-                student.setGrade(course, String.valueOf(score));
-
+                for (Course c : lms.getCourses()) {
+                    if (c.equals(course)) {
+                        student.setGrade(course, String.valueOf(score));
+                        break; 
+                    }
+                }
                 // save users to file
                 lms.setUsers(users);
                 saveLMS(LMSFILE); 
@@ -504,6 +552,14 @@ public class Server implements Serializable {
                             if (r.getTime().equals(reply.getTime())) { // TODO - make sure the identifier is unique 
                                 r.addComment(comment);
 
+                                for (User user : users) {
+                                    if (user.equals(r.getOwner())) {
+                                        ((Student) user).attachCommentToStudent(comment);
+                                        break; 
+                                    }
+                                }
+
+
                                 
 
                                 // for (User user : users) {
@@ -516,7 +572,8 @@ public class Server implements Serializable {
                                 //     }
                                 // }
                                 // save the LMS
-                                
+                                lms.getUsers();
+                                saveUsers(USERSFILE);
                                 saveLMS(LMSFILE);
                                 return; 
                             }
@@ -843,6 +900,8 @@ class ClientHandler extends Thread implements Serializable {
                 return null;
             }
 
+            Server.updateRepliesAndComments(user);
+
             response = new Response(0, new Object[]{Server.getLMS(), user});
             // send the response to the client
             sendToClient(response);
@@ -880,11 +939,14 @@ class ClientHandler extends Thread implements Serializable {
             String studentName = (String) info[0];
             Course course = (Course) info[1];
             int score = (int) info[2];
+            System.out.println("The score is " + score); // TODO - delete test comment later
+            System.out.println("The student is " + studentName); // TODO - delete test comment later 
             Server.gradeStudent(studentName, course, score);
-            response = new Response(0, Server.getLMS());
-            sendToClient(response);
-            System.out.println("Sending ok response to add grade");
-            return null;
+
+            response = new Response(0, Server.getLMS()); // creates a new response object to send to the user 
+            System.out.println("Sending ok response to add grade");// TODO - delete test comment later 
+            broadcastToOneStudent(response, studentName); // sends the response to the student getting graded 
+            return null; 
         }
         return null;
     }
@@ -1017,6 +1079,19 @@ class ClientHandler extends Thread implements Serializable {
             //     }
             // }
             
+        }
+    }
+    public void broadcastToOneStudent(Response response, String studentName) {
+        for (ClientHandler client : Server.clients) { //TODO - might need synchronized the method calling for the client objects 
+            if (client.getUser().getIdentifier().equals(studentName)) { // finds the client that is being graded 
+                try {
+                    client.s_OTC.writeObject(response);
+                    client.s_OTC.flush();
+                    client.s_OTC.reset(); 
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

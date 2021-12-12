@@ -17,8 +17,9 @@ import main.page.*;
 
 public class Student extends User implements Serializable {
 
-    public ArrayList<Reply> studentReplies;
-    public ArrayList<String> repliesToString;
+    private ArrayList<Reply> studentReplies;
+    private ArrayList<Comment> studentComments; 
+    private ArrayList<String> repliesToString;
 
     // index represents the index of the student reply
     public HashMap<Course, String> grades;
@@ -27,9 +28,9 @@ public class Student extends User implements Serializable {
         super(email, password, true);
         this.identifier = this.email.substring(0, this.email.indexOf('@'));
         this.studentReplies = new ArrayList<Reply>();
+        this.studentComments = new ArrayList<Comment>();
         this.repliesToString = new ArrayList<String>();
 
-        studentReplies = new ArrayList<Reply>();
         grades = new HashMap<>();
     }
 
@@ -50,12 +51,24 @@ public class Student extends User implements Serializable {
         }
     }
 
+    public void deleteComments(Forum forum) {
+
+    }
+
+    public ArrayList<Comment> getComments() {
+        return this.studentComments; 
+    }
+
     public void removeGrades(Course course) {
         grades.remove(course);
     }
 
-    public void attachReplyToStudent (Reply reply) {
+    public void attachReplyToStudent(Reply reply) {
         this.studentReplies.add(reply);
+    }
+
+    public void attachCommentToStudent(Comment comment) {
+        this.studentComments.add(comment);
     }
 
     // this method takes in a reply and the contents of the comment, creates a new

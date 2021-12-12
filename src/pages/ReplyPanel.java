@@ -27,7 +27,8 @@ public class ReplyPanel extends JPanel {
     JPanel lowerPanel; // contains the reply content and the comments
     JLabel replyMessage; 
     JLabel date;
-    JLabel username;
+    //JLabel username;
+    String username;
     JLabel upvotes;
     JLabel identifier;
     JPanel commentPanel; 
@@ -38,20 +39,39 @@ public class ReplyPanel extends JPanel {
     public ReplyPanel(Reply reply) {
         this.reply = reply; 
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        username = reply.getOwner().getIdentifier();
+        setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK) ,"Reply created by: "
+        + username
+        + ", at: " + reply.getCurrentTime()
+        + ", with ID: "
+        + String.valueOf(reply.getIdentifier())
+        ));
+
+
+        upperPanel = new JPanel(new FlowLayout());
+
+
+        
+        replyMessage = new JLabel(reply.getContent());
+        upperPanel.add(replyMessage);
+        
+        lowerPanel = new JPanel();
+        upvotes = new JLabel("UPVOTES: " + reply.getUpvotes());
+        lowerPanel.add(upvotes);
+        
+        
         // initializes a border object to be added to the panel
 
         // finish off reply panel and comment panel so that we can finish the forum page component
-        upperPanel = new JPanel(new FlowLayout());
 
-        identifier = new JLabel("ID: " + String.valueOf(reply.getIdentifier()));
-        // TODO - set the constraints and add to the panel
-        upperPanel.add(identifier);
+        // identifier = new JLabel("ID: " + String.valueOf(reply.getIdentifier()));
+        // // TODO - set the constraints and add to the panel
+        // upperPanel.add(identifier);
         
-        date = new JLabel("Sent at: " + reply.getCurrentTime());
-        upperPanel.add(date);
+        // date = new JLabel("Sent at: " + reply.getCurrentTime());
+        // upperPanel.add(date);
 
-        upvotes = new JLabel("UPVOTES: " + reply.getUpvotes());
-        upperPanel.add(upvotes);
+        
 
         
         
@@ -63,12 +83,7 @@ public class ReplyPanel extends JPanel {
         //middlePanel.add(date);
         
         // sets up the lower panel
-        lowerPanel = new JPanel();
-        username = new JLabel(reply.getOwner().getIdentifier());
-        lowerPanel.add(username);
         
-        replyMessage = new JLabel("Replied with: " + reply.getContent());
-        lowerPanel.add(replyMessage);
 
         // adds the previous two panels to the main reply panel
         this.add(upperPanel);
@@ -126,11 +141,22 @@ public class ReplyPanel extends JPanel {
     }
     public void unselect() {
         selected = false; 
-        setBorder(null);
+        //setBorder(null);
+        setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK) ,"Reply created by: "
+        + username
+        + ", at: " + reply.getCurrentTime()
+        + ", with ID: "
+        + String.valueOf(reply.getIdentifier())
+        ));
     }
 
     public void select() {
         selected = true; 
-        setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GREEN) ,"Reply created by: "
+        + username
+        + ", at: " + reply.getCurrentTime()
+        + ", with ID: "
+        + String.valueOf(reply.getIdentifier())
+        ));
     }
 }

@@ -164,6 +164,7 @@ public class CourseStudent extends JComponent {
 
     synchronized public void updateDisplay(Course course) {
         // TODO - Update the display of the course with a Course object input
+
         this.course = course;
         courseName = this.course.getCourseName();
         forums = this.course.getForums();
@@ -192,17 +193,26 @@ public class CourseStudent extends JComponent {
             }
         }
         if (index != -1) {
+            
             this.course = lms.getCourses().get(index);
             courseName = this.course.getCourseName();
             forums = this.course.getForums();
             accessForums.removeAllItems();
-    
+            
+            for (int i = 0; i < lms.getUsers().size(); i++) {
+                if (student.equals(lms.getUsers().get(i))) {
+                    student = (Student) lms.getUsers().get(i);
+                    System.out.println(student.getGrade(course));
+                }
+            }
+            //
             for (Forum f: forums) {
                 accessForums.addItem(f.getTopic());
     
             }
 
             welcomeLabel.setText("Welcome to " + course.getCourseName() + "!");
+            gradeSentence.setText("Your grade is: " + student.getGrade(course));
     
     
             // refreshes the display

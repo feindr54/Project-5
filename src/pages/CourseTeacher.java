@@ -182,6 +182,7 @@ public class CourseTeacher extends JComponent {
 
                 } catch (IOException ioException) {
                     // TODO - if file is not read(invalid filename eg), throw JOptionPane at user
+                    JOptionPane.showMessageDialog(null, "Unable to read file", "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 addCourse.setText("");
             }
@@ -263,7 +264,7 @@ public class CourseTeacher extends JComponent {
                 if (students.getSelectedItem() == null) {
                     JOptionPane.showMessageDialog(null, "Error, no students found", "Error",
                             JOptionPane.INFORMATION_MESSAGE);
-                }else {
+                } else {
 
                     repliesArr = course.getStudents().get(students.getSelectedIndex()).getReplies();
                     replies.removeAllItems();
@@ -288,7 +289,7 @@ public class CourseTeacher extends JComponent {
                         // TODO - sends the updated scores and a particular student to the server
                         Request request = new Request(10, new Object[]{studentName, course, choice});
                         client.sendToServer(request);
-                        System.out.println("sent add grade request");
+                        System.out.println("sent add grade request"); // TODO - delete test comment later 
 
                         replyGrade.setText("");
                         replies.setSelectedIndex(0);
@@ -298,12 +299,12 @@ public class CourseTeacher extends JComponent {
                     } else {
                         JOptionPane.showMessageDialog(null, "Error, please enter an " +
                                         "integer between 0 and 100!", "Error",
-                                JOptionPane.INFORMATION_MESSAGE);
+                                JOptionPane.ERROR_MESSAGE);
                         replyGrade.setText("");
                     }
                 } catch (NumberFormatException exception) {
                     JOptionPane.showMessageDialog(null, "Error, unexpected input", "Error",
-                            JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.ERROR_MESSAGE);
                     replyGrade.setText("");
                 }
             }
@@ -361,6 +362,7 @@ public class CourseTeacher extends JComponent {
             accessForums.removeAllItems();
             editForums.removeAllItems();
             deleteForums.removeAllItems();
+            students.removeAllItems();
     
             for (Forum f: forums) {
                 accessForums.addItem(f.getTopic());
