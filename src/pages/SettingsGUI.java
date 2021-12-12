@@ -146,12 +146,13 @@ public class SettingsGUI extends JComponent {
                             new Object[]{client.getUser(), newUsername});
                     client.sendToServer(request);
                 }
+                idText.setText("");
             }
 
             if (e.getSource() == passwordSubmitButton) {
                 //TODO send new password to server, change it in the list of passwords
                 // Get new password from textField
-                String newPassword = idText.getText();
+                String newPassword = passwordText.getText();
                 if (newPassword == null || newPassword.isBlank()) { // check if the field is blank
                     // JOptionPane error message (please fill in textfield)
                     JOptionPane.showMessageDialog(null, "Please fill in the textfield.", "Error",
@@ -160,6 +161,7 @@ public class SettingsGUI extends JComponent {
                     Request request = new Request(8, new Object[]{client.getUser(), newPassword});
                     client.sendToServer(request);
                 }
+                passwordText.setText("");
             }
 
             if (e.getSource() == logoutButton) {

@@ -28,6 +28,7 @@ public class ReplyPanel extends JPanel {
     JLabel replyMessage; 
     JLabel date;
     JLabel username;
+    JLabel upvotes;
     JLabel identifier;
     JPanel commentPanel; 
     ArrayList<JLabel> comments;
@@ -48,6 +49,9 @@ public class ReplyPanel extends JPanel {
         
         date = new JLabel("Sent at: " + reply.getCurrentTime());
         upperPanel.add(date);
+
+        upvotes = new JLabel("UPVOTES: " + reply.getUpvotes());
+        upperPanel.add(upvotes);
 
         
         

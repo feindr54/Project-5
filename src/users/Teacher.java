@@ -124,6 +124,6 @@ public class Teacher extends User implements Serializable {
         }
 
         Teacher u = (Teacher) o;
-        return ((Teacher) o).getIdentifier().equals(((Teacher) o).getIdentifier());
+        return ((Teacher) o).getEmail().equals(((Teacher) u).getEmail());
     }
 }
