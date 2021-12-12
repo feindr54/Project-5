@@ -261,8 +261,28 @@ class ReaderThread extends Thread {
         System.out.println("Received success response, now we gotta update display"); // TODO - delete test comment later 
         // make sure LMS is correct
 
-        System.out.println("We are at " + gui.getPageStack().peek()); // TODO - delete test comment later 
+        System.out.println("We are at " + gui.getPageStack().peek()); // TODO - delete test comment later
         
+        if (gui.getLmsStudent() != null) {
+            gui.getLmsStudent().updateDisplay(newLms);
+        }
+        if (gui.getLmsTeacher() != null) {
+            gui.getLmsTeacher().updateDisplay(newLms);
+        }
+        if (gui.getCourseStudent() != null) {
+            gui.getCourseStudent().updateDisplay(newLms);
+        }
+        if (gui.getCourseTeacher() != null) {
+            gui.getCourseTeacher().updateDisplay(newLms);
+        }
+        if (gui.getForumStudent() != null) {
+            gui.getForumStudent().updateDisplay(newLms);
+        }
+        if (gui.getForumTeacher() != null) {
+            gui.getForumTeacher().updateDisplay(newLms);
+        }
+        
+        /*
         switch (gui.getPageStack().peek()) {
             case "lmsStudent":
                 // TODO - load student lms
@@ -287,7 +307,9 @@ class ReaderThread extends Thread {
                 gui.getForumTeacher().updateDisplay(newLms);
                 System.out.println("updating forumTeacher page"); // delete test comment later 
                 break;
+            case "SettingsGUI"
         }
+        */
     }
 
     

@@ -160,6 +160,9 @@ public class ForumTeacher extends JComponent {
     public void setUser(User newUser) {
         this.currentUser = newUser;
     }
+    public Forum getForum() {
+        return this.forum; 
+    }
     
     ActionListener actionListener = new ActionListener() {
         @Override

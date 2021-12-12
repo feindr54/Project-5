@@ -294,11 +294,16 @@ public class Server implements Serializable {
         // TODO - change the whole for-loop, should loop through the users ArrayList
         for (int i = 0; i < users.size(); i++) {
             if (email.equals(users.get(i).getEmail())) {
-                // replaces the course name with a new name
+                // if old username is same as new return null
                 if (users.get(i).getIdentifier().equals(newUsername)) {
                     return null; 
                 } 
-                users.get(i).setIdentifier(newUsername);
+                for (Reply r : ((Student) users.get(i)).getReplyObjects()) {
+                    System.out.println(r.getContent());
+                }
+                users.get(i).setIdentifier(newUsername); //changing the identifier
+
+                
                 if (users.get(i) instanceof Student) {
                     System.out.println("student is changing username");
                     for (Reply r : ((Student) users.get(i)).getReplyObjects()) {
@@ -308,6 +313,10 @@ public class Server implements Serializable {
                 }else{
                     System.out.println("Teacher is changing username");
                 }
+
+                // for () {
+                    
+                // }
                 
                 // for (int i = 0; i < lms.getCourses().size(); i++) {
                     
@@ -358,8 +367,14 @@ public class Server implements Serializable {
                     if (f.getTopic().equals(currentForum.getTopic())) {
                         // add the reply into the arrayList
                         f.addReply(reply);
-                        c.addStudent(reply.getOwner());
-                        reply.getOwner().attachReplyToStudent(reply);
+
+                        for (User user : users) {
+                            if (user.equals(reply.getOwner())) {
+                                c.addStudent((Student)user);
+                                ((Student) user).attachReplyToStudent(reply);
+                            }
+                        }
+                        
                         // save the LMS 
                         saveLMS(LMSFILE);
                         return; 
@@ -469,7 +484,20 @@ public class Server implements Serializable {
                         for (Reply r : f.getReplies()) {
                             if (r.getTime().equals(reply.getTime())) { // TODO - make sure the identifier is unique 
                                 r.addComment(comment);
+
+                                
+
+                                // for (User user : users) {
+                                //     if (user.equals(comment.getOwner())) {
+                                //         for (Reply rep : ((Student) user).getReplyObjects()) {
+                                //             for (Comment comment : (Student))
+                                //         }
+                                //         // c.addStudent((Student)user);
+                                //         // ((Student) user).attachReplyToStudent(reply);
+                                //     }
+                                // }
                                 // save the LMS
+                                
                                 saveLMS(LMSFILE);
                                 return; 
                             }
@@ -779,6 +807,7 @@ class ClientHandler extends Thread implements Serializable {
             } else {
                 // sends error back to client 
                 response = new Response(1, "You have already upvoted once.");
+                sendToClient(response);
                 return null; 
             }
             // TODO - return the LMS 
@@ -798,6 +827,7 @@ class ClientHandler extends Thread implements Serializable {
             response = new Response(0, new Object[]{Server.getLMS(), user});
             // send the response to the client
             sendToClient(response);
+            broadCastReponseToOthers(new Response(0, Server.getLMS()));
             return null; 
             // TODO - change response object to just LMS so others can update their respective LMS 
             // response = new Response(0, Server.getLMS());
@@ -923,6 +953,33 @@ class ClientHandler extends Thread implements Serializable {
         //Response response = new Response();
         for (ClientHandler client : Server.clients) {
             
+            try {
+                client.getOut().writeObject(response);
+                client.getOut().flush();
+                client.getOut().reset();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            // }else {
+            //     try {
+            //         client.getOut().writeObject("You: " + input);
+            //         client.getOut().flush();
+            //     } catch (IOException e) {
+            //         // TODO Auto-generated catch block
+            //         e.printStackTrace();
+            //     }
+            // }
+            
+        }
+    }
+
+    public void broadCastReponseToOthers(Response response) {
+        //Response response = new Response();
+        for (ClientHandler client : Server.clients) {
+            if (client.getID() == this.getID()) {
+                continue;
+            }
             try {
                 client.getOut().writeObject(response);
                 client.getOut().flush();

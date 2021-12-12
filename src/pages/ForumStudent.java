@@ -132,7 +132,9 @@ public class ForumStudent extends JComponent {
         this.currentUser = newUser;
     }
 
-    
+    public Forum getForum() {
+        return this.forum; 
+    }
 
     // synchronized static public void selectPanel(ReplyPanel replyPanel) {
     //     for (ReplyPanel rp : replyPanels) {
@@ -271,6 +273,7 @@ public class ForumStudent extends JComponent {
         //forumDisplay.add(replies.get(replies.size() - 1));
         //forumDisplay = new JPanel();
         forumDisplay.removeAll();
+        System.out.println(forum.getTopic());
         forumDisplay.setBorder(BorderFactory.createTitledBorder(forum.getTopic()));
         replies = selectedForumObject.getReplies();
         replyPanels = new ArrayList<>();
@@ -299,6 +302,7 @@ public class ForumStudent extends JComponent {
 
         // get the forum we are at
         System.out.println("UPDATING FORUM STUDENT WITH NEW LMS");
+        System.out.println(client.getUser().getIdentifier());
         forumDisplay.removeAll();
 
         replies = new ArrayList<>();
@@ -319,11 +323,13 @@ public class ForumStudent extends JComponent {
 
         System.out.println("Replies array " + forum.getReplies());
         
-        // TODO - delete test block below later 
+        // TODO - delete test comment above later 
         
         
         for (Reply reply : replies) {
-            System.out.println(reply.getOwner().getIdentifier());
+            // TODO - delete test comment below
+            System.out.println(reply.getOwner().getIdentifier()); // show name of replier
+
             for (Comment c : reply.getComments()) {
                 System.out.println(c.getContent());
             }

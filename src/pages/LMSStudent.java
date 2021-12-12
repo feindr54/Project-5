@@ -49,13 +49,20 @@ public class LMSStudent extends JComponent implements ActionListener {
                         break;
                     }
                 }
-                if (client.getCourseStudent() == null) {
-
+                
+                if (client.getCourseStudent() == null || 
+                !client.getCourseStudent().getCourse().getCourseName().equals(selectedCourse)) {
                     CourseStudent cs = new CourseStudent(client, selectedCourseObject, (Student) client.getUser());
                     client.setCourseStudent(cs);
                     client.addPanelToCardLayout(client.getCourseStudent().getContent(), "courseStudent");
                     cs.updateDisplay(selectedCourseObject);
                 }
+
+                //i took out the if statement for this block b/c it didn't let
+                //students change from one course to another
+
+                
+
                 //client.getCl().con(client.getCourseStudent());
                 client.changePanel("courseStudent");
                 System.out.println("student switched to " + selectedCourse + " course.");
