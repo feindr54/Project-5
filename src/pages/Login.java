@@ -291,6 +291,9 @@ public class Login extends JComponent {
                 // TODO - 2) send the strings separately and find the user object there
                 request = new Request(5, new String[]{username, password});
                 client.sendToServer(request);
+
+                idText.setText("");
+                passwordText.setText("");
                 // TODO - wait for server response to see if username is valid && username and password matches
             } else {
                 // when user is signing up
@@ -302,10 +305,16 @@ public class Login extends JComponent {
                     request = new Request(4, new String[]{username, password, "student"});
                     client.sendToServer(request);
 
+                    idText.setText("");
+                    passwordText.setText("");
+
                 } else if (teacher.isSelected()) {
                     // TODO - creates a teacher object and send it to the server
                     request = new Request(4, new String[]{username, password, "teacher"});
                     client.sendToServer(request);
+
+                    idText.setText("");
+                    passwordText.setText("");
 
                 } else {
                     // if neither box is selected

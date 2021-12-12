@@ -1,5 +1,4 @@
 package pages;
-
 import networking.Request;
 import users.*;
 import main.page.*;
