@@ -46,7 +46,7 @@ public class Student extends User implements Serializable {
 
     public void deleteReplies(Forum forum) {
         for (Reply r : studentReplies) {
-            if (r.getForum().getTopic().equals(forum.getTopic())) {
+            if (r.getForum().getCurrentTime().equals(forum.getCurrentTime())) {
                 studentReplies.remove(r);
             }
         }
