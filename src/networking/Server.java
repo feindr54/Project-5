@@ -815,34 +815,32 @@ class ClientHandler extends Thread implements Serializable {
                         sendToClient(response);
                         return null;
                     }
-                    // TODO - creates a new user object
-                    User newUser;
-                    //  check if user is a student or teacher and initializes respectively
-                    if (role.equals("teacher")) {
-                        newUser = new Teacher(username, password);
-                    } else {
-                        newUser = new Student(username, password);
-                    }
-                    this.user = newUser;
-                    // add the newUser to the users array list
-                    newUser.setUserIndex(Server.users.size()); // sets the index of the user
-
-                    Server.addUser(newUser);
-
-                    //  and send the respective LMS object and user back to PARTICULAR USER
-                    //  create a Response object and
-                    response = new Response(0, new Object[]{newUser, Server.lms});
-                    sendToClient(response);
-
-                    return null;
                 }
+                // creates a new user object after knowing no email is repeated
+                User newUser;
+                //  check if user is a student or teacher and initializes respectively
+                if (role.equals("teacher")) {
+                    newUser = new Teacher(username, password);
+                } else {
+                    newUser = new Student(username, password);
+                }
+                this.user = newUser;
+                // add the newUser to the users array list
+                newUser.setUserIndex(Server.users.size()); // sets the index of the user
+
+                Server.addUser(newUser);
+
+                //  and send the respective LMS object and user back to PARTICULAR USER
+                //  create a Response object and
+                response = new Response(0, new Object[]{newUser, Server.lms});
+                sendToClient(response);
+
+                return null;
             } else if (operation == 5) {
                 // logging in
-                // TODO - create a synchronized method in the server that does these functions
                 if (Server.getUsers().isEmpty()) {
                     response = new Response(1, "No users signed up yet!");
-                    
-                    // TODO - do these need to be synchronized?
+
                     sendToClient(response);
                     return null;
                 }
@@ -878,7 +876,7 @@ class ClientHandler extends Thread implements Serializable {
             Object[] info = (Object[]) object;
             Reply reply = (Reply) info[0];
             Student upvotedStudent = (Student) info[1];
-            // TODO - upvote the student's response
+            // upvote the student's response
             if (Server.upvote(reply, upvotedStudent)) {
                 // sends LMS back to all 
                 response = new Response(0, Server.getLMS());
@@ -889,12 +887,12 @@ class ClientHandler extends Thread implements Serializable {
                 sendToClient(response);
                 return null; 
             }
-            // TODO - return the LMS 
         } else if (operation == 7) { // if user is changing username
             Object[] info = (Object[]) object;
             User user = (User) info[0];
             String newUsername = (String) info[1];
 
+            // returns null if new and old usernames are the same
             user = Server.editUsername(user.getEmail(), newUsername);
 
             if (user == null) {
@@ -902,17 +900,16 @@ class ClientHandler extends Thread implements Serializable {
                 sendToClient(response);
                 return null;
             }
-
+            // after username is changed, change the username label of all its replies and comments
             Server.updateRepliesAndComments(user);
 
             response = new Response(0, new Object[]{Server.getLMS(), user});
             // send the response to the client
             sendToClient(response);
+
+            // sends plain LMS to other clients to update
             broadCastReponseToOthers(new Response(0, Server.getLMS()));
-            return null; 
-            // TODO - change response object to just LMS so others can update their respective LMS 
-            // response = new Response(0, Server.getLMS());
-            // return response;
+            return null;
 
         } else if (operation == 8) { // if user is changing password
             Object[] info = (Object[]) object;
@@ -983,16 +980,6 @@ class ClientHandler extends Thread implements Serializable {
                     
                     broadCastReponse(response);
                 }
-
-                // String input = (String) s_IFC.readObject();
-                // System.out.println(input);
-                // if (input.equals("Exit")) {
-                //     System.out.println(socket + " has exited!");
-                //     break;
-                // }
-
-                // writeToOthers(input);
-                
             } catch (Exception e) {
                 // TODO - REMOVE TEST WHEN DONE
                 System.out.println("someone disconnected");
@@ -1042,7 +1029,7 @@ class ClientHandler extends Thread implements Serializable {
                 client.getOut().flush();
                 client.getOut().reset();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
+                // Auto-generated catch block
                 e.printStackTrace();
             }
             // }else {
@@ -1072,16 +1059,6 @@ class ClientHandler extends Thread implements Serializable {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            // }else {
-            //     try {
-            //         client.getOut().writeObject("You: " + input);
-            //         client.getOut().flush();
-            //     } catch (IOException e) {
-            //         // TODO Auto-generated catch block
-            //         e.printStackTrace();
-            //     }
-            // }
-            
         }
     }
     public void broadcastToOneStudent(Response response, String studentName) {
@@ -1097,6 +1074,4 @@ class ClientHandler extends Thread implements Serializable {
             }
         }
     }
-
-    
 }

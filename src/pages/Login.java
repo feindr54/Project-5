@@ -194,35 +194,12 @@ public class Login extends JComponent {
                 teacherCheck();
             }
             if (e.getSource() == confirmButton) {
-
-                //if login is successful, pull up the respective page
-                
+                //tries to sign up
                 try {
-                    if (successful_login()) {
-
-                        //if student, go to lmsStudent
-                        if (student.isSelected()) {
-
-                            client.changePanel("lmsStudent");
-                            //if teacher, go to lmsTeacher
-                        } else if (teacher.isSelected()) {
-                            client.changePanel("lmsTeacher");
-                        }
-
-                    }
+                    signupAction();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
-
-                /*
-                if (successful_login()) {
-                    // receives a user (currentUser) object and the pages.LMS object
-                    // loads up the pages.LMS screen, using the info from the pages.LMS object
-                    // adds the pages.LMS panel identifier string "pages.LMS" to the stack object
-                }
-                */
-
-                 
             }
         }
     };
@@ -288,22 +265,22 @@ public class Login extends JComponent {
 
     }
 
-    public boolean successful_login() throws IOException {
+    public void signupAction() throws IOException {
         String username = idText.getText();
         String password = passwordText.getText();
 
         if (username == null || username.isBlank()) {
             JOptionPane.showMessageDialog(null, "Please type your email/username",
                     " Error: Empty username field", JOptionPane.ERROR_MESSAGE);
-            return false;
+
         } else if (password == null || password.isBlank()) {
             JOptionPane.showMessageDialog(null, "Please enter your password",
                     " Error: Empty password field", JOptionPane.ERROR_MESSAGE);
-            return false;
+
         } else if (!isLogin && !username.contains("@")) {
             JOptionPane.showMessageDialog(null, "Please enter a valid email address",
                     " Error: Invalid Email", JOptionPane.ERROR_MESSAGE);
-            return false;
+
         } else {
             // else send the data to the server to create a new user object
             // check if user is logging in or signing up
@@ -316,8 +293,6 @@ public class Login extends JComponent {
                 // TODO - 2) send the strings separately and find the user object there
                 request = new Request(5, new String[]{username, password});
                 client.sendToServer(request);
-                
-                return true; 
                 // TODO - wait for server response to see if username is valid && username and password matches
             } else {
                 // when user is signing up
@@ -328,17 +303,16 @@ public class Login extends JComponent {
                     // TODO - creates a student object and sends it to the server
                     request = new Request(4, new String[]{username, password, "student"});
                     client.sendToServer(request);
-                    return true;
+
                 } else if (teacher.isSelected()) {
                     // TODO - creates a teacher object and send it to the server
                     request = new Request(4, new String[]{username, password, "teacher"});
                     client.sendToServer(request);
-                    return true;
+
                 } else {
                     // if neither box is selected
                     JOptionPane.showMessageDialog(null, "Please select a user type",
                             " Error: Empty user type", JOptionPane.ERROR_MESSAGE);
-                    return false;
                 }
             }
 
