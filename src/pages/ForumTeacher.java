@@ -446,7 +446,7 @@ public class ForumTeacher extends JComponent {
             if (c.equals(forum.getCourse())) { // if the course is the same as the current forum's course
                 courseNotFound = false;
                 for (Forum f : c.getForums()) {
-                    if (f.getIndex() == forum.getIndex()) { // find the forum we are at
+                    if (f.getCurrentTime() == forum.getCurrentTime()) { // find the forum we are at
                         forumNotFound = false;
                         forum = f;
                         break;
