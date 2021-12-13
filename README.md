@@ -14,8 +14,7 @@
 Changxiang Gao - Submitted Vocareum Workspace 
 
 Chloe Click - Submitted Report on Brightspace 
-
-Someone - Submitted Presentation on Brightspace
+Ahmed Qarooni - Submitted Presentation on Brightspace
 
 ## Class Descriptions:
 
