@@ -8,34 +8,32 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * LMSStudent
  * <p>
- * The Student's class of LMS
+ * Description - This class contains the LMS GUI accessed by a Student
  *
  * @author Chloe Click, CS180
  * @version November 30, 2021
  */
 
-
 public class LMSStudent extends JComponent implements ActionListener {
 
-    ActualClient client;
-    Container content;
+    private ActualClient client;
+    private Container content;
 
-    JButton submitButton;
-    JButton settingsButton;
-    JLabel viewCourseLabel;
-    JPanel accessPanel;
-    ArrayList<Course> courses;
-    JComboBox<String> courseDropdown;
+    private JButton submitButton;
+    private JButton settingsButton;
+    private JLabel viewCourseLabel;
+    private JPanel accessPanel;
+    private ArrayList<Course> courses;
+    private JComboBox<String> courseDropdown;
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == submitButton) {
-            //show selected course
-            //TODO: add Student to the Course's students arraylist
+            // show selected course
+            // add Student to the Course's students arraylist
             if (courseDropdown.getSelectedItem() == null) {
                 JOptionPane.showMessageDialog(null, "No course selected. ", null, JOptionPane.ERROR_MESSAGE);
             } else {
@@ -55,15 +53,7 @@ public class LMSStudent extends JComponent implements ActionListener {
                     client.addPanelToCardLayout(client.getCourseStudent().getContent(), "courseStudent");
                     cs.updateDisplay(selectedCourseObject);
                 }
-
-                //i took out the if statement for this block b/c it didn't let
-                //students change from one course to another
-
-
-                //client.getCl().con(client.getCourseStudent());
                 client.changePanel("courseStudent");
-                System.out.println("student switched to " + selectedCourse + " course.");
-
             }
         }
         if (e.getSource() == settingsButton) {
@@ -80,9 +70,6 @@ public class LMSStudent extends JComponent implements ActionListener {
 
             }
         }
-
-        //courseDropdown.addItem("I received this telepathically");
-        //client.refreshPanel();
         revalidate();
     }
 
@@ -98,23 +85,19 @@ public class LMSStudent extends JComponent implements ActionListener {
 
         gbc.anchor = GridBagConstraints.PAGE_START;
 
-        //accessPanel.add(settingsButton, gbc);
-
         JPanel northPanel = new JPanel();
         settingsButton = new JButton("Settings");
         settingsButton.addActionListener(this);
         northPanel.add(settingsButton);
 
-        //submit Button
+        // submit Button
         JPanel southPanel = new JPanel();
         submitButton = new JButton("Submit");
         submitButton.addActionListener(this);
 
         southPanel.add(submitButton);
 
-
         GridBagConstraints a = new GridBagConstraints();
-        //String[] courses = {"CS 180", "MA 261"};
         courses = new ArrayList<>();
         courseDropdown = new JComboBox<>();
         viewCourseLabel = new JLabel("Choose a course to view.");
@@ -130,7 +113,6 @@ public class LMSStudent extends JComponent implements ActionListener {
         a.gridy = 1;
 
         accessPanel.add(courseDropdown, a);
-
 
         content.add(accessPanel, BorderLayout.CENTER);
         content.add(northPanel, BorderLayout.NORTH);

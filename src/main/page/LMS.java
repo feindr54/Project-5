@@ -3,7 +3,6 @@ package main.page;
 import java.io.Serializable;
 import java.util.*;
 
-
 import users.*;
 
 /**
@@ -17,16 +16,9 @@ import users.*;
  */
 
 public class LMS implements Serializable {
-    User user;
-    ArrayList<User> users; // shows the list of users that have logged in
-    ArrayList<Course> courses;
-
-    public static String teacherMenu = ("Choose what you would like to do:"
-            + "\n1. Create a new course. \n2. Access an existing course. \n3. Delete an existing course.\n" +
-            "4. pages.Settings. \n5. Exit.");
-
-    public static String studentMenu = "Choose what you would like to do:"
-            + "\n1. Access a course. \n2. pages.Settings. \n3. Exit.";
+    private User user;
+    private ArrayList<User> users; // shows the list of users that have logged in
+    private ArrayList<Course> courses;
 
     public LMS() {
         this.users = new ArrayList<User>();
@@ -47,15 +39,6 @@ public class LMS implements Serializable {
 
     public void setCurrentUser(User currentUser) {
         this.user = currentUser;
-    }
-
-    public void addUser(User user1) {
-        for (User u : users) {
-            if (u.getEmail().equals(user1.getEmail())) {
-                return;
-            }
-        }
-        this.users.add(user1);
     }
 
     public void setUsers(ArrayList<User> users) {

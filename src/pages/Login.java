@@ -11,40 +11,39 @@ import java.io.IOException;
 /**
  * Project 5 - Login
  * <p>
- * Description - TODO
+ * Description - This class contains the Login GUI
  *
  * @author Alex Younkers
  * @version 12/7/2021
  */
 
 public class Login extends JComponent {
-    ActualClient client;
+    private ActualClient client;
 
-    JFrame frame;
-    Container content;
+    private JFrame frame;
+    private Container content;
 
-    JButton loginButton;
-    JButton signupButton;
+    private JButton loginButton;
+    private JButton signupButton;
 
-    JLabel emailLabel;
-    JLabel idLabel;
-    JLabel passwordLabel;
+    private JLabel emailLabel;
+    private JLabel idLabel;
+    private JLabel passwordLabel;
 
-    JTextField idText;
-    JTextField passwordText;
+    private JTextField idText;
+    private JTextField passwordText;
 
-    JButton confirmButton;
+    private JButton confirmButton;
 
-    JPanel textPanel;
-    JPanel southPanel;
+    private JPanel textPanel;
+    private JPanel southPanel;
 
-    JLabel studentLabel;
-    JLabel teacherLabel;
-    JCheckBox teacher;
-    JCheckBox student;
+    private JLabel studentLabel;
+    private JLabel teacherLabel;
+    private JCheckBox teacher;
+    private JCheckBox student;
 
-    boolean isLogin;
-
+    private boolean isLogin;
 
     public Login(ActualClient client, JFrame frame) {
         this.client = client;
@@ -70,7 +69,6 @@ public class Login extends JComponent {
         buttonPanel.add(signupButton, gbc);
         content.add(buttonPanel, BorderLayout.NORTH);
 
-
         idLabel = new JLabel("Identifier:");
         emailLabel = new JLabel("Email:");
 
@@ -95,7 +93,6 @@ public class Login extends JComponent {
         textPanel.setLayout(new GridBagLayout());
 
         GridBagConstraints c = new GridBagConstraints();
-
 
         c.weighty = 0;
         c.gridx = 0;
@@ -124,10 +121,8 @@ public class Login extends JComponent {
 
         textPanel.add(passwordText, c);
 
-
         c.weightx = 0;
         c.weighty = 0;
-        //c.ipady = 50;
         c.insets = new Insets(50, 0, 0, 0);
         c.gridx = 0;
         c.gridy = 2;
@@ -136,7 +131,6 @@ public class Login extends JComponent {
 
         c.weightx = 0;
         c.weighty = 0;
-        //c.ipady = 50;
         c.gridx = 1;
         c.gridy = 2;
 
@@ -158,9 +152,7 @@ public class Login extends JComponent {
 
         textPanel.add(teacher, c);
 
-
         content.add(textPanel, BorderLayout.CENTER);
-
 
         southPanel = new JPanel();
 
@@ -172,11 +164,9 @@ public class Login extends JComponent {
 
         textPanel.setVisible(false);
         southPanel.setVisible(false);
-
     }
 
     ActionListener actionListener = new ActionListener() {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == loginButton) {
@@ -192,7 +182,7 @@ public class Login extends JComponent {
                 teacherCheck();
             }
             if (e.getSource() == confirmButton) {
-                //tries to sign up
+                // tries to sign up
                 try {
                     signupAction();
                 } catch (IOException ex) {
@@ -206,8 +196,8 @@ public class Login extends JComponent {
         return content;
     }
 
-    //when login button pressed, set the login panel and confirm button
-    //to be visible
+    // when login button pressed, set the login panel and confirm button
+    // to be visible
     public void login() {
         idLabel.setText("Username:");
 
@@ -225,8 +215,8 @@ public class Login extends JComponent {
         isLogin = true;
     }
 
-    //changes the id label to their email for signing up
-    //allows user to pick a role
+    // changes the id label to their email for signing up
+    // allows user to pick a role
     public void signUp() {
         idLabel.setText("Email:");
 
@@ -286,31 +276,24 @@ public class Login extends JComponent {
 
             if (isLogin) {
                 // when user is logging in
-
-                // TODO - either 1) creates a user object and send to the server to compare (and validate)
-                // TODO - 2) send the strings separately and find the user object there
-                request = new Request(5, new String[]{username, password});
+                request = new Request(5, new String[] { username, password });
                 client.sendToServer(request);
 
                 idText.setText("");
                 passwordText.setText("");
-                // TODO - wait for server response to see if username is valid && username and password matches
             } else {
                 // when user is signing up
 
                 if (student.isSelected()) {
                     // checks if the student box is selected
-
-                    // TODO - creates a student object and sends it to the server
-                    request = new Request(4, new String[]{username, password, "student"});
+                    request = new Request(4, new String[] { username, password, "student" });
                     client.sendToServer(request);
 
                     idText.setText("");
                     passwordText.setText("");
 
                 } else if (teacher.isSelected()) {
-                    // TODO - creates a teacher object and send it to the server
-                    request = new Request(4, new String[]{username, password, "teacher"});
+                    request = new Request(4, new String[] { username, password, "teacher" });
                     client.sendToServer(request);
 
                     idText.setText("");
@@ -322,7 +305,6 @@ public class Login extends JComponent {
                             " Error: Empty user type", JOptionPane.ERROR_MESSAGE);
                 }
             }
-
         }
     }
 }

@@ -1,7 +1,6 @@
 package pages;
 
 import networking.*;
-import users.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,29 +10,29 @@ import java.awt.event.ActionListener;
 /**
  * Project 5 - SettingsGUI
  * <p>
- * Description - TODO
+ * Description - This class contains the Settings GUI
  *
  * @author Alex Younkers
  * @version 12/7/2021
  */
 
 public class SettingsGUI extends JComponent {
-    ActualClient client;
+    private ActualClient client;
 
-    JFrame frame;
-    Container content;
+    private JFrame frame;
+    private Container content;
 
-    JButton idSubmitButton;
-    JButton passwordSubmitButton;
+    private JButton idSubmitButton;
+    private JButton passwordSubmitButton;
 
-    JLabel idLabel;
-    JLabel passwordLabel;
+    private JLabel idLabel;
+    private JLabel passwordLabel;
 
-    JTextField idText;
-    JTextField passwordText;
+    private JTextField idText;
+    private JTextField passwordText;
 
-    JButton backButton;
-    JButton logoutButton;
+    private JButton backButton;
+    private JButton logoutButton;
 
     public SettingsGUI(ActualClient client, JFrame frame) {
         this.client = client;
@@ -57,12 +56,10 @@ public class SettingsGUI extends JComponent {
 
         content.add(topPanel, BorderLayout.NORTH);
 
-
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new GridBagLayout());
 
         GridBagConstraints c = new GridBagConstraints();
-
 
         idSubmitButton = new JButton("Confirm");
         idSubmitButton.addActionListener(actionListener);
@@ -116,7 +113,6 @@ public class SettingsGUI extends JComponent {
         centerPanel.add(passwordSubmitButton, c);
 
         content.add(centerPanel, BorderLayout.CENTER);
-
     }
 
     public Container getContent() {
@@ -128,12 +124,12 @@ public class SettingsGUI extends JComponent {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == backButton) {
-                //TODO: track state of page before going to settings, send user back to that page
+                // track state of page before going to settings, send user back to that page
                 client.changeToPreviousPanel();
             }
 
             if (e.getSource() == idSubmitButton) {
-                //TODO send new username to server, change it in the list of usernames
+                // send new username to server, change it in the list of usernames
                 // Get new username from textField
                 String newUsername = idText.getText();
                 if (newUsername == null || newUsername.isBlank()) { // check if the field is blank
@@ -142,14 +138,14 @@ public class SettingsGUI extends JComponent {
                             JOptionPane.ERROR_MESSAGE);
                 } else {
                     Request request = new Request(7,
-                            new Object[]{client.getUser(), newUsername});
+                            new Object[] { client.getUser(), newUsername });
                     client.sendToServer(request);
                 }
                 idText.setText("");
             }
 
             if (e.getSource() == passwordSubmitButton) {
-                //TODO send new password to server, change it in the list of passwords
+                // send new password to server, change it in the list of passwords
                 // Get new password from textField
                 String newPassword = passwordText.getText();
                 if (newPassword == null || newPassword.isBlank()) { // check if the field is blank
@@ -157,22 +153,21 @@ public class SettingsGUI extends JComponent {
                     JOptionPane.showMessageDialog(null, "Please fill in the textfield.", "Error",
                             JOptionPane.ERROR_MESSAGE);
                 } else {
-                    Request request = new Request(8, new Object[]{client.getUser(), newPassword});
+                    Request request = new Request(8, new Object[] { client.getUser(), newPassword });
                     client.sendToServer(request);
                 }
                 passwordText.setText("");
             }
 
             if (e.getSource() == logoutButton) {
-                //TODO logout implementation
+                // logout implementation
                 // step 1: go back to login page
                 client.logout();
-                // step 2: send a "logout" request to ClientHandler, which removes the user reference 
+                // step 2: send a "logout" request to ClientHandler, which removes the user
+                // reference
                 Request request = new Request(9, null);
                 client.sendToServer(request);
             }
-
-
         }
     };
 }

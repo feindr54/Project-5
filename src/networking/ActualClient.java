@@ -15,7 +15,8 @@ import main.page.*;
 /**
  * Project 5 - ActualClient
  * <p>
- * Description - This class operates the client and its functions. It is responsible for connecting to the server and
+ * Description - This class operates the client and its functions. It is
+ * responsible for connecting to the server and
  * simultaneously displaying its content on the user interface.
  *
  * @author Changxiang Gao, Ahmed Qarooni
@@ -26,16 +27,13 @@ import main.page.*;
 public class ActualClient extends JFrame implements Runnable {
     private User user;
     private Socket socket;
-    // private ObjectInputStream C_IFS; // c = client, i = input, f = from, s =
-    // server;
-    private ObjectOutputStream C_OTS; // c = client, o = out, t = to, s = server;
 
-    // creates the stack
-    private final Stack<String> pageStack = new Stack<>();
+    private ObjectOutputStream C_OTS;
 
-    public static Container mainPanel;
+    private Stack<String> pageStack = new Stack<>();
 
-    // creates the cardlayout object
+    private static Container mainPanel;
+
     private CardLayout cl;
 
     LMSStudent lmsStudent;
@@ -48,7 +46,6 @@ public class ActualClient extends JFrame implements Runnable {
     public synchronized void refreshPanel() {
         mainPanel.revalidate();
     }
-
 
     public LMSStudent getLmsStudent() {
         return lmsStudent;
@@ -103,7 +100,7 @@ public class ActualClient extends JFrame implements Runnable {
             socket = new Socket("localhost", 42069);
             C_OTS = new ObjectOutputStream(socket.getOutputStream());
         } catch (Exception e) {
-            // TODO: handle exception
+            // handle exception
             System.out.println("Unable to connect");
         }
     }
@@ -158,21 +155,9 @@ public class ActualClient extends JFrame implements Runnable {
         Login login = new Login(this, frame);
         SettingsGUI settingsGUI = new SettingsGUI(this, frame);
 
-        // TODO - uncomment the ones below later on
-
-        // ForumTeacher forumTeacher = new ForumTeacher(this);
-        // //TODO: update the forum objects with the specific forum when going from course to forum
-        // ForumStudent forumStudent = new ForumStudent(this, null);
-
-        // Adds all the different pages to the main panel
+        // Adds the login and settings to the main panel
         mainPanel.add(login.getContent(), "login");
         mainPanel.add(settingsGUI.getContent(), "settingsGUI");
-
-
-        // add the courses panels
-        // add the forums panels
-        // mainPanel.add(forumTeacher.getContent(), "forumTeacher");
-        // mainPanel.add(forumStudent.getContent(), "forumStudent");
 
         // shows the login page by default
         cl.show(mainPanel, "login");
@@ -210,7 +195,6 @@ public class ActualClient extends JFrame implements Runnable {
     }
 
     synchronized public void currentPanelDeleted(String page) {
-        System.out.println("currentPanelDeleted has been run!"); // TODO - delete test comment later 
         String currentPage = pageStack.peek();
         if (currentPage.equals("lmsTeacher") || currentPage.equals("lmsStudent")) {
             if (page.equals("forum")) {
@@ -230,7 +214,6 @@ public class ActualClient extends JFrame implements Runnable {
             }
 
         }
-
 
         System.out.println(page);
         if (page.equals("course")) {
@@ -264,7 +247,6 @@ public class ActualClient extends JFrame implements Runnable {
             C_OTS.flush();
             C_OTS.reset();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -273,45 +255,23 @@ public class ActualClient extends JFrame implements Runnable {
 /**
  * Project 5 - ReaderThread
  * <p>
- * Description - TODO
+ * Description - This thread is responsible for receiving Responses from the
+ * Server, and calling out methods
+ * to update the GUI.
  *
- * @author Ahmed Qarooni
+ * @author Ahmed Qarooni, Changxiang Gao
  * @version 12/7/2021
  */
 
 class ReaderThread extends Thread {
 
-    private final ActualClient gui;
+    private ActualClient gui;
 
     public ReaderThread(ActualClient gui) {
         this.gui = gui; // store reference to the gui thread
     }
 
     public void updateGUIWithNewLMS(LMS newLms) {
-        // check if user is at LMS page
-        System.out.println("Received success response, now we gotta update display"); // TODO - delete test comment later 
-        // make sure LMS is correct
-
-        System.out.println("We are at " + gui.getPageStack().peek()); // TODO - delete test comment later
-
-        // if (gui.getLmsStudent() != null) {
-        //     gui.getLmsStudent().updateDisplay(newLms);
-        // }
-        // if (gui.getLmsTeacher() != null) {
-        //     gui.getLmsTeacher().updateDisplay(newLms);
-        // }
-        // if (gui.getCourseStudent() != null) {
-        //     gui.getCourseStudent().updateDisplay(newLms);
-        // }
-        // if (gui.getCourseTeacher() != null) {
-        //     gui.getCourseTeacher().updateDisplay(newLms);
-        // }
-        // if (gui.getForumStudent() != null) {
-        //     gui.getForumStudent().updateDisplay(newLms);
-        // }
-        // if (gui.getForumTeacher() != null) {
-        //     gui.getForumTeacher().updateDisplay(newLms);
-        // }
 
         if (gui.getForumStudent() != null) {
             gui.getForumStudent().updateDisplay(newLms);
@@ -335,7 +295,6 @@ class ReaderThread extends Thread {
         }
     }
 
-
     public void processResponse(Response response) {
         int type = response.getType();
         Object object = response.getObj();
@@ -343,45 +302,40 @@ class ReaderThread extends Thread {
         System.out.println(type);
 
         if (type == 0) {
-            // TODO - updates the pages to be displayed
             if (object instanceof Object[]) {
                 // user has just logged in
                 Object[] loginDetails = (Object[]) object;
 
                 if (loginDetails[0] instanceof Student) {
                     gui.setUser((Student) loginDetails[0]);
-                    // TODO - load student lms (this should be done in the EDT though)
-                    // push the student lms to top of page stack
-                    // gui.getPageStack().push("lmsStudent");
-
                     // create student lms object
                     gui.setLmsStudent(new LMSStudent(gui));
 
                     // add it to the main panel
-                    //gui.getMainPanel().add(, );
                     gui.getLmsStudent().updateDisplay((LMS) loginDetails[1]);
                     gui.addPanelToCardLayout(gui.getLmsStudent().getContent(), "lmsStudent");
-                    //gui.getCl().show(gui.getMainPanel(), "lmsStudent");
                     gui.changePanel("lmsStudent");
 
                 } else if (loginDetails[0] instanceof Teacher) {
                     gui.setUser((Teacher) loginDetails[0]);
-                    // TODO - load teacher lms by creating teacher lms object
+                    // load teacher lms by creating teacher lms object
                     gui.setLmsTeacher(new LMSTeacher(gui));
                     gui.getLmsTeacher().updateDisplay((LMS) loginDetails[1]);
                     gui.addPanelToCardLayout(gui.getLmsTeacher().getContent(), "lmsTeacher");
                     gui.changePanel("lmsTeacher");
 
-                } else { // when the user changes his/her username or password 
+                } else { // when the user changes his/her username or password
                     LMS newLMS = (LMS) loginDetails[0]; // updated LMS
                     User newUser = (User) loginDetails[1]; // updated user
 
-                    if (gui.getUser().getIdentifier().equals(newUser.getIdentifier())) { // denotes a change in password
+                    // denotes a change in password
+                    if (gui.getUser().getIdentifier().equals(newUser.getIdentifier())) {
                         JOptionPane.showMessageDialog(null, "Password successfully changed.", "Password Changed",
                                 JOptionPane.INFORMATION_MESSAGE);// prints success message for change in password
                     } else {
-                        JOptionPane.showMessageDialog(null, "Username successfully changed to " + newUser.getIdentifier()
-                                        + ".", "Username Changed",
+                        JOptionPane.showMessageDialog(null, "Username successfully changed to "
+                                + newUser.getIdentifier()
+                                + ".", "Username Changed",
                                 JOptionPane.INFORMATION_MESSAGE);// prints success message for change in password
                     }
                     gui.setUser(newUser);
@@ -391,11 +345,11 @@ class ReaderThread extends Thread {
                 updateGUIWithNewLMS((LMS) object);
             }
 
-        } else if (type == 1) { // displays error messages 
+        } else if (type == 1) { // displays error messages
             String errorMessage = object.toString();
             JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
         } else { // user is logging out
-            // resets all the saved the pages 
+            // resets all the saved the pages
             gui.setLmsStudent(null);
             gui.setLmsTeacher(null);
             gui.setCourseStudent(null);
@@ -411,15 +365,14 @@ class ReaderThread extends Thread {
         try {
 
             Socket socket = gui.getSocket();
-            System.out.println("Connected"); // TODO - dk if needa delete this
+            System.out.println("Connected");
 
             ObjectInputStream C_IFS = new ObjectInputStream(socket.getInputStream());
 
-            // TODO - change the condition to whether the client is open
+            // change the condition to whether the client is open
             while (true) {
                 // receiving the response from the server
                 Response response = (Response) C_IFS.readObject();
-                System.out.println(response.toString()); // delete test response later
                 processResponse(response);
             }
         } catch (Exception e) {

@@ -48,21 +48,6 @@ public class User implements Serializable {
         this.identifier = identifier;
     }
 
-    public void changeIdentifier(Scanner scanner) {
-        String prompt = "What would you like you to change your identifier to?";
-        String response = null;
-        System.out.println(prompt);
-
-        response = scanner.nextLine();
-
-        if (response.equalsIgnoreCase("/back")) {
-            return;
-        } else {
-            this.identifier = response;
-            System.out.println("Successfully changed identifier to " + response + "!");
-        }
-    }
-
     public String getEmail() {
         return email;
     }
@@ -77,42 +62,6 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public void changePassword(Scanner s) {
-        boolean validPassword = true;
-        do {
-            String prompt = "What would you like you to change your password to?";
-            String response = null;
-            System.out.println(prompt);
-
-            response = s.nextLine();
-
-            if (response.equalsIgnoreCase("/back")) {
-                return;
-            } else {
-                if (!(this.password.equals(response))) {
-                    this.password = response;
-                    System.out.println("Successfully changed password!");
-                    validPassword = true;
-                } else {
-                    System.out.println("Error, new password must be different.");
-                    validPassword = false;
-                }
-            }
-        } while (!validPassword);
-    }
-
-    // first method takes in just the id, could be used to check for existence of a
-    // identifier
-    public boolean equals(String id) {
-        return id.equals(this.getIdentifier());
-    }
-
-    // this equals method checks an id and a password, could be used for checking
-    // login validity
-    public boolean equals(String id, String pass) {
-        return id.equals(this.getIdentifier()) && pass.equals(this.getPassword());
     }
 
     @Override

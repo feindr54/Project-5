@@ -6,12 +6,11 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 /**
- * Project 4 - Reply
+ * Project 5 - Reply
  * <p>
- * Description - Reply class simulates the functionality and the appearance of a
+ * Description - Reply class simulates the functionality of a
  * reply in a public forum.
  *
  * @author Changxiang Gao
@@ -20,17 +19,17 @@ import java.util.Comparator;
 
 public class Reply implements Serializable {
     private Student owner;
-    private final Forum forum;
-    private final String content;
-    private final ArrayList<Comment> comments;
+    private Forum forum;
+    private String content;
+    private ArrayList<Comment> comments;
 
-    private final int identifier;
+    private int identifier;
 
     // the time stamp
-    private final LocalDateTime currentTime;
+    private LocalDateTime currentTime;
 
     // integer upvote to keep track of a reply's upvotes
-    private final ArrayList<Student> upvotedStudents;
+    private ArrayList<Student> upvotedStudents;
     public int upvotes;
 
     public Reply(Forum forum, Student currentUser, String content) {
@@ -60,7 +59,6 @@ public class Reply implements Serializable {
     public void setOwner(Student student) {
         this.owner = student;
     }
-
 
     // adds comment to the reply with only the content
 
@@ -100,25 +98,7 @@ public class Reply implements Serializable {
         return identifier;
     }
 
-    // print all its comments (could be changed to getComments(), do give
-    // suggestions)
-    public void printComments() {
-        for (Comment c : this.comments) {
-            c.printContent();
-        }
-    }
-
     public ArrayList<Comment> getComments() {
         return this.comments;
-    }
-
-
-    // Method to print a divider between replies, and between comments
-    public void printDivider() {
-        System.out.print("\t");
-        for (int i = 0; i < 58; i++) {
-            System.out.print("-");
-        }
-        System.out.println();
     }
 }

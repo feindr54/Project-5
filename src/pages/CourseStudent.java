@@ -1,5 +1,5 @@
 package pages;
-import networking.Request;
+
 import users.*;
 import main.page.*;
 import networking.ActualClient;
@@ -7,39 +7,35 @@ import networking.ActualClient;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 import java.util.*;
 
 /**
  * CourseStudent
  * <p>
- * This class is the GUI for Courses used by Students
+ * This class contains the Course GUI accessed by a Student
  *
  * @author Qasim Ali, CS180
  * @version December 7, 2021
  */
 public class CourseStudent extends JComponent {
 
-    ActualClient client;
-    Container content;
-    Course course;
-    String courseName;
-    Student student;
+    private ActualClient client;
+    private Container content;
+    private Course course;
+    private String courseName;
+    private Student student;
 
-    JComboBox<String> accessForums;
-    JPanel defaultPanel;
-    JButton backButton;
-    JLabel welcomeLabel;
-    JButton settingsButton;
-    JPanel accessPanel;
-    JLabel gradeSentence;
-    JLabel gradeCourse;
-    JLabel accessPrompt;
-    ArrayList<Forum> forums;
-    JButton accessSubmitButton;
-
-    /*public void clear() {
-    }*/
+    private JComboBox<String> accessForums;
+    private JPanel defaultPanel;
+    private JButton backButton;
+    private JLabel welcomeLabel;
+    private JButton settingsButton;
+    private JPanel accessPanel;
+    private JLabel gradeSentence;
+    private JLabel gradeCourse;
+    private JLabel accessPrompt;
+    private ArrayList<Forum> forums;
+    private JButton accessSubmitButton;
 
     ActionListener actionListener = new ActionListener() {
         @Override
@@ -51,20 +47,16 @@ public class CourseStudent extends JComponent {
                             JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     String selectedForum = (String) accessForums.getSelectedItem();
-                    System.out.println(selectedForum);
                     Forum selectedForumObject = null;
                     for (Forum f : forums) {
-                        System.out.println("Forums are: ");
-                        System.out.println(f.getTopic());
                         if (selectedForum.equals(f.getTopic())) {
-                            System.out.println(f);
                             selectedForumObject = f;
                             break;
                         }
                     }
                     // first we chose java, forumStudent was null so it initialized with java forum
-                    // if we choose a different one, getForumStudent is not null so it will not update with new forum
-                    System.out.println("The forum we want to load is " + selectedForum);
+                    // if we choose a different one, getForumStudent is not null so it will not
+                    // update with new forum
                     if (client.getForumStudent() == null ||
                             !client.getForumStudent().getForum().getTopic().equals(selectedForum)) {
 
@@ -73,24 +65,13 @@ public class CourseStudent extends JComponent {
                         client.addPanelToCardLayout(client.getForumStudent().getContent(), "forumStudent");
                         fs.updateDisplay(selectedForumObject);
                     }
-                    //client.getCl().con(client.getCourseStudent());
                     client.changePanel("forumStudent");
-                    System.out.println("Student switched to " + selectedForum + " forum.");
-
-
                 }
-                //get selected forumName from list
-                //check if forumName equals an existing forum
-                //if true, forum.access()
-                //else show error message
-
-
             }
             if (e.getSource() == settingsButton) {
                 client.goToSettings();
             }
             if (e.getSource() == backButton) {
-                //LMS.access()
                 client.changeToPreviousPanel();
             }
         }
@@ -107,7 +88,7 @@ public class CourseStudent extends JComponent {
         content = new Container();
         content.setLayout(new BorderLayout());
 
-        //header and back/settings buttons
+        // header and back/settings buttons
         defaultPanel = new JPanel();
         backButton = new JButton("Back");
         backButton.addActionListener(actionListener);
@@ -159,7 +140,7 @@ public class CourseStudent extends JComponent {
     }
 
     synchronized public void updateDisplay(Course course) {
-        // TODO - Update the display of the course with a Course object input
+        // Update the display of the course with a Course object input
 
         this.course = course;
         courseName = this.course.getCourseName();
@@ -168,7 +149,6 @@ public class CourseStudent extends JComponent {
 
         for (Forum f : forums) {
             accessForums.addItem(f.getTopic());
-
         }
 
         // refreshes the display
@@ -180,18 +160,16 @@ public class CourseStudent extends JComponent {
     }
 
     synchronized public void updateDisplay(LMS lms) {
-        // TODO - Update the display of the course with a Course object input
+        // Update the display of the course with a Course object input
         int index = -1;
-        for (Course c : lms.getCourses()) {
-            if (c.equals(this.course)) {
-                index = c.getIndex();
-                this.course = c;
+        for (int i = 0; i < lms.getCourses().size(); i++) {
+            if (lms.getCourses().get(i).equals(this.course)) {
+                index = i;
                 break;
             }
         }
         if (index != -1) {
-
-            // this.course = lms.getCourses().get(index);
+            this.course = lms.getCourses().get(index);
             courseName = this.course.getCourseName();
             forums = this.course.getForums();
             accessForums.removeAllItems();
@@ -199,10 +177,6 @@ public class CourseStudent extends JComponent {
             for (int i = 0; i < lms.getUsers().size(); i++) {
                 if (student.equals(lms.getUsers().get(i))) {
                     student = (Student) lms.getUsers().get(i);
-                    System.out.println(student.toString());
-                    // TODO - delete these test comments later
-                    System.out.println("Old address of course is " + course); // check value of 
-
 
                     for (Map.Entry mapElement : student.getGradesHashMap().entrySet()) {
                         Course key = (Course) mapElement.getKey();
@@ -211,26 +185,19 @@ public class CourseStudent extends JComponent {
                             break;
                         }
                     }
-                    // TODO - delete test comment later 
-                    System.out.println("New address of course is " + course); // check the value of new address
-
-                    System.out.println(student.getGrade(course));
                 }
             }
-            //
             for (Forum f : forums) {
                 accessForums.addItem(f.getTopic());
-
             }
 
             welcomeLabel.setText("Welcome to " + course.getCourseName() + "!");
             gradeSentence.setText("Your grade is: " + student.getGrade(course));
 
-
             // refreshes the display
             content.revalidate();
         } else {
-            System.out.println("Student was in course, course was deleted, should go back to lms page");
+            // declares that the course is deleted
             client.currentPanelDeleted("course");
         }
     }

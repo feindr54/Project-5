@@ -1,7 +1,6 @@
 package users;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.*;
 
 import main.page.*;
@@ -100,7 +99,6 @@ public class Student extends User implements Serializable {
         if (o == null || !(o instanceof Student)) {
             return false;
         }
-
         return ((Student) o).getEmail().equals(this.getEmail());
     }
 }

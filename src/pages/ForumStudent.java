@@ -14,43 +14,41 @@ import networking.*;
 import users.*;
 
 /**
-* Project 5 - ForumStudent
-*
-* Description - TODO
-*
-* @author Ahmed Qarooni, Alex Younkers
-*
-* @version 12/13/2021
-*/
+ * Project 5 - ForumStudent
+ *
+ * Description - This class contains the Forum GUI accessed by a Student
+ *
+ * @author Ahmed Qarooni, Alex Younkers
+ *
+ * @version 12/13/2021
+ */
 public class ForumStudent extends JComponent {
-    ActualClient client;
-    Container content;
+    private ActualClient client;
+    private Container content;
 
-    JPanel top;
-    JButton Settings, Back;
+    private JPanel top;
+    private JButton Settings, Back;
 
-    JPanel middle;
-    JPanel forumDisplay;
-    JScrollPane forumDisplayScroll;
+    private JPanel middle;
+    private JPanel forumDisplay;
+    private JScrollPane forumDisplayScroll;
 
-    JPanel bot;
-    JLabel prompt;
-    JTextField input;
-    JButton importSubmit; // button to import a file containing the reply 
-    JButton Submit;
+    private JPanel bot;
+    private JLabel prompt;
+    private JTextField input;
+    private JButton importSubmit;
+    private JButton Submit;
 
-    Forum forum;
-    User currentUser;
+    private Forum forum;
+    private User currentUser;
 
-    JButton upvoteButton;
+    private JButton upvoteButton;
 
-    //tracks all replyPanels in a given forum
-    ArrayList<Reply> replies = new ArrayList<>();
-    ArrayList<ReplyPanel> replyPanels = new ArrayList<>();
-
+    // tracks all replyPanels in a given forum
+    private ArrayList<Reply> replies = new ArrayList<>();
+    private ArrayList<ReplyPanel> replyPanels = new ArrayList<>();
 
     public ForumStudent(ActualClient client, Forum forum) {
-        // ForumTeacher forumPage = new ForumTeacher(frame);
         this.client = client;
         this.forum = forum;
         this.currentUser = this.client.getUser();
@@ -61,13 +59,10 @@ public class ForumStudent extends JComponent {
 
         top = new JPanel();
         top.setLayout(new BoxLayout(top, BoxLayout.X_AXIS));
-        // top.setBorder(BorderFactory.createLineBorder(Color.RED));
         middle = new JPanel();
         middle.setLayout(new BoxLayout(middle, BoxLayout.X_AXIS));
-        // middle.setBorder(BorderFactory.createLineBorder(Color.BLUE));
         bot = new JPanel();
         bot.setLayout(new BoxLayout(bot, BoxLayout.X_AXIS));
-        // bot.setBorder(BorderFactory.createLineBorder(Color.GREEN));
 
         // TOP PANEL
 
@@ -78,15 +73,10 @@ public class ForumStudent extends JComponent {
         top.add(Box.createHorizontalGlue());
 
         JLabel title = new JLabel("Welcome to the Forum Page");
-        // gbc.anchor = GridBagConstraints.CENTER;
-        // gbc.gridx = 1;
         top.add(title);
         top.add(Box.createHorizontalGlue());
 
-
         Settings = new JButton("Settings");
-        // gbc.anchor = GridBagConstraints.WEST;
-        // gbc.gridx = 0;
         Settings.addActionListener(actionListener);
         top.add(Settings);
 
@@ -94,7 +84,6 @@ public class ForumStudent extends JComponent {
 
         // MIDDLE PANEL
 
-        GridBagConstraints optionConstraint = new GridBagConstraints();
         GridBagConstraints middleConstraint = new GridBagConstraints();
 
         forumDisplay = new JPanel();
@@ -107,19 +96,17 @@ public class ForumStudent extends JComponent {
         middleConstraint.gridx = 0;
         middleConstraint.gridy = 0;
         middleConstraint.weightx = 1;
-        // middle.add(chatDisplay, middleConstraint);
         middle.add(forumDisplayScroll);
         middle.add(Box.createHorizontalGlue());
 
-
-        //adds upvote button on the side next to the forum display
+        // adds upvote button on the side next to the forum display
         upvoteButton = new JButton("Upvote");
         upvoteButton.addActionListener(actionListener);
         middle.add(upvoteButton);
 
         content.add(middle, BorderLayout.CENTER);
 
-        // Bottom
+        // BOTTOM PANEL
 
         prompt = new JLabel("Enter Reply:\t");
         input = new JTextField(50);
@@ -136,8 +123,6 @@ public class ForumStudent extends JComponent {
         content.add(bot, BorderLayout.SOUTH);
     }
 
-    // TODO - create a button to import a file to create comment 
-
     public Container getContent() {
         return content;
     }
@@ -150,15 +135,6 @@ public class ForumStudent extends JComponent {
         return this.forum;
     }
 
-    // synchronized static public void selectPanel(ReplyPanel replyPanel) {
-    //     for (ReplyPanel rp : replyPanels) {
-    //         if (rp.equals(replyPanel)) {
-    //             continue;
-    //         }
-    //         // unselects all other reply panels 
-    //     }
-    // }
-
     ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -166,9 +142,9 @@ public class ForumStudent extends JComponent {
             if (e.getSource() == Submit) {
                 String inputText = input.getText();
 
-                //checks if the input is empty or just whitespace
-                //if yes, throws an error menu
-                //else, continue making the reply
+                // checks if the input is empty or just whitespace
+                // if yes, throws an error menu
+                // else, continue making the reply
                 if (inputText == null || inputText.isBlank()) {
                     JOptionPane.showMessageDialog(null, "Please enter a reply or comment",
                             " Error: Empty input", JOptionPane.ERROR_MESSAGE);
@@ -178,20 +154,16 @@ public class ForumStudent extends JComponent {
 
                     if (selectedReply == null) { // no reply selected so we are making a new one
                         Reply newReply = new Reply(forum, (Student) currentUser, inputText);
-                        //newReply.setIndex(forum.getNumRepliesCreated());
                         Request request = new Request(1, 2, newReply);
 
                         client.sendToServer(request);
-                        System.out.println("add reply request sent"); // TODO - delete test comment  
 
                     } else { // a reply is selected so we are commenting
                         // send request to server to add comment
                         Comment newComment = new Comment(selectedReply, currentUser, inputText);
-                        Request request = new Request(1, 3, newComment); // creates a add comment request 
+                        Request request = new Request(1, 3, newComment); // creates a add comment request
                         client.sendToServer(request);
-                        System.out.println("add comment request sent"); // TODO - delete test comment  
                     }
-                    //add reply request to list of courses
 
                     input.setText("");
                     Submit.setText("Reply");
@@ -212,19 +184,13 @@ public class ForumStudent extends JComponent {
                     while ((string = br.readLine()) != null) {
                         topic += string;
                     }
-
-                    /*
-                    Forum newForum = new Forum(course, topic);
-                    course.getForums().add(newForum);
-                     */
                     Reply newReply = new Reply(forum, (Student) currentUser, topic);
 
                     Request request = new Request(1, 2, newReply);
                     client.sendToServer(request);
-                    System.out.println("Imported reply sent to server!"); // remove test comment later 
 
                 } catch (IOException ioException) {
-                    // TODO - if file is not read(invalid filename eg), throw JOptionPane at user
+                    // if file is not read(invalid filename eg), throw JOptionPane at user
                     JOptionPane.showMessageDialog(null, "Error, unable to read file", "Error",
                             JOptionPane.ERROR_MESSAGE);
                 }
@@ -242,8 +208,8 @@ public class ForumStudent extends JComponent {
 
                 } else { // a reply is selected so upvote
 
-                    //how to upvote a reply
-                    Request request = new Request(6, new Object[]{selectedReply, currentUser});
+                    // sends upvote reply request
+                    Request request = new Request(6, new Object[] { selectedReply, currentUser });
                     client.sendToServer(request);
                 }
 
@@ -260,40 +226,17 @@ public class ForumStudent extends JComponent {
 
     public Reply replyPanelSelected() {
         for (ReplyPanel rp : replyPanels) {
-            if (rp.isSelected()) { // checks if a reply panel has been selected (creates a comment for that panel )
+            if (rp.isSelected()) { // checks if a reply panel has been selected (creates a comment for that panel)
                 return rp.getReply();
             }
         }
         return null;
     }
 
-
-    public Comment createComment(Reply reply, String commentMessage) {
-        Comment newComment = new Comment(reply, client.getUser(), commentMessage);
-        return newComment;
-    }
-
-    public Reply createReply(String replyMessage) {
-        // TODO - create a new reply object with 
-        Reply newReply = new Reply(forum, (Student) client.getUser(), replyMessage);
-        return newReply;
-    }
-
-
-    // synchronized public void updateForumDisplay(Forum newForum) {
-
-    //     //adds the last new reply to the display
-    //     //could work if we add each new reply to the replyPanel list after processing them
-    //     forumDisplay.add(replies.get(replies.size() - 1));
-
-
-    // }
-
     MouseAdapter selectReplyListener = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
             ReplyPanel selectedReplyPanel = (ReplyPanel) e.getSource();
-            //System.out.println(selectedReplyPanel);
             if (!selectedReplyPanel.isSelected()) { // checks if the current reply is unselected
                 selectedReplyPanel.select();
                 for (ReplyPanel replyPanel : replyPanels) { // unselects all other replies
@@ -311,16 +254,13 @@ public class ForumStudent extends JComponent {
                 prompt.setText("Enter Reply:\t");
                 importSubmit.setVisible(true);
             }
-            //e.getSource();
         }
     };
 
     synchronized public void updateDisplay(Forum selectedForumObject) {
-        //forumDisplay.add(replies.get(replies.size() - 1));
-        //forumDisplay = new JPanel();
         forumDisplay.removeAll();
-        System.out.println(forum.getTopic());
-        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum topic: " + forum.getTopic() + " created at " + forum.getCurrentTime()));
+        forumDisplay.setBorder(BorderFactory
+                .createTitledBorder("Forum topic: " + forum.getTopic() + " created at " + forum.getCurrentTime()));
         replies = selectedForumObject.getReplies();
         replyPanels = new ArrayList<>();
 
@@ -330,7 +270,6 @@ public class ForumStudent extends JComponent {
             replyPanels.add(replyPanel);
         }
 
-
         for (ReplyPanel replyPanel : replyPanels) {
             forumDisplay.add(replyPanel);
         }
@@ -339,17 +278,6 @@ public class ForumStudent extends JComponent {
     }
 
     synchronized public void updateDisplay(LMS lms) {
-        // gets updated lms
-
-        // get the replies of this forum
-        // add every reply to the replies list
-        // create replyPanel for each reply
-        // add it to the forumDisplay
-        // revalidate 
-
-        // get the forum we are at
-        System.out.println("UPDATING FORUM STUDENT WITH NEW LMS");
-        System.out.println(client.getUser().getIdentifier());
         forumDisplay.removeAll();
 
         replies = new ArrayList<>();
@@ -359,10 +287,9 @@ public class ForumStudent extends JComponent {
         boolean forumNotFound = true;
 
         for (Course c : lms.getCourses()) {
-            if (c.equals(forum.getCourse())) { // found the course this forum is at
+            if (c.equals(forum.getCourse())) { // find the course this forum is at
                 courseNotFound = false;
                 for (Forum f : c.getForums()) {
-                    // TODO - change the getTopic to getIdentifier 
                     if (f.getCurrentTime().equals(forum.getCurrentTime())) { // find the forum we are at
                         forumNotFound = false;
                         forum = f;
@@ -374,30 +301,17 @@ public class ForumStudent extends JComponent {
 
         if (forumNotFound) {
             client.currentPanelDeleted("forum");
-            System.out.println("Student was in forum page, forum deleted, should go back to course page");
             return;
         }
         if (courseNotFound) {
             client.currentPanelDeleted("course");
-            System.out.println("Student was in forum page, course deleted, should go back to lms page");
             return;
         }
 
         // update replies ArrayList with the forum replies
         replies = forum.getReplies();
 
-        System.out.println("Replies array " + forum.getReplies());
-
-        // TODO - delete test comment above later 
-
-
         for (Reply reply : replies) {
-            // TODO - delete test comment below
-            System.out.println(reply.getOwner().getIdentifier()); // show name of replier
-
-            for (Comment c : reply.getComments()) {
-                System.out.println(c.getContent());
-            }
             ReplyPanel replyPanel = new ReplyPanel(reply);
             replyPanel.addMouseListener(selectReplyListener);
             replyPanels.add(replyPanel);
@@ -407,14 +321,8 @@ public class ForumStudent extends JComponent {
             forumDisplay.add(replyPanel);
         }
 
-        System.out.println("shouldve added all replies");
-
-        // TODO - delete test stuff below later
-        // ReplyPanel tempplsdeleteLater = new ReplyPanel(new Reply(forum, (Student) currentUser, "monkey"));
-        // forumDisplay.add(tempplsdeleteLater);
-
-    
-        forumDisplay.setBorder(BorderFactory.createTitledBorder("Forum topic: " + forum.getTopic() + " created at " + forum.getCurrentTime()));
+        forumDisplay.setBorder(BorderFactory
+                .createTitledBorder("Forum topic: " + forum.getTopic() + " created at " + forum.getCurrentTime()));
 
         forumDisplay.revalidate();
         forumDisplay.repaint();

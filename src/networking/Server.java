@@ -4,17 +4,17 @@ import main.page.*;
 import pages.ReplyPanel;
 import users.*;
 
-
 import java.net.*;
 import java.util.ArrayList;
 import java.io.*;
 
-
 /**
  * Project 5 - Server
  * <p>
- * Description - This is primarily responsible for the functionalities of the server. It receives and sends information
- * from and to the client. It is also responsible for storing the data of application and will save information
+ * Description - This is primarily responsible for the functionalities of the
+ * server. It receives and sends information
+ * from and to the client. It is also responsible for storing the data of
+ * application and will save information
  * intermittently to prevent loss.
  *
  * @author Ahmed Aqarooni, Changxiang Gao
@@ -29,7 +29,7 @@ public class Server implements Serializable {
     private static ArrayList<ReplyPanel> replies;
 
     private static ArrayList<ClientHandler> clients;
-    //public static LMS;
+    // public static LMS;
 
     private final static String LMSFILE = "LMS.txt";
     private final static String USERSFILE = "Users.txt";
@@ -42,10 +42,10 @@ public class Server implements Serializable {
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
         } catch (IOException e) {
-            //e.printStackTrace();
+            // e.printStackTrace();
             System.out.println("Error initializing stream");
         } catch (Exception e) {
-            //e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 
@@ -66,7 +66,7 @@ public class Server implements Serializable {
             e.printStackTrace();
             System.out.println("Error initializing stream");
         } catch (Exception e) {
-            //e.printStackTrace();
+            // e.printStackTrace();
         }
 
     }
@@ -79,7 +79,7 @@ public class Server implements Serializable {
             return lms;
         } catch (FileNotFoundException e) {
             System.out.println("LMS file not found exception");
-            //e.printStackTrace();
+            // e.printStackTrace();
         } catch (Exception e) {
             System.out.println("Error reading LMS!");
             e.printStackTrace();
@@ -99,9 +99,9 @@ public class Server implements Serializable {
 
         } catch (FileNotFoundException e) {
             System.out.println("Users file not found exception!");
-            //e.printStackTrace();
+            // e.printStackTrace();
         } catch (IOException e) {
-            //e.printStackTrace();
+            // e.printStackTrace();
             System.out.println("Error initializing stream");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -136,7 +136,7 @@ public class Server implements Serializable {
             server = new ServerSocket(42069);
             System.out.println("ServerSocket: " + server);
 
-            //load the users and LMS from the file, and store them
+            // load the users and LMS from the file, and store them
             lms = readLMS(LMSFILE);
 
         } catch (Exception e) {
@@ -160,10 +160,10 @@ public class Server implements Serializable {
                 ObjectInputStream serverInputFromClient = new ObjectInputStream(client.getInputStream());
 
                 System.out.println("Creating new Thread for this client");
-                ClientHandler clientThread = new ClientHandler(client, serverInputFromClient, serverOutputToClient, clients.size());
+                ClientHandler clientThread = new ClientHandler(client, serverInputFromClient, serverOutputToClient,
+                        clients.size());
                 clients.add(clientThread);
                 clientThread.start();
-
 
             } catch (Exception e) {
                 // handle exception
@@ -188,7 +188,7 @@ public class Server implements Serializable {
         Course course = new Course(courseName);
         lms.getCourses().add(course);
 
-        // save the LMS file 
+        // save the LMS file
         saveLMS(LMSFILE);
 
         return true;
@@ -247,7 +247,7 @@ public class Server implements Serializable {
                     return null;
                 }
 
-                users.get(i).setIdentifier(newUsername); //changing the identifier
+                users.get(i).setIdentifier(newUsername); // changing the identifier
 
                 // saves users and LMS to file
                 saveUsers(USERSFILE);
@@ -281,11 +281,11 @@ public class Server implements Serializable {
 
     synchronized public static void updateRepliesAndComments(User user) {
         if (user instanceof Teacher) {
-            //update all comments made by this teacher
+            // update all comments made by this teacher
             for (int i = 0; i < users.size(); i++) {
                 if (users.get(i) instanceof Student) {
                     for (int j = 0; j < ((Student) users.get(i)).getReplyObjects().size(); j++) {
-                        // change any instance of the name of teacher who commented 
+                        // change any instance of the name of teacher who commented
                         Reply r = ((Student) users.get(i)).getReplyObjects().get(j);
                         for (int k = 0; k < r.getComments().size(); k++) {
                             // checks if the owner of the comment is the teacher
@@ -307,10 +307,11 @@ public class Server implements Serializable {
                 // update all comments made by this student
                 if (users.get(i) instanceof Student) {
                     for (int j = 0; j < ((Student) users.get(i)).getReplyObjects().size(); j++) {
-                        // change any instance of the name of teacher who commented 
+                        // change any instance of the name of teacher who commented
                         Reply r = ((Student) users.get(i)).getReplyObjects().get(j);
                         for (int k = 0; k < r.getComments().size(); k++) {
-                            if (r.getComments().get(k).getOwnerObject().equals(user)) { // checks if the owner of the comment is the teacher
+                            if (r.getComments().get(k).getOwnerObject().equals(user)) { // checks if the owner of the
+                                                                                        // comment is the teacher
                                 r.getComments().get(k).setOwner(user);
                             }
                         }
@@ -323,7 +324,6 @@ public class Server implements Serializable {
         lms.setUsers(users);
         saveLMS(LMSFILE);
     }
-
 
     synchronized public static void addReply(Reply reply) {
         Forum currentForum = reply.getForum();
@@ -343,7 +343,7 @@ public class Server implements Serializable {
                             }
                         }
 
-                        // save the LMS 
+                        // save the LMS
                         saveUsers(USERSFILE);
                         lms.setUsers(users);
                         saveLMS(LMSFILE);
@@ -368,12 +368,12 @@ public class Server implements Serializable {
                     Forum forum = new Forum(c, forumName);
                     forum.setIndex(c.getNumForumCreated());
                     c.addForum(forum);
-                    //save the LMS
+                    // save the LMS
                 } else {
                     // add a new Forum in the current course
                     Forum forum = new Forum(c, forumName);
                     c.addForum(forum);
-                    //save the LMS
+                    // save the LMS
                 }
                 saveLMS(LMSFILE);
                 return true;
@@ -503,7 +503,8 @@ public class Server implements Serializable {
 /**
  * Project 5 - ClientHandler
  * <p>
- * Description - Handles receiving Request packets from its assigned client and processes them, and then sends the
+ * Description - Handles receiving Request packets from its assigned client and
+ * processes them, and then sends the
  * requested/updated info back to the client or all clients respectively
  *
  * @author Ahmed Aqarooni, Changxiang Gao
@@ -549,11 +550,13 @@ class ClientHandler extends Thread implements Serializable {
     }
 
     /**
-     * This method processes a request and generates a Response object to be sent to the user
+     * This method processes a request and generates a Response object to be sent to
+     * the user
      *
      * @param request
-     * @return Response response if info is to be sent to all clients, or a null object if it's only
-     * to be sent to a particular user
+     * @return Response response if info is to be sent to all clients, or a null
+     *         object if it's only
+     *         to be sent to a particular user
      * @throws IOException
      */
     public Response processRequest(Request request) throws IOException {
@@ -654,7 +657,7 @@ class ClientHandler extends Thread implements Serializable {
                 // signing up
                 if (Server.getUsers().isEmpty()) {
                     User newUser;
-                    //  check if user is a student or teacher and initializes respectively
+                    // check if user is a student or teacher and initializes respectively
                     if (role.equals("teacher")) {
                         newUser = new Teacher(username, password);
                     } else {
@@ -667,9 +670,9 @@ class ClientHandler extends Thread implements Serializable {
                     Server.addUser(newUser);
                     System.out.println("User successfully added");
 
-                    //  and send the respective LMS object and user back to PARTICULAR USER
-                    //  create a Response object and
-                    response = new Response(0, new Object[]{newUser, Server.getLMS()});
+                    // and send the respective LMS object and user back to PARTICULAR USER
+                    // create a Response object and
+                    response = new Response(0, new Object[] { newUser, Server.getLMS() });
                     sendToClient(response);
 
                     return null;
@@ -698,9 +701,9 @@ class ClientHandler extends Thread implements Serializable {
 
                 Server.addUser(newUser);
 
-                //  and send the respective LMS object and user back to PARTICULAR USER
-                //  create a Response object and
-                response = new Response(0, new Object[]{newUser, Server.getLMS()});
+                // and send the respective LMS object and user back to PARTICULAR USER
+                // create a Response object and
+                response = new Response(0, new Object[] { newUser, Server.getLMS() });
                 sendToClient(response);
 
                 return null;
@@ -716,7 +719,7 @@ class ClientHandler extends Thread implements Serializable {
                 // check through list of users, check if any username matches
                 for (User user : Server.getUsers()) {
                     if (username.equals(user.getIdentifier()) && password.equals(user.getPassword())) {
-                        //  check if user is already logged in
+                        // check if user is already logged in
                         for (ClientHandler client : Server.getClients()) {
                             if (user.equals(client.getUser())) {
 
@@ -728,7 +731,7 @@ class ClientHandler extends Thread implements Serializable {
                         }
                         // send the LMS object back to the client based on the userType
 
-                        response = new Response(0, new Object[]{user, Server.getLMS()});
+                        response = new Response(0, new Object[] { user, Server.getLMS() });
                         sendToClient(response);
                         this.user = user;
                         return null;
@@ -740,13 +743,13 @@ class ClientHandler extends Thread implements Serializable {
                 return null;
             }
             return null;
-        } else if (operation == 6) { // student upvote reply 
+        } else if (operation == 6) { // student upvote reply
             Object[] info = (Object[]) object;
             Reply reply = (Reply) info[0];
             Student upvotedStudent = (Student) info[1];
             // upvote the student's response
             if (Server.upvote(reply, upvotedStudent)) {
-                // sends LMS back to all 
+                // sends LMS back to all
                 response = new Response(0, Server.getLMS());
                 return response;
             } else {
@@ -768,10 +771,11 @@ class ClientHandler extends Thread implements Serializable {
                 sendToClient(response);
                 return null;
             }
-            // after username is changed, change the username label of all its replies and comments
+            // after username is changed, change the username label of all its replies and
+            // comments
             Server.updateRepliesAndComments(user);
 
-            response = new Response(0, new Object[]{Server.getLMS(), user});
+            response = new Response(0, new Object[] { Server.getLMS(), user });
             // send the response to the client
             sendToClient(response);
 
@@ -790,12 +794,11 @@ class ClientHandler extends Thread implements Serializable {
                 sendToClient(response);
                 return null;
             } else {
-                response = new Response(0, new Object[]{Server.getLMS(), user});
+                response = new Response(0, new Object[] { Server.getLMS(), user });
                 // send the response to the client
                 sendToClient(response);
                 return null;
             }
-
 
         } else if (operation == 9) { // user is logging out
             this.user = null;
@@ -808,12 +811,12 @@ class ClientHandler extends Thread implements Serializable {
             Course course = (Course) info[1];
             int score = (int) info[2];
             System.out.println("The score is " + score); // TODO - delete test comment later
-            System.out.println("The student is " + studentName); // TODO - delete test comment later 
+            System.out.println("The student is " + studentName); // TODO - delete test comment later
             Server.gradeStudent(studentName, course, score);
 
-            response = new Response(0, Server.getLMS()); // creates a new response object to send to the user 
-            System.out.println("Sending ok response to add grade");// TODO - delete test comment later 
-            broadcastToOneStudent(response, studentName); // sends the response to the student getting graded 
+            response = new Response(0, Server.getLMS()); // creates a new response object to send to the user
+            System.out.println("Sending ok response to add grade");// TODO - delete test comment later
+            broadcastToOneStudent(response, studentName); // sends the response to the student getting graded
             return null;
         }
         return null;
@@ -827,11 +830,12 @@ class ClientHandler extends Thread implements Serializable {
                 Request request = getRequest();
                 System.out.println(request.getOPERATION());
 
-                // creates a new response, return null if response is not to be broadcasted to other people
+                // creates a new response, return null if response is not to be broadcasted to
+                // other people
                 Response response = processRequest(request);
 
                 if (response != null) {
-                    //sends the response to all other clients
+                    // sends the response to all other clients
                     broadCastReponse(response);
                 }
             } catch (Exception e) {
@@ -851,7 +855,7 @@ class ClientHandler extends Thread implements Serializable {
                         Server.getClients().get(index).interrupt();
                         Server.getClients().remove(index);
                     } catch (IOException e1) {
-                        // TODO Auto-generated catch block
+                        // Auto-generated catch block
                         e1.printStackTrace();
                     }
                 } else {
@@ -889,7 +893,7 @@ class ClientHandler extends Thread implements Serializable {
     }
 
     public void broadCastReponseToOthers(Response response) {
-        //Response response = new Response();
+        // Response response = new Response();
         for (ClientHandler client : Server.getClients()) {
             if (client.getID() == this.getID()) {
                 continue;
@@ -899,7 +903,7 @@ class ClientHandler extends Thread implements Serializable {
                 client.getOut().flush();
                 client.getOut().reset();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
+                // Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -907,7 +911,7 @@ class ClientHandler extends Thread implements Serializable {
 
     public void broadcastToOneStudent(Response response, String studentName) {
         for (ClientHandler client : Server.getClients()) {
-            if (client.getUser().getIdentifier().equals(studentName)) { // finds the client that is being graded 
+            if (client.getUser().getIdentifier().equals(studentName)) { // finds the client that is being graded
                 try {
                     client.s_OTC.writeObject(response);
                     client.s_OTC.flush();

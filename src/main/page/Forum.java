@@ -4,33 +4,25 @@ import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import pages.SortByDate;
-import pages.SortByName;
-import pages.SortByUpvotes;
-
 import java.time.*;
 
-import users.*;
-
 /**
- * Project 4 - Forum
+ * Project 5 - Forum
  * <p>
- * Description - simulates a forum and allows the user to interact with the forum or go deeper into the pages.LMS.
+ * Description - Simulates a forum and allows the user to interact with the
+ * forum or go deeper into the pages.LMS.
  *
  * @author Changxiang Gao
  * @version 11/5/2021
  */
 
 public class Forum implements Serializable {
-    // fixed String menu 
-    //private final String = 
-
 
     // a number that indicates which course it is
-    private final Course course;
+    private Course course;
     private String topic;
     private int index;
-    private final ArrayList<Reply> replies; // an AL that lists replies from latest to earliest
+    private ArrayList<Reply> replies; // an AL that lists replies from latest to earliest
     private LocalDateTime currentTime;
 
     private int numRepliesCreated;
@@ -95,24 +87,6 @@ public class Forum implements Serializable {
      */
     public void addReply(Reply reply) {
         this.replies.add(0, reply);
-    }
-
-    // prints all the replies in the forum and all the comments of each reply
-    //
-    public void printReplies(User currentUser) {
-        for (Reply r : this.replies) {
-            /*
-            // shows the reply number on top of the reply
-            System.out.printf("#%d\n", r.getIdentifier());
-
-            // Rightfully, shows the name and date on the first line
-            // shows the content from the second line, and then prints the comments below
-            // each reply
-            System.out.printf("|%1$-20s %2$s|%n", r.getIdentifier(), r.getCurrentTime());
-
-             */
-
-        }
     }
 
 }

@@ -4,15 +4,14 @@ import main.page.Comment;
 import main.page.Reply;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
 
 import javax.swing.*;
 
 /**
  * Project 5 - ReplyPanel
  * <p>
- * Description - This class describes how a typical reply would appear on a GUI. It would contain the username
+ * Description - This class describes how a typical reply would appear on a GUI.
+ * It would contain the username
  * date, the reply message as well as its comments.
  *
  * @author Changxiang Gao
@@ -20,19 +19,12 @@ import javax.swing.*;
  */
 
 public class ReplyPanel extends JPanel {
-    Reply reply;
-    JPanel upperPanel; // contains the username and the date
-    JPanel middlePanel;
-    JPanel lowerPanel; // contains the reply content and the comments
-    JLabel replyMessage;
-    JLabel date;
-    //JLabel username;
-    String username;
-    JLabel upvotes;
-    JLabel identifier;
-    JPanel commentPanel;
-    ArrayList<JLabel> comments;
-    //Border blackline; 
+    private Reply reply;
+    private JPanel upperPanel; // contains the username and the date
+    private JPanel lowerPanel; // contains the reply content and the comments
+    private JLabel replyMessage;
+    private String username;
+    private JLabel upvotes;
     private boolean selected;
 
     public ReplyPanel(Reply reply) {
@@ -43,64 +35,31 @@ public class ReplyPanel extends JPanel {
                 + username
                 + ", at: " + reply.getCurrentTime()
                 + ", with ID: "
-                + reply.getIdentifier()
-        ));
+                + reply.getIdentifier()));
 
-
+        // UPPER PANEL
         upperPanel = new JPanel(new FlowLayout());
-
-
         replyMessage = new JLabel(reply.getContent());
         upperPanel.add(replyMessage);
 
+        // LOWER PANEL
         lowerPanel = new JPanel();
         upvotes = new JLabel("UPVOTES: " + reply.getUpvotes());
         lowerPanel.add(upvotes);
 
-
-        // initializes a border object to be added to the panel
-
-        // finish off reply panel and comment panel so that we can finish the forum page component
-
-        // identifier = new JLabel("ID: " + String.valueOf(reply.getIdentifier()));
-        // // TODO - set the constraints and add to the panel
-        // upperPanel.add(identifier);
-
-        // date = new JLabel("Sent at: " + reply.getCurrentTime());
-        // upperPanel.add(date);
-
-
-        //middlePanel = new JPanel(new FlowLayout());
-        // TODO - set the constraints and add to the panel
-        //middlePanel.add(username);
-
-        // TODO - set the constraints and add to the panel
-        //middlePanel.add(date);
-
-        // sets up the lower panel
-
-
         // adds the previous two panels to the main reply panel
         this.add(upperPanel);
-        //this.add(middlePanel);
         this.add(lowerPanel);
 
         // convert the individual comments into commentPanels
         // then adds the CPs to the reply panel
-        System.out.println(reply.getComments().size());
         if (reply.getComments().size() > 0) {
             for (Comment c : reply.getComments()) {
                 CommentPanel cp = new CommentPanel(c);
-                System.out.println(c.getContent());
-
-                // TODO - find a way to add the comment to the reply panels in a more proper fashion than this
                 this.add(cp);
             }
             revalidate();
         }
-
-
-        // TODO - set a preferred size / packed size
     }
 
     public Reply getReply() {
@@ -118,8 +77,7 @@ public class ReplyPanel extends JPanel {
                         + username
                         + ", at: " + reply.getCurrentTime()
                         + ", with ID: "
-                        + reply.getIdentifier()
-        ));
+                        + reply.getIdentifier()));
     }
 
     public void select() {
@@ -129,7 +87,6 @@ public class ReplyPanel extends JPanel {
                         + username
                         + ", at: " + reply.getCurrentTime()
                         + ", with ID: "
-                        + reply.getIdentifier()
-        ));
+                        + reply.getIdentifier()));
     }
 }

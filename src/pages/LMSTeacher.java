@@ -8,13 +8,12 @@ import users.Teacher;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * pages.LMSTeacher
+ * LMSTeacher
  * <p>
- * The Teacher's class of LMS
+ * Description - This class contains the LMS GUI accessed by a Teacher
  *
  * @author Chloe Click, CS180
  * @version November 30, 2021
@@ -22,43 +21,41 @@ import java.util.ArrayList;
 
 public class LMSTeacher extends JComponent implements ActionListener {
 
-    ActualClient client;
-    Container content;
+    private ActualClient client;
+    private Container content;
 
-    ButtonGroup radioGroup;
-    JRadioButton accessButton;
-    JRadioButton addButton;
-    JRadioButton editButton;
-    JRadioButton deleteButton;
+    private ButtonGroup radioGroup;
+    private JRadioButton accessButton;
+    private JRadioButton addButton;
+    private JRadioButton editButton;
+    private JRadioButton deleteButton;
 
-    JButton submitButton;
-    JButton settingsButton;
+    private JButton submitButton;
+    private JButton settingsButton;
 
-    JLabel viewCourseLabel;
-    JLabel addCourseLabel;
-    JLabel editCourseLabel;
-    JLabel deleteCourseLabel;
+    private JLabel viewCourseLabel;
+    private JLabel addCourseLabel;
+    private JLabel editCourseLabel;
+    private JLabel deleteCourseLabel;
 
-    JTextField addCourseText;
-    JTextField editCourseText;
+    private JTextField addCourseText;
+    private JTextField editCourseText;
 
-    JPanel cards;
-    JPanel radioPanel;
-    JPanel accessPanel;
-    JPanel addPanel;
-    JPanel editPanel;
-    JPanel deletePanel;
-    JPanel southPanel;
-    int state;
+    private JPanel cards;
+    private JPanel radioPanel;
+    private JPanel accessPanel;
+    private JPanel addPanel;
+    private JPanel editPanel;
+    private JPanel deletePanel;
+    private JPanel southPanel;
+    private int state;
 
+    private JComboBox<String> courseDropDown;
+    private JComboBox<String> accessCourseDropdown;
+    private JComboBox<String> editCourseDropdown;
+    private JComboBox<String> deleteCourseDropdown;
 
-    JComboBox<String> courseDropDown;
-    JComboBox<String> accessCourseDropdown;
-    JComboBox<String> editCourseDropdown;
-    JComboBox<String> deleteCourseDropdown;
-
-    ArrayList<Course> courses;
-
+    private ArrayList<Course> courses;
 
     public void actionPerformed(ActionEvent e) {
         CardLayout cl = (CardLayout) (cards.getLayout());
@@ -84,19 +81,16 @@ public class LMSTeacher extends JComponent implements ActionListener {
     }
 
     public void submit() {
-        //access
+        // access
         if (state == 0) {
-            //show specified course
+            // show specified course
             if (accessCourseDropdown.getSelectedItem() == null) {
                 JOptionPane.showMessageDialog(null, "No course selected. ", null, JOptionPane.ERROR_MESSAGE);
             } else {
                 String selectedCourse = (String) accessCourseDropdown.getSelectedItem();
-                System.out.println(selectedCourse);
                 Course selectedCourseObject = null;
                 for (Course c : courses) {
-                    System.out.println(c.getCourseName());
                     if (selectedCourse.equals(c.getCourseName())) {
-                        System.out.println(c); // Delete test comment later
                         selectedCourseObject = c;
                         break;
                     }
@@ -108,65 +102,56 @@ public class LMSTeacher extends JComponent implements ActionListener {
                     client.addPanelToCardLayout(client.getCourseTeacher().getContent(), "courseTeacher");
                     ct.updateDisplay(selectedCourseObject);
                 }
-
                 client.changePanel("courseTeacher");
-
-                System.out.println("teacher switched to " + selectedCourse + " course."); // TODO - delete test comment later
-
             }
 
         }
-        //add
+        // add
         if (state == 1) {
             if (addCourseText.getText().isBlank() || addCourseText.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Please enter valid course name.", null, JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Please enter valid course name.",
+                        null, JOptionPane.ERROR_MESSAGE);
             }
 
-            //add course name to list of courses
+            // add course name to list of courses
             Request request = new Request(1, 0, addCourseText.getText());
-
             client.sendToServer(request);
-            System.out.println("add course request sent");
-
             addCourseText.setText("");
-
         }
-        //edit
+        // edit
         if (state == 2) {
-            if (editCourseText.getText().isBlank() || editCourseText.getText().isEmpty() || editCourseDropdown.getSelectedItem() == null) {
-                JOptionPane.showMessageDialog(null, "Please enter valid course name.", null, JOptionPane.ERROR_MESSAGE);
+            if (editCourseText.getText().isBlank() || editCourseText.getText().isEmpty()
+                    || editCourseDropdown.getSelectedItem() == null) {
+                JOptionPane.showMessageDialog(null, "Please enter valid course name.",
+                        null, JOptionPane.ERROR_MESSAGE);
             } else {
                 String selectedCourse = (String) editCourseDropdown.getSelectedItem();
                 if (selectedCourse.equals(editCourseText.getText())) {
-                    JOptionPane.showMessageDialog(null, "Please a different name for this course.", null, JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Please a different name for this course.",
+                            null, JOptionPane.ERROR_MESSAGE);
                 } else {
-                    Request request = new Request(2, 0, new String[]{selectedCourse, editCourseText.getText()}); // operation 2 is edit, operand 0 is course = edit course
+                    // operation 2 is edit, operand 0 is course = edit course
+                    Request request = new Request(2, 0, new String[] { selectedCourse, editCourseText.getText() });
                     client.sendToServer(request);
-                    System.out.println("edit course request sent");
-
                 }
             }
-            //change specified course to new course name
-
+            // change specified course to new course name
 
             editCourseText.setText("");
         }
-        //delete
+        // delete
         if (state == 3) {
-            //delete specified course
+            // delete specified course
             if (deleteCourseDropdown.getSelectedItem() == null) {
                 JOptionPane.showMessageDialog(null, "No course selected. ", null, JOptionPane.ERROR_MESSAGE);
             } else {
                 String selectedCourse = (String) deleteCourseDropdown.getSelectedItem();
-                Request request = new Request(3, 0, selectedCourse); // operation 3 is delete, operand 0 is course = delete course
+                // operation 3 is delete, operand 0 is course = delete course
+                Request request = new Request(3, 0, selectedCourse);
                 client.sendToServer(request);
-                System.out.println("edit course request sent");
-
             }
-
         }
     }
-
 
     synchronized public void updateDisplay(LMS lms) {
         courses = lms.getCourses();
@@ -179,7 +164,6 @@ public class LMSTeacher extends JComponent implements ActionListener {
                 accessCourseDropdown.addItem(c.getCourseName());
                 editCourseDropdown.addItem(c.getCourseName());
                 deleteCourseDropdown.addItem(c.getCourseName());
-                System.out.println(c.getCourseName());
             }
         }
         accessCourseDropdown.revalidate();
@@ -196,7 +180,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
         JPanel radioPanel = new JPanel();
         radioPanel.setLayout(new GridBagLayout());
 
-        //creating the radiobuttons
+        // creating the radiobuttons
         accessButton = new JRadioButton("access");
         accessButton.setMnemonic(KeyEvent.VK_B);
         accessButton.setActionCommand("access");
@@ -218,22 +202,18 @@ public class LMSTeacher extends JComponent implements ActionListener {
         deleteButton.setActionCommand("delete");
         deleteButton.addActionListener(this);
 
-
-        //settings Button created
+        // settings Button created
         settingsButton = new JButton("Settings");
         settingsButton.addActionListener(this);
 
-
-        //creating button group
+        // creating button group
         radioGroup = new ButtonGroup();
         radioGroup.add(accessButton);
         radioGroup.add(addButton);
         radioGroup.add(editButton);
         radioGroup.add(deleteButton);
 
-
-        //formatting radio panel with settings button and radio buttons
-        //**place of settings button can be changed**
+        // formatting radio panel with settings button and radio buttons
         GridBagConstraints gbc = new GridBagConstraints();
 
         gbc.anchor = GridBagConstraints.PAGE_START;
@@ -245,7 +225,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
         radioPanel.add(deleteButton, gbc);
         content.add(radioPanel, BorderLayout.NORTH);
 
-        //creating labels and text fields
+        // creating labels and text fields
         viewCourseLabel = new JLabel("Choose a course to view.");
         addCourseLabel = new JLabel("Enter the name of the course you want to add.");
         editCourseLabel = new JLabel("Choose the course you want to edit, and input the new name.");
@@ -256,7 +236,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
         editCourseText = new JTextField("", 10);
         editCourseText.setEditable(true);
 
-        //accessPanel layout
+        // accessPanel layout
         accessPanel = new JPanel();
         accessPanel.setLayout(new GridBagLayout());
         GridBagConstraints a = new GridBagConstraints();
@@ -277,13 +257,10 @@ public class LMSTeacher extends JComponent implements ActionListener {
 
         accessPanel.add(accessCourseDropdown, a);
 
-
-        //addPanel layout
+        // addPanel layout
         addPanel = new JPanel();
         addPanel.setLayout(new GridBagLayout());
         GridBagConstraints b = new GridBagConstraints();
-        //courseDropdown = new JComboBox<>();
-
 
         b.weighty = 0;
         b.gridx = 0;
@@ -297,8 +274,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
 
         addPanel.add(addCourseText, b);
 
-
-        //editPanel layout
+        // editPanel layout
         editPanel = new JPanel();
         editPanel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -322,11 +298,10 @@ public class LMSTeacher extends JComponent implements ActionListener {
 
         editPanel.add(editCourseText, c);
 
-        //deletePanel layout
+        // deletePanel layout
         deletePanel = new JPanel();
         deletePanel.setLayout(new GridBagLayout());
         GridBagConstraints d = new GridBagConstraints();
-        //courseDropdown = new JComboBox<>();
         deleteCourseDropdown = new JComboBox<>();
 
         d.weighty = 0;
@@ -341,31 +316,26 @@ public class LMSTeacher extends JComponent implements ActionListener {
 
         deletePanel.add(deleteCourseDropdown, d);
 
-
-        //implementing card layout, adding each panel to cards
+        // implementing card layout, adding each panel to cards
         cards = new JPanel(new CardLayout());
         cards.add(accessPanel, "Access Panel");
         cards.add(addPanel, "Add Panel");
         cards.add(editPanel, "Edit Panel");
         cards.add(deletePanel, "Delete Panel");
 
-        //submit Button
+        // submit Button
         southPanel = new JPanel();
         submitButton = new JButton("Submit");
         submitButton.addActionListener(this);
 
         southPanel.add(submitButton);
 
-        //adding all panels to container
+        // adding all panels to container
         content.add(southPanel, BorderLayout.SOUTH);
         content.add(cards, BorderLayout.CENTER);
-
-
     }
 
     public Container getContent() {
         return content;
     }
-
-
 }
