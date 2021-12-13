@@ -330,12 +330,12 @@ class ReaderThread extends Thread {
                     // denotes a change in password
                     if (gui.getUser().getIdentifier().equals(newUser.getIdentifier())) {
                         JOptionPane.showMessageDialog(null, "Password successfully changed.", "Password Changed",
-                                JOptionPane.INFORMATION_MESSAGE);// prints success message for change in password
+                                JOptionPane.INFORMATION_MESSAGE); // prints success message for change in password
                     } else {
                         JOptionPane.showMessageDialog(null, "Username successfully changed to "
                                 + newUser.getIdentifier()
                                 + ".", "Username Changed",
-                                JOptionPane.INFORMATION_MESSAGE);// prints success message for change in password
+                                JOptionPane.INFORMATION_MESSAGE); // prints success message for change in password
                     }
                     gui.setUser(newUser);
                     updateGUIWithNewLMS(newLMS);
