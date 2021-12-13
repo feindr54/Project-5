@@ -14,7 +14,7 @@ import java.io.Serializable;
  * @version 12/7/2021
  */
 public class Request implements Serializable {
-    private final int OPERATION; // 0 - access, 1 - add, 2 - edit, 3 - delete, 4 - create account, 5 - login, 6 - ask
+    private final int OPERATION; // 1 - add, 2 - edit, 3 - delete, 4 - create account, 5 - login, 6 - ask to
     // upvote replies, 7 - change username, 8 - change password, 9 - logout, 10 - grade student
     private final int OPERAND; // 0 - course, 1 - forum, 2 - reply, 3 - comment
     private final Object OBJ; // this object could be an instance of LMS, course or, forum, or an array containing

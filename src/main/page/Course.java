@@ -31,10 +31,10 @@ public class Course implements Serializable {
     private ArrayList<String> forumsString;
     private ArrayList<String> studentsString;
 
-    private int numForumCreated; 
+    private int numForumCreated;
 
     private int index;
-    private LocalDateTime currentTime; 
+    private final LocalDateTime currentTime;
 
     // constructor
     public Course(String courseName) {
@@ -42,7 +42,7 @@ public class Course implements Serializable {
         this.forums = new ArrayList<Forum>();
         this.students = new ArrayList<Student>();
         this.numForumCreated = 0;
-        this.index = 0; 
+        this.index = 0;
         this.currentTime = LocalDateTime.now();
     }
 
@@ -50,7 +50,7 @@ public class Course implements Serializable {
     public LocalDateTime getTime() {
         return currentTime;
     }
-    
+
     public void addNumForumCreated() {
         this.numForumCreated++;
     }
@@ -58,7 +58,7 @@ public class Course implements Serializable {
     public int getNumForumCreated() {
         return numForumCreated;
     }
-    
+
     public void setIndex(int index) {
         this.index = index;
     }
@@ -92,7 +92,7 @@ public class Course implements Serializable {
     }
 
     public void addStudent(Student student) {
-        for(Student s: this.students) {
+        for (Student s : this.students) {
             if (s.equals(student)) {
                 return;
             }
@@ -133,13 +133,11 @@ public class Course implements Serializable {
         return studentsString;
     }
 
-    @Override 
+    @Override
     public boolean equals(Object o) {
         if (o instanceof Course) {
-            if (((Course) o).getTime().equals(this.currentTime)) {
-                return true; 
-            }
+            return ((Course) o).getTime().equals(this.currentTime);
         }
-        return false; 
+        return false;
     }
 }

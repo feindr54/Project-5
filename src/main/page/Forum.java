@@ -25,22 +25,22 @@ public class Forum implements Serializable {
     // fixed String menu 
     //private final String = 
 
-    
+
     // a number that indicates which course it is
-    private Course course; 
+    private final Course course;
     private String topic;
-    private int index; 
-    private ArrayList<Reply> replies; // an AL that lists replies from latest to earliest
+    private int index;
+    private final ArrayList<Reply> replies; // an AL that lists replies from latest to earliest
     private LocalDateTime currentTime;
 
-    private int numRepliesCreated; 
+    private int numRepliesCreated;
 
-    public Forum(Course course, String topic) { 
+    public Forum(Course course, String topic) {
         this.course = course;
         this.topic = topic;
         this.replies = new ArrayList<Reply>();
         this.currentTime = LocalDateTime.now();
-        this.index = 0; 
+        this.index = 0;
         this.numRepliesCreated = 0;
     }
 
@@ -57,7 +57,7 @@ public class Forum implements Serializable {
     }
 
     public void setIndex(int index) {
-        this.index = index; 
+        this.index = index;
     }
 
     public Course getCourse() {
@@ -93,7 +93,7 @@ public class Forum implements Serializable {
      *
      * @param reply
      */
-    public void addReply(Reply reply) {    
+    public void addReply(Reply reply) {
         this.replies.add(0, reply);
     }
 

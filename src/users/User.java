@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * Project 4 - User
+ * Project 5 - User
  * <p>
  * Description - User class sets up a generic user for the program
  *
@@ -127,29 +127,4 @@ public class User implements Serializable {
     public String toString() {
         return "User [email=" + email + ", identifier=" + identifier + ", password=" + password + "]";
     }
-
-    // checks the given email to make sure there's an @ symbol
-    public boolean isValidEmail() {
-        for (int i = 0; i < this.email.length(); i++) {
-
-            if (this.email.charAt(i) == '@') {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // checks if an identifier is available, loops through given array of current
-    // users
-    public boolean isAvailable(ArrayList<User> users) {
-
-        for (User user : users) {
-            if (this.getIdentifier().equals(user.getIdentifier())) {
-                return false;
-            }
-        }
-        return true;
-
-    }
-
 }

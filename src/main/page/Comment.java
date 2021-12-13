@@ -15,8 +15,8 @@ import users.*;
  * @version 11/6/2021
  */
 public class Comment implements Serializable {
-    private String content;
-    private Reply reply;
+    private final String content;
+    private final Reply reply;
 
     // an owner attribute; the person who wrote the comment
     private User owner;
@@ -35,7 +35,7 @@ public class Comment implements Serializable {
     }
 
     public Reply getReply() {
-        return reply; 
+        return reply;
     }
 
     // returns the message in the Comment

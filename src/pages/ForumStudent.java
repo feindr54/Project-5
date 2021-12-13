@@ -13,7 +13,15 @@ import main.page.*;
 import networking.*;
 import users.*;
 
-// TODO - create a javadoc
+/**
+* Project 5 - ForumStudent
+*
+* Description - TODO
+*
+* @author Ahmed Qarooni, Alex Younkers
+*
+* @version 12/13/2021
+*/
 public class ForumStudent extends JComponent {
     ActualClient client;
     Container content;

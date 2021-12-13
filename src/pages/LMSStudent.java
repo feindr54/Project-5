@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * pages.LMSStudent
+ * LMSStudent
  * <p>
  * The Student's class of LMS
  *

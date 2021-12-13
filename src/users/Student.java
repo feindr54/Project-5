@@ -7,7 +7,7 @@ import java.util.*;
 import main.page.*;
 
 /**
- * Project 4 - Student
+ * Project 5 - Student
  * <p>
  * Description - A child class of User which allows students to comment and
  * reply
@@ -18,12 +18,12 @@ import main.page.*;
 
 public class Student extends User implements Serializable {
 
-    private ArrayList<Reply> studentReplies;
-    private ArrayList<Comment> studentComments;
-    private ArrayList<String> repliesToString;
+    private final ArrayList<Reply> studentReplies;
+    private final ArrayList<Comment> studentComments;
+    private final ArrayList<String> repliesToString;
 
     // index represents the index of the student reply
-    private HashMap<Course, String> grades;
+    private final HashMap<Course, String> grades;
 
     public Student(String email, String password) {
         super(email, password, true);
@@ -35,15 +35,6 @@ public class Student extends User implements Serializable {
         grades = new HashMap<>();
     }
 
-    // this method should take in a forum and the contents of the reply, creates a
-    // new reply, then calls the forum's add reply method.
-    public void createReply(Forum currentForum, String content) {
-        Reply newReply = new Reply(currentForum, this, content);
-        currentForum.addReply(newReply);
-        this.studentReplies.add(newReply);
-
-    }
-
     public void deleteReplies(Forum forum) {
         for (Reply r : studentReplies) {
             if (r.getForum().getCurrentTime().equals(forum.getCurrentTime())) {
@@ -51,11 +42,6 @@ public class Student extends User implements Serializable {
             }
         }
     }
-
-    public void deleteComments(Forum forum) {
-
-    } // TODO - delete later if us
-
 
     public HashMap<Course, String> getGradesHashMap() {
         return this.grades;
@@ -83,18 +69,6 @@ public class Student extends User implements Serializable {
         Comment newComment = new Comment(currentReply, this, content);
         currentReply.addComment(newComment);
     }
-
-    public void upvoteReply(Reply currentReply) {
-
-        for (Student student : currentReply.getUpvotedStudents()) {
-            if (this.getIdentifier().equals(student.getIdentifier())) {
-                System.out.println("You can only upvote once!\n");
-                return;
-            }
-        }
-        currentReply.upvote(this);
-    }
-
 
     public void setGrade(Course course, String grade) {
         grades.put(course, grade);

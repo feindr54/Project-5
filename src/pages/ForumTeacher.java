@@ -11,7 +11,16 @@ import main.page.*;
 import networking.*;
 import users.*;
 
-// TODO - add javadoc
+/**
+* Project 5 - ForumTeacher
+*
+* Description - TODO
+*
+* @author Changxiang Gao
+*
+* @version 12/13/2021
+*/
+
 public class ForumTeacher extends JComponent {
 
     ActualClient client;

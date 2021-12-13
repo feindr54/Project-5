@@ -20,7 +20,6 @@ import java.util.ArrayList;
  * @version November 30, 2021
  */
 
-
 public class LMSTeacher extends JComponent implements ActionListener {
 
     ActualClient client;

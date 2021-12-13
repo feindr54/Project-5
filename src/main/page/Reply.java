@@ -20,17 +20,17 @@ import java.util.Comparator;
 
 public class Reply implements Serializable {
     private Student owner;
-    private Forum forum;
-    private String content;
-    private ArrayList<Comment> comments;
+    private final Forum forum;
+    private final String content;
+    private final ArrayList<Comment> comments;
 
-    private int identifier;
+    private final int identifier;
 
     // the time stamp
-    private LocalDateTime currentTime;
+    private final LocalDateTime currentTime;
 
     // integer upvote to keep track of a reply's upvotes
-    private ArrayList<Student> upvotedStudents;
+    private final ArrayList<Student> upvotedStudents;
     public int upvotes;
 
     public Reply(Forum forum, Student currentUser, String content) {
@@ -50,7 +50,7 @@ public class Reply implements Serializable {
     }
 
     public Forum getForum() {
-        return forum; 
+        return forum;
     }
 
     public Student getOwner() {
@@ -58,7 +58,7 @@ public class Reply implements Serializable {
     }
 
     public void setOwner(Student student) {
-        this.owner = student; 
+        this.owner = student;
     }
 
 
@@ -109,9 +109,8 @@ public class Reply implements Serializable {
     }
 
     public ArrayList<Comment> getComments() {
-        return this.comments; 
+        return this.comments;
     }
-
 
 
     // Method to print a divider between replies, and between comments
