@@ -99,8 +99,8 @@ public class Course implements Serializable {
     }
 
     // remove forum from arraylist
-    public void removeForum(int index) {
-        this.forums.remove(index);
+    public void removeForum(int i) {
+        this.forums.remove(i);
     }
 
     @Override

@@ -26,7 +26,8 @@ public class ForumTeacher extends JComponent {
     private Container content;
 
     private JPanel top;
-    private JButton Settings, Back;
+    private JButton settings;
+    private JButton back;
 
     private JPanel middle;
     private JPanel forumDisplay;
@@ -35,9 +36,11 @@ public class ForumTeacher extends JComponent {
     private JPanel bot;
     private JLabel prompt;
     private JTextField input;
-    private JButton Submit;
+    private JButton submit;
 
-    private JCheckBox date, upvote, name;
+    private JCheckBox date;
+    private JCheckBox upvote;
+    private JCheckBox name;
 
     private Forum forum;
     private User currentUser;
@@ -62,9 +65,9 @@ public class ForumTeacher extends JComponent {
 
         // TOP PANEL
 
-        Back = new JButton("Back");
-        Back.addActionListener(actionListener);
-        top.add(Back);
+        back = new JButton("Back");
+        back.addActionListener(actionListener);
+        top.add(back);
 
         top.add(Box.createHorizontalGlue());
 
@@ -72,9 +75,9 @@ public class ForumTeacher extends JComponent {
         top.add(title);
         top.add(Box.createHorizontalGlue());
 
-        Settings = new JButton("Settings");
-        Settings.addActionListener(actionListener);
-        top.add(Settings);
+        settings = new JButton("Settings");
+        settings.addActionListener(actionListener);
+        top.add(settings);
 
         content.add(top, BorderLayout.NORTH);
 
@@ -139,12 +142,12 @@ public class ForumTeacher extends JComponent {
 
         prompt = new JLabel("Enter comment: ");
         input = new JTextField(50);
-        Submit = new JButton("Comment");
+        submit = new JButton("Comment");
 
         bot.add(prompt);
         bot.add(input);
-        bot.add(Submit);
-        Submit.addActionListener(actionListener);
+        bot.add(submit);
+        submit.addActionListener(actionListener);
 
         content.add(bot, BorderLayout.SOUTH);
     }
@@ -173,7 +176,7 @@ public class ForumTeacher extends JComponent {
             if (e.getSource() == name) {
                 nameCheck();
             }
-            if (e.getSource() == Submit) {
+            if (e.getSource() == submit) {
                 String inputText = input.getText();
 
                 // checks if the input is empty or just whitespace
@@ -198,10 +201,10 @@ public class ForumTeacher extends JComponent {
 
                 }
             }
-            if (e.getSource() == Back) {
+            if (e.getSource() == back) {
                 client.changeToPreviousPanel();
             }
-            if (e.getSource() == Settings) {
+            if (e.getSource() == settings) {
                 client.goToSettings();
             }
         }

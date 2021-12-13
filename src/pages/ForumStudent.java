@@ -27,7 +27,8 @@ public class ForumStudent extends JComponent {
     private Container content;
 
     private JPanel top;
-    private JButton Settings, Back;
+    private JButton settings;
+    private JButton back;
 
     private JPanel middle;
     private JPanel forumDisplay;
@@ -37,7 +38,7 @@ public class ForumStudent extends JComponent {
     private JLabel prompt;
     private JTextField input;
     private JButton importSubmit;
-    private JButton Submit;
+    private JButton submit;
 
     private Forum forum;
     private User currentUser;
@@ -66,9 +67,9 @@ public class ForumStudent extends JComponent {
 
         // TOP PANEL
 
-        Back = new JButton("Back");
-        Back.addActionListener(actionListener);
-        top.add(Back);
+        back = new JButton("Back");
+        back.addActionListener(actionListener);
+        top.add(back);
 
         top.add(Box.createHorizontalGlue());
 
@@ -76,9 +77,9 @@ public class ForumStudent extends JComponent {
         top.add(title);
         top.add(Box.createHorizontalGlue());
 
-        Settings = new JButton("Settings");
-        Settings.addActionListener(actionListener);
-        top.add(Settings);
+        settings = new JButton("Settings");
+        settings.addActionListener(actionListener);
+        top.add(settings);
 
         content.add(top, BorderLayout.NORTH);
 
@@ -111,14 +112,14 @@ public class ForumStudent extends JComponent {
         prompt = new JLabel("Enter Reply:\t");
         input = new JTextField(50);
         importSubmit = new JButton("Import reply");
-        Submit = new JButton("Reply");
+        submit = new JButton("Reply");
 
         bot.add(prompt);
         bot.add(input);
         bot.add(importSubmit);
-        bot.add(Submit);
+        bot.add(submit);
         importSubmit.addActionListener(actionListener);
-        Submit.addActionListener(actionListener);
+        submit.addActionListener(actionListener);
 
         content.add(bot, BorderLayout.SOUTH);
     }
@@ -139,7 +140,7 @@ public class ForumStudent extends JComponent {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            if (e.getSource() == Submit) {
+            if (e.getSource() == submit) {
                 String inputText = input.getText();
 
                 // checks if the input is empty or just whitespace
@@ -166,7 +167,7 @@ public class ForumStudent extends JComponent {
                     }
 
                     input.setText("");
-                    Submit.setText("Reply");
+                    submit.setText("Reply");
                     prompt.setText("Enter Reply:\t");
 
                 }
@@ -215,10 +216,10 @@ public class ForumStudent extends JComponent {
 
             }
 
-            if (e.getSource() == Back) {
+            if (e.getSource() == back) {
                 client.changeToPreviousPanel();
             }
-            if (e.getSource() == Settings) {
+            if (e.getSource() == settings) {
                 client.goToSettings();
             }
         }
@@ -245,12 +246,12 @@ public class ForumStudent extends JComponent {
                     }
                     replyPanel.unselect();
                 }
-                Submit.setText("Comment"); // changes the text of the submit button and the prompt
+                submit.setText("Comment"); // changes the text of the submit button and the prompt
                 prompt.setText("Enter Comment:\t");
                 importSubmit.setVisible(false);
             } else {
                 selectedReplyPanel.unselect();
-                Submit.setText("Reply");
+                submit.setText("Reply");
                 prompt.setText("Enter Reply:\t");
                 importSubmit.setVisible(true);
             }

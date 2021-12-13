@@ -173,11 +173,11 @@ public class CourseTeacher extends JComponent {
                             JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     String oldTopic = (String) editForums.getSelectedItem();
-                    String newTopic = editCourse.getText();
+                    String inputTopic = editCourse.getText();
                     editCourse.setText("");
                     editForums.setSelectedIndex(0);
 
-                    Request request = new Request(2, 1, new String[] { oldTopic, newTopic });
+                    Request request = new Request(2, 1, new String[] { oldTopic, inputTopic });
                     client.sendToServer(request);
                 }
             }
@@ -268,12 +268,12 @@ public class CourseTeacher extends JComponent {
         return this.course;
     }
 
-    synchronized public void updateDisplay(Course course) {
+    synchronized public void updateDisplay(Course c) {
         // Update the display of the course with a Course object input
-        this.course = course;
+        this.course = c;
         courseName = this.course.getCourseName();
         forums = this.course.getForums();
-        studentsArr = course.getStudents();
+        studentsArr = c.getStudents();
         accessForums.removeAllItems();
         editForums.removeAllItems();
         deleteForums.removeAllItems();

@@ -67,7 +67,6 @@ public class LMSStudent extends JComponent implements ActionListener {
         if (lms.getCourses().size() > 0) {
             for (Course c : lms.getCourses()) {
                 courseDropdown.addItem(c.getCourseName());
-
             }
         }
         revalidate();
@@ -78,7 +77,7 @@ public class LMSStudent extends JComponent implements ActionListener {
         this.content = new Container();
         content.setLayout(new BorderLayout());
 
-        JPanel accessPanel = new JPanel();
+        accessPanel = new JPanel();
         accessPanel.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();

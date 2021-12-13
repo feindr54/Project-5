@@ -3,7 +3,6 @@ package networking;
 import javax.swing.*;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.io.*;
 import java.net.*;
 import java.util.Stack;
@@ -28,7 +27,7 @@ public class ActualClient extends JFrame implements Runnable {
     private User user;
     private Socket socket;
 
-    private ObjectOutputStream C_OTS;
+    private ObjectOutputStream cOTS;
 
     private Stack<String> pageStack = new Stack<>();
 
@@ -98,7 +97,7 @@ public class ActualClient extends JFrame implements Runnable {
     public ActualClient() {
         try {
             socket = new Socket("localhost", 42069);
-            C_OTS = new ObjectOutputStream(socket.getOutputStream());
+            cOTS = new ObjectOutputStream(socket.getOutputStream());
         } catch (Exception e) {
             // handle exception
             System.out.println("Unable to connect");
@@ -119,7 +118,7 @@ public class ActualClient extends JFrame implements Runnable {
     }
 
     public ObjectOutputStream getOOS() {
-        return C_OTS;
+        return cOTS;
     }
 
     public CardLayout getCl() {
@@ -243,9 +242,9 @@ public class ActualClient extends JFrame implements Runnable {
 
     public void sendToServer(Request request) {
         try {
-            C_OTS.writeObject(request);
-            C_OTS.flush();
-            C_OTS.reset();
+            cOTS.writeObject(request);
+            cOTS.flush();
+            cOTS.reset();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -367,12 +366,12 @@ class ReaderThread extends Thread {
             Socket socket = gui.getSocket();
             System.out.println("Connected");
 
-            ObjectInputStream C_IFS = new ObjectInputStream(socket.getInputStream());
+            ObjectInputStream cIFS = new ObjectInputStream(socket.getInputStream());
 
             // change the condition to whether the client is open
             while (true) {
                 // receiving the response from the server
-                Response response = (Response) C_IFS.readObject();
+                Response response = (Response) cIFS.readObject();
                 processResponse(response);
             }
         } catch (Exception e) {

@@ -12,22 +12,21 @@ import java.io.Serializable;
  */
 
 public class Response implements Serializable {
-    // TODO - settle how many types of responses there can be
-    private final int TYPE; // 0 - information, 1 - errors (invalid input), 2 - log out 
-    private final Object OBJ; // object sent to the client to display
+    private final int type; // 0 - information, 1 - errors (invalid input), 2 - log out
+    private final Object obj; // object sent to the client to display
     // the only exception is when the user has successfully logged in, the object sent back is an array of Objects
     // holding the User object and the LMS object
 
     public Response(int type, Object obj) {
-        this.TYPE = type;
-        this.OBJ = obj;
+        this.type = type;
+        this.obj = obj;
     }
 
     public int getType() {
-        return TYPE;
+        return type;
     }
 
     public Object getObj() {
-        return OBJ;
+        return obj;
     }
 }

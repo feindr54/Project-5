@@ -177,7 +177,7 @@ public class LMSTeacher extends JComponent implements ActionListener {
         this.content = new Container();
         content.setLayout(new BorderLayout());
 
-        JPanel radioPanel = new JPanel();
+        radioPanel = new JPanel();
         radioPanel.setLayout(new GridBagLayout());
 
         // creating the radiobuttons

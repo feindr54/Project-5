@@ -139,10 +139,10 @@ public class CourseStudent extends JComponent {
         content.add(accessPanel, BorderLayout.CENTER);
     }
 
-    synchronized public void updateDisplay(Course course) {
+    synchronized public void updateDisplay(Course c) {
         // Update the display of the course with a Course object input
 
-        this.course = course;
+        this.course = c;
         courseName = this.course.getCourseName();
         forums = this.course.getForums();
         accessForums.removeAllItems();

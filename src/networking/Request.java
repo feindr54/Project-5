@@ -14,10 +14,10 @@ import java.io.Serializable;
  * @version 12/7/2021
  */
 public class Request implements Serializable {
-    private final int OPERATION; // 1 - add, 2 - edit, 3 - delete, 4 - create account, 5 - login, 6 - ask to
+    private final int operation; // 1 - add, 2 - edit, 3 - delete, 4 - create account, 5 - login, 6 - ask to
     // upvote replies, 7 - change username, 8 - change password, 9 - logout, 10 - grade student
-    private final int OPERAND; // 0 - course, 1 - forum, 2 - reply, 3 - comment
-    private final Object OBJ; // this object could be an instance of LMS, course or, forum, or an array containing
+    private final int operand; // 0 - course, 1 - forum, 2 - reply, 3 - comment
+    private final Object obj; // this object could be an instance of LMS, course or, forum, or an array containing
     // username and password, and the role ("student" or "teacher")
     // if the user is trying to add/delete, the user will send the String nameOfObject
     // if the user is trying to edit, user will send 2 Strings, oldName and newName
@@ -28,26 +28,26 @@ public class Request implements Serializable {
     // in the case of accessing a page, the structure would be (0, String type_of_object/name_of_object)
     // eg (0, "Course/CS 180")
     public Request(int operation, Object obj) {
-        this.OPERATION = operation;
-        this.OBJ = obj;
-        this.OPERAND = -1;
+        this.operation = operation;
+        this.obj = obj;
+        this.operand = -1;
     }
 
     public Request(int operation, int operand, Object obj) {
-        this.OPERATION = operation;
-        this.OBJ = obj;
-        this.OPERAND = operand;
+        this.operation = operation;
+        this.obj = obj;
+        this.operand = operand;
     }
 
-    public int getOPERATION() {
-        return OPERATION;
+    public int getOperation() {
+        return operation;
     }
 
-    public Object getOBJ() {
-        return OBJ;
+    public Object getObj() {
+        return obj;
     }
 
-    public int getOPERAND() {
-        return OPERAND;
+    public int getOperand() {
+        return operand;
     }
 }
